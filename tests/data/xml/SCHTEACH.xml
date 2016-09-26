@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-08-29">
+	<Record userId="410264" username="jeffp" termId="129" dmd:surveyId="1262550">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Finance" text="Finance"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Scholarly Academic" text="Scholarly Academic"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Assistant Professor" text="Assistant Professor"/>
+		<SCHTEACH id="131942365184" dmd:lastModified="2016-08-16T08:50:10" dmd:startDate="2016-05-15" dmd:endDate="2016-08-31" dmd:primaryKey="Summer|2016|FINN|3013||11">
+			<TYT_TERM>Summer</TYT_TERM>
+			<TYY_TERM>2016</TYY_TERM>
+			<TERM_START>2016-05-15</TERM_START>
+			<TERM_END>2016-08-31</TERM_END>
+			<TITLE>FINANCIAL ANALYSIS</TITLE>
+			<COURSEPRE>FINN</COURSEPRE>
+			<COURSENUM>3013</COURSENUM>
+			<COURSENUM_SUFFIX>H</COURSENUM_SUFFIX>
+			<SECTION>11</SECTION>
+			<DEGREE_PROGRAM>Bachelor's</DEGREE_PROGRAM>
+			<ENROLL>33</ENROLL>
+			<SSCH>99</SSCH>
+			<STEARNA>9</STEARNA>
+			<STEARNB>14</STEARNB>
+			<STEARNC>4</STEARNC>
+			<STEARND>2</STEARND>
+			<STEARNF>1</STEARNF>
+			<STEARNCR>3</STEARNCR>
+			<STEARNI>1</STEARNI>
+			<STEARNR>2</STEARNR>
+			<STEARNW>2</STEARNW>
+			<STEARNAU>1</STEARNAU>
+			<STEARNS>1</STEARNS>
+			<CHOURS>3</CHOURS>
+			<UNIV_CORE_MEAN>4.59</UNIV_CORE_MEAN>
+			<UNIV_CORE_MEDIAN>5</UNIV_CORE_MEDIAN>
+			<COLLEGE_MEAN>4.58</COLLEGE_MEAN>
+			<COLLEGE_MEDIAN>5</COLLEGE_MEDIAN>
+			<DEP_MEAN>4.22</DEP_MEAN>
+			<DEP_MEDIAN>4</DEP_MEDIAN>
+			<GPA_MEAN>3.333333333</GPA_MEAN>
+		</SCHTEACH>
+		<SCHTEACH id="131942367232" dmd:lastModified="2016-08-16T08:50:10" dmd:startDate="2016-05-15" dmd:endDate="2016-08-31" dmd:primaryKey="Summer|2016|WCOB|1033||11">
+			<TYT_TERM>Summer</TYT_TERM>
+			<TYY_TERM>2016</TYY_TERM>
+			<TERM_START>2016-05-15</TERM_START>
+			<TERM_END>2016-08-31</TERM_END>
+			<TITLE>DATA ANALYSIS &amp; INTERPRET</TITLE>
+			<COURSEPRE>WCOB</COURSEPRE>
+			<COURSENUM>1033</COURSENUM>
+			<COURSENUM_SUFFIX/>
+			<SECTION>11</SECTION>
+			<DEGREE_PROGRAM>Bachelor's</DEGREE_PROGRAM>
+			<ENROLL>16</ENROLL>
+			<SSCH>48</SSCH>
+			<STEARNA>3</STEARNA>
+			<STEARNB>8</STEARNB>
+			<STEARNC>3</STEARNC>
+			<STEARND>1</STEARND>
+			<STEARNF>1</STEARNF>
+			<STEARNCR/>
+			<STEARNI/>
+			<STEARNR/>
+			<STEARNW/>
+			<STEARNAU/>
+			<STEARNS/>
+			<CHOURS>3</CHOURS>
+			<UNIV_CORE_MEAN>4.87</UNIV_CORE_MEAN>
+			<UNIV_CORE_MEDIAN>5</UNIV_CORE_MEDIAN>
+			<COLLEGE_MEAN>5.00</COLLEGE_MEAN>
+			<COLLEGE_MEDIAN>5</COLLEGE_MEDIAN>
+			<DEP_MEAN>5.00</DEP_MEAN>
+			<DEP_MEDIAN>5</DEP_MEDIAN>
+			<GPA_MEAN>1.6875</GPA_MEAN>
+		</SCHTEACH>
+	</Record>
+	<Record userId="308937" username="jeffpu" termId="129" dmd:surveyId="1081616">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Supporting" text="Supporting"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Information Systems Department" text="Information Systems Department"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Instructor" text="Instructor"/>
+		<SCHTEACH id="9363183616" dmd:lastModified="2010-02-03T18:58:38" dmd:startDate="2008-01-15" dmd:endDate="2008-04-30" dmd:primaryKey="Spring|2008|ISYS|4283||1">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+			<TYT_TERM>Spring</TYT_TERM>
+			<TYY_TERM>2008</TYY_TERM>
+			<TERM_START>2008-01-15</TERM_START>
+			<TERM_END>2008-04-30</TERM_END>
+			<TITLE>CENTRALIZED DATA SYSTEMS</TITLE>
+			<COURSEPRE>ISYS</COURSEPRE>
+			<COURSENUM>4283</COURSENUM>
+			<COURSENUM_SUFFIX/>
+			<SECTION>1</SECTION>
+			<ENROLL>17</ENROLL>
+			<SSCH>51</SSCH>
+			<STEARNA>9</STEARNA>
+			<STEARNB>6</STEARNB>
+			<STEARNC>1</STEARNC>
+			<STEARND/>
+			<STEARNF>1</STEARNF>
+			<STEARNCR/>
+			<STEARNI/>
+			<STEARNR/>
+			<STEARNW/>
+			<STEARNAU/>
+			<STEARNS/>
+			<CHOURS>3</CHOURS>
+			<GPA_MEAN>2.294117647</GPA_MEAN>
+		</SCHTEACH>
+	</Record>
+</Data>

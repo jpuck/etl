@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-06-13">
+	<Record userId="1111" username="jeffpu" termId="129" dmd:surveyId="1234567">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="WCBD" text="WCBD"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Instructional Practitioner" text="Instructional Practitioner"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Academic Staff" text="Academic Staff"/>
+		<GENSERVE id="33426841601" dmd:lastModified="2011-03-15T10:23:01" dmd:startDate="2010-07-01">
+			<TYPE>Other</TYPE>
+			<TYPEOTHER>Korean Olympic Family Translator, Salt Lake City, UT</TYPEOTHER>
+			<ORG>University Academic Advising Council	</ORG>
+			<ROLE>Committee Member</ROLE>
+			<ROLEOTHER/>
+			<OFFICE>President/Elect/Past</OFFICE>
+			<RESPONSIBILITIES>In addition to regular meetings, the committee participated in strategic planning for research vision and outcomes. </RESPONSIBILITIES>
+			<NUMHOURS>15</NUMHOURS>
+			<ELECAPP>Elected</ELECAPP>
+			<AUDIENCE>Local</AUDIENCE>
+			<EXOFFICIO/>
+			<DTM_START>July</DTM_START>
+			<DTD_START/>
+			<DTY_START>2010</DTY_START>
+			<START_START>2010-07-01</START_START>
+			<START_END>2010-07-31</START_END>
+			<DTM_END/>
+			<DTD_END/>
+			<DTY_END/>
+			<END_START></END_START>
+			<END_END></END_END>
+                        <UPLOAD_FILE/>
+		</GENSERVE>
+		<GENSERVE id="33426841602" dmd:lastModified="2011-03-15T10:23:01" dmd:startDate="2010-07-01" dmd:endDate="2012-12-31">
+			<TYPE>University</TYPE>
+			<TYPEOTHER/>
+			<ORG>University Academic Advising Council	</ORG>
+			<ROLE>Committee Member</ROLE>
+			<ROLEOTHER/>
+			<OFFICE>President/Elect/Past</OFFICE>
+			<RESPONSIBILITIES/>
+			<NUMHOURS/>
+			<ELECAPP>Elected</ELECAPP>
+			<AUDIENCE>Local</AUDIENCE>
+			<EXOFFICIO/>
+			<DTM_START>July</DTM_START>
+			<DTD_START/>
+			<DTY_START>2010</DTY_START>
+			<START_START>2010-07-01</START_START>
+			<START_END>2010-07-31</START_END>
+			<DTM_END/>
+			<DTD_END/>
+			<DTY_END/>
+			<END_START></END_START>
+			<END_END></END_END>
+		</GENSERVE>
+	</Record>
+	<Record userId="2222" username="jeffp" termId="129" dmd:surveyId="1234567">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="WCBD" text="WCBD"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Instructional Practitioner" text="Instructional Practitioner"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Academic Staff" text="Academic Staff"/>
+		<GENSERVE id="33426841603" dmd:lastModified="2011-03-15T10:23:01" dmd:startDate="2010-10-29" dmd:endDate="2012-12-31">
+			<TYPE>Student Organization</TYPE>
+			<TYPEOTHER/>
+			<ORG>University Academic Advising Council	</ORG>
+			<ROLE>Other</ROLE>
+			<ROLEOTHER>Parks &amp; Recreation Basketball Coach, Middleton, WI (</ROLEOTHER>
+			<OFFICE>President/Elect/Past</OFFICE>
+			<RESPONSIBILITIES/>
+			<NUMHOURS/>
+			<ELECAPP>Elected</ELECAPP>
+			<AUDIENCE>Local</AUDIENCE>
+			<EXOFFICIO>No</EXOFFICIO>
+			<DTM_START>October</DTM_START>
+			<DTD_START>29</DTD_START>
+			<DTY_START>2010</DTY_START>
+			<START_START>2010-10-29</START_START>
+			<START_END>2010-10-29</START_END>
+			<DTM_END>December</DTM_END>
+			<DTD_END>31</DTD_END>
+			<DTY_END>2012</DTY_END>
+			<END_START>2012-12-31</END_START>
+			<END_END>2012-12-31</END_END>
+		</GENSERVE>
+		<GENSERVE id="33426841604" dmd:lastModified="2011-03-15T10:23:01" dmd:startDate="2010-07-01">
+			<TYPE>University</TYPE>
+			<TYPEOTHER/>
+			<ORG>University Academic Advising Council	</ORG>
+			<ROLE>Committee Member</ROLE>
+			<ROLEOTHER/>
+			<OFFICE>President/Elect/Past</OFFICE>
+			<RESPONSIBILITIES/>
+			<NUMHOURS>0.5</NUMHOURS>
+			<ELECAPP>Elected</ELECAPP>
+			<AUDIENCE>Local</AUDIENCE>
+			<EXOFFICIO/>
+			<DTM_START>July</DTM_START>
+			<DTD_START/>
+			<DTY_START>2010</DTY_START>
+			<START_START>2010-07-01</START_START>
+			<START_END>2010-07-31</START_END>
+			<DTM_END/>
+			<DTD_END/>
+			<DTY_END/>
+			<END_START></END_START>
+			<END_END></END_END>
+                        <UPLOAD_FILE>jp/genserve/RetentionDegree completion  -1.txt</UPLOAD_FILE>
+		</GENSERVE>
+	</Record>
+</Data>

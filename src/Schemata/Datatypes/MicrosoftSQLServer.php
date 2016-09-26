@@ -1,0 +1,87 @@
+<?php
+namespace jpuck\etl\Schemata\Datatypes;
+
+use InvalidArgumentException;
+
+class MicrosoftSQLServer implements Datatyper {
+	protected $default_varchar_size = 100;
+	// TODO: set minimum size
+
+	public function getInteger ($value) : String {
+		$value = str_replace(',','',$value);
+
+		if (!is_numeric($value)){
+			throw new InvalidArgumentException("$value is not numeric.");
+		}
+
+		$getVarchar = function($val){
+			$size = strlen($val);
+			return "varchar($size)";
+		};
+
+		// https://msdn.microsoft.com/en-us/library/ms187745.aspx
+		$msints = [
+			 '9223372036854775807' => 'bigint',
+			          '2147483647' => 'int',
+			               '32767' => 'smallint',
+			                 '255' => 'tinyint',
+			                  '-1' => 'smallint',
+			              '-32769' => 'int',
+			         '-2147483649' => 'bigint',
+			'-9223372036854775809' => '',
+		];
+
+		$last = '9223372036854775807';
+		if ($value > $last){
+			return $getVarchar($value);
+		}
+
+		foreach ($msints as $max => $type){
+			if ($value > $max){
+				return $msints[$last];
+			}
+			$last = $max;
+		}
+		return $getVarchar($value);
+	}
+
+	public function getDatetime($value){
+		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
+
+		// filter out alphabetic chars per relative format symbols
+		// except for 'T' per ISO8601
+		// http://php.net/manual/en/datetime.formats.relative.php
+		if (preg_match('/^[\s\dT:\/-]*$/', $value) !== 1){
+			return false;
+		}
+
+		if (strtotime($value) === false){
+			return false;
+		}
+
+		return 'datetime';
+	}
+
+	public function getVarchar ($length = null) : String {
+		if (empty($length)){
+			$length = $this->default_varchar_size;
+		}
+
+		if (!is_int($length) && $length > 0){
+			throw new InvalidArgumentException("$length is not a positive integer.");
+		}
+
+		if ($length > 8000){
+			return 'varchar(MAX)';
+		}
+
+		return "varchar($length)";
+	}
+
+	public function quote(String $entity, Bool $chars = false){
+		if ($chars) {
+			return ['[',']'];
+		}
+		return "[$entity]";
+	}
+}

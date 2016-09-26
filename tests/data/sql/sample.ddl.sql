@@ -1,0 +1,1 @@
+sample.mssql.ddl.sql

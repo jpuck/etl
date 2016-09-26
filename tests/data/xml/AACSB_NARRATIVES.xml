@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-08-25">
+	<Record userId="410264" username="jeffp" termId="129" dmd:surveyId="1262550">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Finance" text="Finance"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Scholarly Academic" text="Scholarly Academic"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Assistant Professor" text="Assistant Professor"/>
+		<AACSB_NARRATIVES id="114851758080" dmd:lastModified="2016-08-17T10:27:09" dmd:startDate="2015-01-01" dmd:endDate="2015-12-31">
+			<YEAR>2015</YEAR>
+			<null_START>2015-01-01</null_START>
+			<null_END>2015-12-31</null_END>
+			<QUALIFICATION>Scholarly Academic</QUALIFICATION>
+			<ENGAGEMENT>Dr. Jeff Puckett’s primary engagement has been with Academic (Cell 1) and Pedagogical (Cell 4) audience.
+	
+In Cell 1, Dr Puckett has served as a referee for Quarterly Review of Suchother and Something in 2010.
+He also presented papers at regional conference Southern Something Association in 2010.
+
+Dr. Puckett's activities in Cell 4 include:  He has outstanding course evaluations in undergraduate courses. He also serves as a mentor to Ph.D. students in the course Financial Analysis.
+</ENGAGEMENT>			<INNOVATION>He received his Ph.D. in December 2014.
+His Academic (Cell 2) activities include: He has one paper published in Journal of Economics and Business. 
+
+</INNOVATION>			<INFLUENCE/>			<ACTIVITY_MATRIX>Academic Engagement (1)</ACTIVITY_MATRIX>
+			<ACTIVITY_MATRIX>Academic Innovation (2)</ACTIVITY_MATRIX>
+			<ACTIVITY_MATRIX>Pedagogical Engagement (4)</ACTIVITY_MATRIX>
+			<STATEMENT> Dr. Jeff Puckett recently received his Ph.D. (in 2014), and also based on his activities in Cells 1 and 2: journal publications, serving as journal referees, paper presentations in conferences, and in Cell 4, he is classified as Scholarly Academic.</STATEMENT>
+			<AACSBSUFF>Participating</AACSBSUFF>
+			<AACSBSUFF_JUST>Dr. Puckett actively participates in department meeting and distinguished guest speaker presentations.  He also highly encourages his students to guest speaker presentations to enhance learning.  He also participates in faculty recruiting and department research workshop.</AACSBSUFF_JUST>
+		</AACSB_NARRATIVES>
+		<AACSB_NARRATIVES id="123640221696" dmd:lastModified="2016-02-16T12:12:36" dmd:startDate="2014-01-01" dmd:endDate="2014-12-31">
+			<YEAR>2014</YEAR>
+			<null_START>2014-01-01</null_START>
+			<null_END>2014-12-31</null_END>
+			<QUALIFICATION>Scholarly Academic</QUALIFICATION>
+			<ENGAGEMENT/>
+			<INNOVATION/>
+			<INFLUENCE/>
+			<ACTIVITY_MATRIX/>
+			<STATEMENT>Dr. Jeff Puckett received his Ph.D. from University of Arkansas in December 2014. He has one paper published in Journal of Economics and Business.  
+He also presented papers at regional conferences. </STATEMENT>
+			<AACSBSUFF>Participating</AACSBSUFF>
+			<AACSBSUFF_JUST>Dr. Puckett actively participated in department meeting and distinguished guest speaker presentations.  He also highly encourage his students to guest speaker presentations to enhance learning.  He also participated in faculty recruiting and department research workshop. </AACSBSUFF_JUST>
+		</AACSB_NARRATIVES>
+	</Record>
+	<Record userId="342386" username="jeffpu" termId="129" dmd:surveyId="1118826">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="WCBD" text="WCBD"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Instructional Practitioner" text="Instructional Practitioner"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Academic Staff" text="Academic Staff"/>
+		<AACSB_NARRATIVES id="113970477056" dmd:lastModified="2016-02-16T12:12:36" dmd:startDate="2015-01-01" dmd:endDate="2015-12-31">
+			<YEAR>2015</YEAR>
+			<null_START>2015-01-01</null_START>
+			<null_END>2015-12-31</null_END>
+			<QUALIFICATION>Instructional Practitioner</QUALIFICATION>
+			<ENGAGEMENT/>
+			<INNOVATION/>
+			<INFLUENCE>Dr. Doolittle influences pedagogical audiences.  He publishes with doctoral students and has placed doctoral students at other doctoral granting institutions.</INFLUENCE>
+			<ACTIVITY_MATRIX>Pedagogical Engagement (4)</ACTIVITY_MATRIX>
+			<STATEMENT>Academic advisor and Associate Director of the Honors Program at the Sam M. Walton College of Business.</STATEMENT>
+			<AACSBSUFF>Participating</AACSBSUFF>
+			<AACSBSUFF_JUST>Academic staff member actively engaged in work with students, faculty, and staff.</AACSBSUFF_JUST>
+		</AACSB_NARRATIVES>
+	</Record>
+</Data>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-08-29">
+	<Record userId="65386" username="jeffp" termId="129" dmd:surveyId="33617">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Supply Chain Management" text="Supply Chain Management"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Scholarly Academic" text="Scholarly Academic"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Associate Professor" text="Associate Professor"/>
+		<WORKLOAD id="123835480064" dmd:lastModified="2016-01-25T09:06:45" dmd:startDate="2016-01-01" dmd:endDate="2016-12-31">
+			<YR_YEAR>2016</YR_YEAR>
+			<YEAR_START>2016-01-01</YEAR_START>
+			<YEAR_END>2016-12-31</YEAR_END>
+			<WORKLOAD_DEP id="123835480065">
+				<DEP>Supply Chain Management</DEP>
+			</WORKLOAD_DEP>
+			<WEIGHT_TEACH>30</WEIGHT_TEACH>
+			<DESC_TEACH>Primary responsibility is graduate teaching.</DESC_TEACH>
+			<WEIGHT_RESEARCH>60</WEIGHT_RESEARCH>
+			<DESC_RESEARCH/>
+			<WEIGHT_SERVICE>10</WEIGHT_SERVICE>
+			<DESC_SERVICE/>
+			<WEIGHT_ADMIN/>
+			<DESC_ADMIN/>
+			<TOTAL>100</TOTAL>
+			<COMMENTS/>
+			<DEP_CHAIR>105399</DEP_CHAIR>
+			<DEP_CHAIR_FNAME>Brent</DEP_CHAIR_FNAME>
+			<DEP_CHAIR_MNAME></DEP_CHAIR_MNAME>
+			<DEP_CHAIR_LNAME>Williams</DEP_CHAIR_LNAME>
+			<DTM_APPROVE>January</DTM_APPROVE>
+			<DTD_APPROVE>25</DTD_APPROVE>
+			<DTY_APPROVE>2016</DTY_APPROVE>
+			<APPROVE_START>2016-01-25</APPROVE_START>
+			<APPROVE_END>2016-01-25</APPROVE_END>
+			<WORKLOAD_FILES id="123835480066">
+				<UPLOAD_SIGNED_FORM/>
+				<UPLOAD_PLAN/>
+			</WORKLOAD_FILES>
+			<USER_REFERENCE_CREATOR>Yes</USER_REFERENCE_CREATOR>
+		</WORKLOAD>
+		<WORKLOAD id="106828982272" dmd:lastModified="2015-11-30T14:52:39" dmd:startDate="2015-01-01" dmd:endDate="2015-12-31">
+			<YR_YEAR>2015</YR_YEAR>
+			<YEAR_START>2015-01-01</YEAR_START>
+			<YEAR_END>2015-12-31</YEAR_END>
+			<WORKLOAD_DEP id="106828982273">
+				<DEP>Supply Chain Management</DEP>
+			</WORKLOAD_DEP>
+			<WEIGHT_TEACH>30</WEIGHT_TEACH>
+			<DESC_TEACH>Primary focus is graduate teaching</DESC_TEACH>
+			<WEIGHT_RESEARCH>60</WEIGHT_RESEARCH>
+			<DESC_RESEARCH>Primary workload is research</DESC_RESEARCH>
+			<WEIGHT_SERVICE>10</WEIGHT_SERVICE>
+			<DESC_SERVICE>Continue current service as needed</DESC_SERVICE>
+			<WEIGHT_ADMIN/>
+			<DESC_ADMIN/>
+			<TOTAL>100</TOTAL>
+			<COMMENTS>We are very proud of your research productivity and contribution. This is outstanding work. You have also been a great mentor to Elvis Presley. Helping our formal doctoral students to succeed is a great copntribution</COMMENTS>
+			<DEP_CHAIR/>
+			<DTM_APPROVE>March</DTM_APPROVE>
+			<DTD_APPROVE>2</DTD_APPROVE>
+			<DTY_APPROVE>2015</DTY_APPROVE>
+			<APPROVE_START>2015-03-02</APPROVE_START>
+			<APPROVE_END>2015-03-02</APPROVE_END>
+			<WORKLOAD_FILES id="106828982274">
+				<UPLOAD_SIGNED_FORM>jeffp/workload/W-jeffp Jeff-1.pdf</UPLOAD_SIGNED_FORM>
+				<UPLOAD_PLAN/>
+			</WORKLOAD_FILES>
+			<USER_REFERENCE_CREATOR>Yes</USER_REFERENCE_CREATOR>
+		</WORKLOAD>
+		<WORKLOAD id="85740814336" access="READ_ONLY" dmd:lastModified="2014-12-30T12:27:37" dmd:startDate="2014-01-01" dmd:endDate="2014-12-31">
+			<YR_YEAR>2014</YR_YEAR>
+			<YEAR_START>2014-01-01</YEAR_START>
+			<YEAR_END>2014-12-31</YEAR_END>
+			<WORKLOAD_DEP id="85740814337">
+				<DEP>Supply Chain Management</DEP>
+			</WORKLOAD_DEP>
+			<WEIGHT_TEACH>30</WEIGHT_TEACH>
+			<DESC_TEACH>Strengths: Three different courses taught with good evaluations
+
+Need Improvements: We need to figure out a long term teaching plan for you.</DESC_TEACH>
+			<WEIGHT_RESEARCH>60</WEIGHT_RESEARCH>
+			<DESC_RESEARCH>Strengths: IRS, POM, DS, IJLM, and others
+
+Needs Improvement: I think it is time to chair a dissertation committee in our department</DESC_RESEARCH>
+			<WEIGHT_SERVICE>10</WEIGHT_SERVICE>
+			<DESC_SERVICE>Strengths: RILA focus group organizer. Peer review committee for department. PhD Advisory committee. Behavioral Lab Committee, Research and Human Subjects Committee.
+
+Needs Improvement: University level service might be a future opportunity</DESC_SERVICE>
+			<WEIGHT_ADMIN/>
+			<DESC_ADMIN/>
+			<TOTAL>100</TOTAL>
+			<COMMENTS>We are very proud of your research productivity and contribution. This is outstanding work. You have also been a great mentor to Elvis Presley. Helping our former doctoral students to succeed is a great contribution.</COMMENTS>
+			<DEP_CHAIR>93297</DEP_CHAIR>
+			<DEP_CHAIR_FNAME>Matthew</DEP_CHAIR_FNAME>
+			<DEP_CHAIR_MNAME></DEP_CHAIR_MNAME>
+			<DEP_CHAIR_LNAME>Waller</DEP_CHAIR_LNAME>
+			<DTM_APPROVE>February</DTM_APPROVE>
+			<DTD_APPROVE>14</DTD_APPROVE>
+			<DTY_APPROVE>2014</DTY_APPROVE>
+			<APPROVE_START>2014-02-14</APPROVE_START>
+			<APPROVE_END>2014-02-14</APPROVE_END>
+			<WORKLOAD_FILES id="85740814338">
+				<UPLOAD_SIGNED_FORM>jeffp/workload/jeffp - W-1.PDF</UPLOAD_SIGNED_FORM>
+				<UPLOAD_PLAN>jeffp/workload/Faculty Workload-2.docx</UPLOAD_PLAN>
+			</WORKLOAD_FILES>
+			<USER_REFERENCE_CREATOR>Yes</USER_REFERENCE_CREATOR>
+		</WORKLOAD>
+		<WORKLOAD id="79308365824" access="READ_ONLY" dmd:lastModified="2014-12-30T12:27:37" dmd:startDate="2013-01-01" dmd:endDate="2013-12-31">
+			<YR_YEAR>2013</YR_YEAR>
+			<YEAR_START>2013-01-01</YEAR_START>
+			<YEAR_END>2013-12-31</YEAR_END>
+			<WORKLOAD_DEP id="79308365825">
+				<DEP>Supply Chain Management</DEP>
+			</WORKLOAD_DEP>
+			<WEIGHT_TEACH>30</WEIGHT_TEACH>
+			<DESC_TEACH>Strengths: Three different courses taught with good evaluations
+
+Need Improvements: We need to figure out a long term teaching plan for you.</DESC_TEACH>
+			<WEIGHT_RESEARCH>60</WEIGHT_RESEARCH>
+			<DESC_RESEARCH>Strengths: IRS, POM, DS, IJLM, and others
+
+Needs Improvement: I think it is time to chair a dissertation committee in our department</DESC_RESEARCH>
+			<WEIGHT_SERVICE>10</WEIGHT_SERVICE>
+			<DESC_SERVICE>Strengths: RILA focus group organizer. Peer review committee for department. PhD Advisory committee. Behavioral Lab Committee, Research and Human Subjects Committee.
+
+Needs Improvement: University level service might be a future opportunity</DESC_SERVICE>
+			<WEIGHT_ADMIN/>
+			<DESC_ADMIN/>
+			<TOTAL>100</TOTAL>
+			<COMMENTS>We are very proud of your research productivity and contribution. This is outstanding work. You have also been a great mentor to Elvis Presley. Helping our former doctoral students to succeed is a great contribution.</COMMENTS>
+			<DEP_CHAIR>93297</DEP_CHAIR>
+			<DEP_CHAIR_FNAME>Matthew</DEP_CHAIR_FNAME>
+			<DEP_CHAIR_MNAME></DEP_CHAIR_MNAME>
+			<DEP_CHAIR_LNAME>Waller</DEP_CHAIR_LNAME>
+			<DTM_APPROVE>March</DTM_APPROVE>
+			<DTD_APPROVE>5</DTD_APPROVE>
+			<DTY_APPROVE>2013</DTY_APPROVE>
+			<APPROVE_START>2013-03-05</APPROVE_START>
+			<APPROVE_END>2013-03-05</APPROVE_END>
+			<WORKLOAD_FILES id="79308365826">
+				<UPLOAD_SIGNED_FORM/>
+				<UPLOAD_PLAN/>
+			</WORKLOAD_FILES>
+			<USER_REFERENCE_CREATOR>Yes</USER_REFERENCE_CREATOR>
+		</WORKLOAD>
+	</Record>
+	<Record userId="310667" username="jeffpu" termId="129" dmd:surveyId="1083716">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Management" text="Management"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Instructional Practitioner" text="Instructional Practitioner"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Visiting/Adjunct Faculty" text="Visiting/Adjunct Faculty"/>
+		<WORKLOAD id="126490634240" dmd:lastModified="2016-03-14T12:49:38" dmd:startDate="2016-01-01" dmd:endDate="2016-12-31">
+			<YR_YEAR>2016</YR_YEAR>
+			<YEAR_START>2016-01-01</YEAR_START>
+			<YEAR_END>2016-12-31</YEAR_END>
+			<WORKLOAD_DEP id="126490634241">
+				<DEP>Management</DEP>
+			</WORKLOAD_DEP>
+			<WEIGHT_TEACH>0.625</WEIGHT_TEACH>
+			<DESC_TEACH/>
+			<WEIGHT_RESEARCH>0.125</WEIGHT_RESEARCH>
+			<DESC_RESEARCH/>
+			<WEIGHT_SERVICE/>
+			<DESC_SERVICE/>
+			<WEIGHT_ADMIN>0.25</WEIGHT_ADMIN>
+			<DESC_ADMIN>Asst dept chair</DESC_ADMIN>
+			<TOTAL/>
+			<COMMENTS/>
+			<DEP_CHAIR>93273</DEP_CHAIR>
+			<DEP_CHAIR_FNAME>Alan</DEP_CHAIR_FNAME>
+			<DEP_CHAIR_MNAME></DEP_CHAIR_MNAME>
+			<DEP_CHAIR_LNAME>Ellstrand</DEP_CHAIR_LNAME>
+			<DTM_APPROVE>March</DTM_APPROVE>
+			<DTD_APPROVE>14</DTD_APPROVE>
+			<DTY_APPROVE>2016</DTY_APPROVE>
+			<APPROVE_START>2016-03-14</APPROVE_START>
+			<APPROVE_END>2016-03-14</APPROVE_END>
+			<WORKLOAD_FILES id="126490634242">
+				<UPLOAD_SIGNED_FORM/>
+				<UPLOAD_PLAN/>
+			</WORKLOAD_FILES>
+			<USER_REFERENCE_CREATOR>Yes</USER_REFERENCE_CREATOR>
+		</WORKLOAD>
+	</Record>
+</Data>

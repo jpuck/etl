@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-08-23">
+	<Record userId="7654321" username="jeffp" termId="129" dmd:surveyId="16881965">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Supporting" text="Supporting"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Management" text="Management"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Instructional Practitioner" text="Instructional Practitioner"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Ph.D. Candidate" text="Ph.D. Candidate"/>
+		<ADMIN id="131951073280" dmd:lastModified="2016-08-15T10:02:33" dmd:startDate="2016-09-01" dmd:endDate="2016-12-31" dmd:primaryKey="Fall|2016">
+			<TYT_TERM>Fall</TYT_TERM>
+			<TYY_TERM>2016</TYY_TERM>
+			<TERM_START>2016-09-01</TERM_START>
+			<TERM_END>2016-12-31</TERM_END>
+			<ADMIN_DEP id="131951073281" dmd:primaryKey="Management">
+				<DEP>Management</DEP>
+			</ADMIN_DEP>
+			<RANK>Ph.D. Candidate</RANK>
+			<ACADEMIC_MODIFIER/>
+			<TENURE>Tenured</TENURE>
+			<ENDPOS>Walter B. Cole Chair in Accounting, MAcc Program Director</ENDPOS>
+			<CONTRACT_TERM/>
+			<DISCIPLINE/>
+			<GRADUATE/>
+			<ABD_STATUS>Non-ABD</ABD_STATUS>
+			<TYT_ABD/>
+			<TYY_ABD/>
+			<ABD_START></ABD_START>
+			<ABD_END></ABD_END>
+			<TEACHING_WORKLOAD_WEIGHT/>
+			<RESEARCH_WORKLOAD_WEIGHT/>
+			<SERVICE_WORKLOAD_WIEGHT/>
+			<ADMINISTRATIVE_WORKLOAD_WEIGHT/>
+			<QUALIFICATION>Instructional Practitioner</QUALIFICATION>
+			<QUALIFICATION_BASIS/>
+			<AACSBQUAL>Professionally Qualified</AACSBQUAL>
+			<AACSBQUAL_JUST>Dude Man has considerable expertise in operations, with over 200 years’ experience in operations at Business. His operations work continues in his current role as Operations director at Somewhere Community Centers.  </AACSBQUAL_JUST>
+			<AACSBSUFF>Supporting</AACSBSUFF>
+			<AACSBSUFF_JUST/>
+			<SABBATICAL>Other</SABBATICAL>
+			<SABBATICAL_OTHER>Maternity Leave</SABBATICAL_OTHER>
+			<DEDMISS>25</DEDMISS>
+			<FTE>25</FTE>
+			<NPRESP>Undergraduate Teaching</NPRESP>
+			<AACSBTCLASS>Substantial coursework but no doctoral degree</AACSBTCLASS>
+		</ADMIN>
+	</Record>
+	<Record userId="654321" username="jeffpu" termId="129" dmd:surveyId="1262550">
+		<dmd:IndexEntry indexKey="AACSBSUFF" entryKey="Participating" text="Participating"/>
+		<dmd:IndexEntry indexKey="DEPARTMENT" entryKey="Finance" text="Finance"/>
+		<dmd:IndexEntry indexKey="QUALIFICATION" entryKey="Scholarly Academic" text="Scholarly Academic"/>
+		<dmd:IndexEntry indexKey="RANK" entryKey="Assistant Professor" text="Assistant Professor"/>
+		<ADMIN id="129396340736" dmd:lastModified="2016-06-03T08:44:03" dmd:startDate="2016-05-15" dmd:endDate="2016-08-31" dmd:primaryKey="Summer|2016">
+			<TYT_TERM>Summer</TYT_TERM>
+			<TYY_TERM>2016</TYY_TERM>
+			<TERM_START>2016-05-15</TERM_START>
+			<TERM_END>2016-08-31</TERM_END>
+			<ADMIN_DEP id="129396340737" dmd:primaryKey="Finance">
+				<DEP>Finance</DEP>
+			</ADMIN_DEP>
+			<RANK>Assistant Professor</RANK>
+			<ACADEMIC_MODIFIER>Clinical</ACADEMIC_MODIFIER>
+			<TENURE>Non-Tenure Track</TENURE>
+			<ENDPOS/>
+			<CONTRACT_TERM>9 month</CONTRACT_TERM>
+			<DISCIPLINE>Finance (includes Banking)</DISCIPLINE>
+			<GRADUATE/>
+			<ABD_STATUS/>
+			<TYT_ABD>Spring</TYT_ABD>
+			<TYY_ABD>2012</TYY_ABD>
+			<ABD_START>2012-01-15</ABD_START>
+			<ABD_END>2012-04-30</ABD_END>
+			<TEACHING_WORKLOAD_WEIGHT>10</TEACHING_WORKLOAD_WEIGHT>
+			<RESEARCH_WORKLOAD_WEIGHT/>
+			<SERVICE_WORKLOAD_WIEGHT/>
+			<ADMINISTRATIVE_WORKLOAD_WEIGHT/>
+			<QUALIFICATION>Scholarly Academic</QUALIFICATION>
+			<QUALIFICATION_BASIS/>
+			<AACSBQUAL>Professionally Qualified</AACSBQUAL>
+			<AACSBQUAL_JUST/>
+			<AACSBSUFF>Participating</AACSBSUFF>
+			<AACSBSUFF_JUST>Instructor is actively working with and helping doctoral students while also interacting with the business community and department services.</AACSBSUFF_JUST>
+			<SABBATICAL/>
+			<SABBATICAL_OTHER/>
+			<DEDMISS>100</DEDMISS>
+			<FTE>100</FTE>
+			<NPRESP>Undergraduate Teaching</NPRESP>
+			<AACSBTCLASS>Substantial coursework but no doctoral degree</AACSBTCLASS>
+		</ADMIN>
+		<ADMIN id="123352686592" dmd:lastModified="2016-01-15T12:35:18" dmd:startDate="2016-01-15" dmd:endDate="2016-04-30" dmd:primaryKey="Spring|2016">
+			<TYT_TERM>Spring</TYT_TERM>
+			<TYY_TERM>2016</TYY_TERM>
+			<TERM_START>2016-01-15</TERM_START>
+			<TERM_END>2016-04-30</TERM_END>
+			<ADMIN_DEP id="123352686593" dmd:primaryKey="Finance">
+				<DEP>Finance</DEP>
+			</ADMIN_DEP>
+			<RANK>Assistant Professor</RANK>
+			<ACADEMIC_MODIFIER>Clinical</ACADEMIC_MODIFIER>
+			<TENURE>Non-Tenure Track</TENURE>
+			<ENDPOS/>
+			<CONTRACT_TERM/>
+			<DISCIPLINE>Finance (includes Banking)</DISCIPLINE>
+			<GRADUATE>No</GRADUATE>
+			<ABD_STATUS/>
+			<TYT_ABD>Spring</TYT_ABD>
+			<TYY_ABD>2012</TYY_ABD>
+			<ABD_START>2012-01-15</ABD_START>
+			<ABD_END>2012-04-30</ABD_END>
+			<TEACHING_WORKLOAD_WEIGHT>25</TEACHING_WORKLOAD_WEIGHT>
+			<RESEARCH_WORKLOAD_WEIGHT>60</RESEARCH_WORKLOAD_WEIGHT>
+			<SERVICE_WORKLOAD_WIEGHT>15</SERVICE_WORKLOAD_WIEGHT>
+			<ADMINISTRATIVE_WORKLOAD_WEIGHT>0</ADMINISTRATIVE_WORKLOAD_WEIGHT>
+			<QUALIFICATION>Scholarly Academic</QUALIFICATION>
+			<QUALIFICATION_BASIS>	Jeff teaches Introduction to Something on the undergraduate level and Multivariate Statistical Analysis on the doctoral level. For years, Jeff taught in all three of our programs, undergraduate, MBA, and PhD. Jeff is known for teaching excellence and has won multiple teaching and research awards, including best all-around faculty for the Super-Duper College. Jeff is currently serving on four doctoral dissertation committees; he is the most active faculty member in our doctoral program. Jeff had forty articles accepted for publication this year and three thousand articles published in the last three years. These articles were published in some of the top journals in Something including the Journal of Something Research. Jeff is the most prolific researcher in the Department and one of the most prolific researchers in the College and University. In addition, he is very active in national and international conferences publishing multiple proceedings articles. In 2014, a number of his articles won best paper awards. Jeff is very active as a reviewer, editorial board member, and conference organizer. For example, he was conference co-chair and co-organizer of the Southeast Something Symposium taking place in the Spring 2014. Jeff serves on the Department’s Graduate Program Committee and the College’s Promotion and Tenure Committee. </QUALIFICATION_BASIS>
+			<AACSBQUAL>Professionally Qualified</AACSBQUAL>
+			<AACSBQUAL_JUST/>
+			<AACSBSUFF>Participating</AACSBSUFF>
+			<AACSBSUFF_JUST/>
+			<SABBATICAL/>
+			<SABBATICAL_OTHER/>
+			<DEDMISS>100</DEDMISS>
+			<FTE>100</FTE>
+			<NPRESP>Undergraduate Teaching</NPRESP>
+			<AACSBTCLASS>Substantial coursework but no doctoral degree</AACSBTCLASS>
+		</ADMIN>
+        </Record>
+</Data>

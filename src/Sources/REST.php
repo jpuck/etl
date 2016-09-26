@@ -20,10 +20,41 @@ class REST extends Source {
 		}
 		return true;
 	}
+
+	/**
+	 * @throws Exception
+	 */
 	public function fetch (String $endpoint, String $datumClass) : Datum {
-		throw new Unimplemented(__METHOD__);
-		return new XML;
+		$curl = curl_init();
+
+		$options = [
+			CURLOPT_URL => "{$this->uri['url']}/$endpoint",
+			CURLOPT_ENCODING => 'gzip',
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_RETURNTRANSFER => true,
+		];
+
+		if (isset($this->uri['username']) && isset($this->uri['password'])){
+			$options[CURLOPT_USERPWD] =
+				"{$this->uri['username']}:{$this->uri['password']}";
+		}
+
+		curl_setopt_array($curl, $options);
+
+		$responseData = curl_exec($curl);
+
+		if (curl_errno($curl)){
+			throw new Exception(curl_error($curl));
+		} else {
+			// TODO: Handle HTTP status code and response data
+			$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		}
+
+		curl_close($curl);
+
+		return new $datumClass($responseData);
 	}
+
 	public function insert  (Datum $data) : bool {
 		throw new Unimplemented(__METHOD__);
 		return false;

@@ -1,17 +1,23 @@
 <?php
 namespace jpuck\etl\Sources;
 
-use jpuck\phpdev\Exceptions\Unimplemented;
 use jpuck\etl\Data\Datum;
-use jpuck\etl\Data\XML;
+use Exception;
+use InvalidArgumentException;
+use jpuck\phpdev\Exceptions\Unimplemented;
 
 class REST extends Source {
 	/**
 	 * @throws InvalidArgumentException
-	 * @throws Unimplemented
 	 */
 	protected function validateURI($uri) : Bool {
-		throw new Unimplemented(__METHOD__);
+		if (empty($uri['url'])){
+			// TODO: validate URL
+			// http://stackoverflow.com/q/206059/4233593
+			throw new InvalidArgumentException(
+				'base url required.'
+			);
+		}
 		return true;
 	}
 	public function fetch (String $endpoint, String $datumClass) : Datum {

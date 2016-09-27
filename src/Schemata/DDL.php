@@ -7,11 +7,16 @@ use InvalidArgumentException;
 
 class DDL {
 	protected $datatyper;
+	protected $prefix = '';
 
 	public function __construct(...$options){
 		foreach ($options as $option){
 			if ($option instanceof Datatyper){
 				$this->datatyper($option);
+			}
+
+			if (is_array($option) && isset($option['prefix'])){
+				$this->prefix($option['prefix']);
 			}
 		}
 
@@ -19,6 +24,13 @@ class DDL {
 		if (is_null($this->datatyper())){
 			$this->datatyper(new MicrosoftSQLServer);
 		}
+	}
+
+	protected function prefix(String $prefix = null) : String {
+		if (isset($prefix)){
+			$this->prefix = $prefix;
+		}
+		return $this->prefix;
 	}
 
 	public function datatyper(Datatyper $dt = null){
@@ -44,16 +56,18 @@ class DDL {
 	}
 
 	protected function build(Array $nodes, String $path='') : Array {
+		$prefix = $this->prefix();
+
 		// initialize recursor
 		$drops = '';
 		$creates = '';
 
 		foreach ($nodes as $name => $node){
 			// drop table definition
-			$parent = $this->datatyper->quote($path);
-			$table  = $this->datatyper->quote($path.$name);
+			$parent = $this->datatyper->quote($prefix.$path);
+			$table  = $this->datatyper->quote($prefix.$path.$name);
 			$drop   = "\nDROP TABLE $table;";
-			$drops .= $this->wrapCheckIfExists($path.$name,$drop);
+			$drops .= $this->wrapCheckIfExists($prefix.$path.$name,$drop);
 
 			// open table definition
 			$create = "\nCREATE TABLE $table (\n";
@@ -62,7 +76,7 @@ class DDL {
 			// TODO: use natural key if unique values
 			if (!empty($path)){
 				$create .= "	jpetl_pid int,\n";
-				$create .= "	CONSTRAINT fk_$path$name\n";
+				$create .= "	CONSTRAINT fk_$prefix$path$name\n";
 				$create .= "		FOREIGN KEY (jpetl_pid)\n";
 				$create .= "		REFERENCES $parent(jpetl_id),\n";
 			}
@@ -107,7 +121,7 @@ class DDL {
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
 			$create .= "	jpetl_id int IDENTITY PRIMARY KEY\n);";
-			$creates .= $this->wrapCheckIfNotExists($path.$name,$create);
+			$creates .= $this->wrapCheckIfNotExists($prefix.$path.$name,$create);
 
 			// get children and multi-values
 			if (isset($recurse)){

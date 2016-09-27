@@ -7,12 +7,21 @@ use jpuck\etl\Data\Datum;
 use jpuck\etl\Data\XML;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
-use jpuck\etl\Schemata\Datatypes\Datatyper;
+use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
 use PDO;
 use InvalidArgumentException;
 
 class DB extends Source {
 	private $DEBUG = false;
+
+	public function __construct($uri, ...$options){
+		parent::__construct($uri, ...$options);
+
+		// defaults
+		if (is_null($this->datatyper())){
+			$this->datatyper(new MicrosoftSQLServer);
+		}
+	}
 
 	/**
 	 * @throws InvalidArgumentException

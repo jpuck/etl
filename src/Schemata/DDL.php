@@ -2,11 +2,13 @@
 namespace jpuck\etl\Schemata;
 
 use jpuck\etl\Schemata\Datatypes\Datatyper;
+use jpuck\etl\Schemata\Datatypes\DatatyperHandler;
 use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
 use InvalidArgumentException;
 
 class DDL {
-	protected $datatyper;
+	use DatatyperHandler;
+
 	protected $prefix = '';
 
 	public function __construct(...$options){
@@ -31,13 +33,6 @@ class DDL {
 			$this->prefix = $prefix;
 		}
 		return $this->prefix;
-	}
-
-	public function datatyper(Datatyper $dt = null){
-		if (isset($dt)){
-			$this->datatyper = $dt;
-		}
-		return $this->datatyper;
 	}
 
 	public function generate(Schema $schema, ...$options) : String {

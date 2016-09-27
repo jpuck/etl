@@ -9,4 +9,12 @@ trait DatatyperHandler {
 		}
 		return $this->datatyper;
 	}
+
+	protected $prefix = '';
+	public function prefix(String $prefix = null) : String {
+		if (isset($prefix)){
+			$this->prefix = $prefix;
+		}
+		return $this->prefix;
+	}
 }

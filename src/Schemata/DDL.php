@@ -9,8 +9,6 @@ use InvalidArgumentException;
 class DDL {
 	use DatatyperHandler;
 
-	protected $prefix = '';
-
 	public function __construct(...$options){
 		foreach ($options as $option){
 			if ($option instanceof Datatyper){
@@ -26,13 +24,6 @@ class DDL {
 		if (is_null($this->datatyper())){
 			$this->datatyper(new MicrosoftSQLServer);
 		}
-	}
-
-	protected function prefix(String $prefix = null) : String {
-		if (isset($prefix)){
-			$this->prefix = $prefix;
-		}
-		return $this->prefix;
 	}
 
 	public function generate(Schema $schema, ...$options) : String {

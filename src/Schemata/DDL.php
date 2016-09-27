@@ -8,10 +8,15 @@ use InvalidArgumentException;
 class DDL {
 	protected $datatyper;
 
-	public function __construct(Datatyper $dt = null){
-		if (isset($dt)){
-			$this->datatyper($dt);
-		} else {
+	public function __construct(...$options){
+		foreach ($options as $option){
+			if ($option instanceof Datatyper){
+				$this->datatyper($option);
+			}
+		}
+
+		// defaults
+		if (is_null($this->datatyper())){
 			$this->datatyper(new MicrosoftSQLServer);
 		}
 	}

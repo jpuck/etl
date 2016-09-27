@@ -59,4 +59,27 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertSame($expected,$actual);
 	}
+
+	public function tablePrefixOptionsDataProvider(){
+		return [
+			'(datatyper, prefix)' => [new MicrosoftSQLServer, ['prefix'=>'tmp']],
+			'(prefix, datatyper)' => [['prefix'=>'tmp'], new MicrosoftSQLServer],
+			'(prefix)'            => [['prefix'=>'tmp']],
+		];
+	}
+
+	/**
+	 *  @testdox Can generate prefixed DDL from Schema with options
+	 *  @dataProvider tablePrefixOptionsDataProvider
+	 */
+	public function testCanGeneratePrefixedDDLfromSchema(...$params){
+		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.tmp.ddl.sql");
+		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
+		$schema   = new Schema($schema);
+		$ddl      = new DDL(...$params);
+
+		$actual   = $ddl->generate($schema);
+
+		$this->assertSame($expected,$actual);
+	}
 }

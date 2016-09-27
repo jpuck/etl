@@ -2,6 +2,7 @@
 namespace jpuck\etl\Sources;
 
 use jpuck\etl\Data\Datum;
+use jpuck\etl\Schemata\Schema;
 use Exception;
 use InvalidArgumentException;
 use jpuck\phpdev\Exceptions\Unimplemented;
@@ -24,7 +25,7 @@ class REST extends Source {
 	/**
 	 * @throws Exception
 	 */
-	public function fetch (String $endpoint, String $datumClass) : Datum {
+	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
 		$curl = curl_init();
 
 		$options = [
@@ -52,7 +53,7 @@ class REST extends Source {
 
 		curl_close($curl);
 
-		return new $datumClass($responseData);
+		return new $datumClass($responseData, $schema);
 	}
 
 	public function insert  (Datum $data) : bool {

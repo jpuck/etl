@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use jpuck\phpdev\Exceptions\Unimplemented;
 use jpuck\etl\Data\Datum;
 use jpuck\etl\Data\XML;
+use jpuck\etl\Schemata\Schema;
 
 class Folder extends Source {
 	/**
@@ -21,14 +22,14 @@ class Folder extends Source {
 		return true;
 	}
 
-	public function fetch (String $endpoint, String $datumClass) : Datum {
+	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
 		if ($datumClass !== XML::class){
 			throw new InvalidArgumentException(
 				XML::class." required, $datumClass given."
 			);
 		}
 
-		return new XML(file_get_contents("{$this->uri['path']}/$endpoint"));
+		return new XML(file_get_contents("{$this->uri['path']}/$endpoint"), $schema);
 	}
 	public function insert  (Datum $data) : bool {
 		throw new Unimplemented(__METHOD__);

@@ -8,9 +8,13 @@ abstract class Source implements Transceiver {
 	protected $uri;
 	protected $datatyper;
 
-	public function __construct($uri, Datatyper $dt = null){
+	public function __construct($uri, ...$options){
 		$this->uri($uri);
-		$this->datatyper = $dt;
+		foreach ($options as $option){
+			if ($option instanceof Datatyper){
+				$this->datatyper($option);
+			}
+		}
 	}
 
 	public function uri($uri=null){
@@ -20,6 +24,13 @@ abstract class Source implements Transceiver {
 			}
 		}
 		return $this->uri;
+	}
+
+	public function datatyper(Datatyper $dt = null){
+		if (isset($dt)){
+			$this->datatyper = $dt;
+		}
+		return $this->datatyper;
 	}
 
 	protected function quote(String $entity, Bool $chars = false){

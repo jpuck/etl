@@ -67,7 +67,7 @@ class MicrosoftSQLServer implements Datatyper {
 			$length = $this->default_varchar_size;
 		}
 
-		if (!is_int($length) && $length > 0){
+		if (!is_int($length) || $length < 0){
 			throw new InvalidArgumentException("$length is not a positive integer.");
 		}
 

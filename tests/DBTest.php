@@ -15,6 +15,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		// maybe create a symlink for some of these files
 		self::$pdo = require "$data/pdos/pdo.php";
 		$ddl  = file_get_contents("$data/sql/sample.ddl.sql");
+		$ddl .= file_get_contents("$data/sql/sample.mssql.tmp.ddl.sql");
 		self::$pdo->exec($ddl);
 	}
 
@@ -47,5 +48,23 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		$db  = new DB(self::$pdo, new MicrosoftSQLServer);
 
 		$this->assertTrue($db->insert($xml));
+	}
+
+	/**
+	 *  @testdox Can insert XML into prefixed DB
+	 */
+	public function testCanInsertXMLintoPrefixedDB(){
+		$data = self::$dataDir;
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
+		$db  = new DB(self::$pdo, ['prefix'=>'tmp'], new MicrosoftSQLServer);
+
+		$this->assertTrue($db->insert($xml));
+
+		$sql = 'SELECT COUNT(*) AS cntdata FROM tmpDataRecordSAMPLESUPP_DEPDEP';
+		foreach (self::$pdo->query($sql) as $result){
+			$count = $result['cntdata'];
+		}
+
+		$this->assertSame('3',$count);
 	}
 }

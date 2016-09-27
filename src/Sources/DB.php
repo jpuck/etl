@@ -25,7 +25,7 @@ class DB extends Source {
 		}
 		return true;
 	}
-	public function fetch (String $endpoint, String $datumClass) : Datum {
+	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
 		throw new Unimplemented(__METHOD__);
 		return new XML;
 	}

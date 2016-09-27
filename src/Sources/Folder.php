@@ -29,7 +29,7 @@ class Folder extends Source {
 			);
 		}
 
-		return new XML(file_get_contents("{$this->uri['path']}/$endpoint"));
+		return new XML(file_get_contents("{$this->uri['path']}/$endpoint"), $schema);
 	}
 	public function insert  (Datum $data) : bool {
 		throw new Unimplemented(__METHOD__);

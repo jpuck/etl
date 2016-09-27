@@ -53,7 +53,7 @@ class REST extends Source {
 
 		curl_close($curl);
 
-		return new $datumClass($responseData);
+		return new $datumClass($responseData, $schema);
 	}
 
 	public function insert  (Datum $data) : bool {

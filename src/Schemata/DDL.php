@@ -10,15 +10,7 @@ class DDL {
 	use DatatyperHandler;
 
 	public function __construct(...$options){
-		foreach ($options as $option){
-			if ($option instanceof Datatyper){
-				$this->datatyper($option);
-			}
-
-			if (is_array($option) && isset($option['prefix'])){
-				$this->prefix($option['prefix']);
-			}
-		}
+		$this->handleDatatyperOptions($options);
 
 		// defaults
 		if (is_null($this->datatyper())){

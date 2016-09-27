@@ -17,4 +17,16 @@ trait DatatyperHandler {
 		}
 		return $this->prefix;
 	}
+
+	public function handleDatatyperOptions(Array $options){
+		foreach ($options as $option){
+			if ($option instanceof Datatyper){
+				$this->datatyper($option);
+			}
+
+			if (is_array($option) && isset($option['prefix'])){
+				$this->prefix($option['prefix']);
+			}
+		}
+	}
 }

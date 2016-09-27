@@ -12,11 +12,7 @@ abstract class Source implements Transceiver {
 
 	public function __construct($uri, ...$options){
 		$this->uri($uri);
-		foreach ($options as $option){
-			if ($option instanceof Datatyper){
-				$this->datatyper($option);
-			}
-		}
+		$this->handleDatatyperOptions($options);
 	}
 
 	public function uri($uri=null){

@@ -25,7 +25,7 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL(new MicrosoftSQLServer);
+		$ddl      = new DDL;
 
 		$actual   = $ddl->generate($schema, ...$params);
 

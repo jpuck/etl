@@ -7,14 +7,16 @@ use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
  * @testdox DB
  */
 class DBTest extends PHPUnit_Framework_TestCase {
-	public $dataDir = __DIR__.'/data';
-	public $pdo;
+	public static $dataDir = __DIR__.'/data';
+	public static $pdo;
 
-	public function setUp(){
-		// create a symlink for these files
-		$this->pdo = require "{$this->dataDir}/pdos/pdo.php";
-		$ddl = file_get_contents("{$this->dataDir}/sql/sample.ddl.sql");
-		$this->pdo->exec($ddl);
+	public static function setUpBeforeClass(){
+		$data = self::$dataDir;
+		// maybe create a symlink for some of these files
+		self::$pdo = require "$data/pdos/pdo.php";
+		$ddl  = file_get_contents("$data/sql/sample.ddl.sql");
+		$ddl .= file_get_contents("$data/sql/sample.mssql.tmp.ddl.sql");
+		self::$pdo->exec($ddl);
 	}
 
 	/**
@@ -29,7 +31,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	 *  @testdox Can validate DB URI in constructor
 	 */
 	public function testCanValidateDBURIinConstructor(){
-		$expected = $this->pdo;
+		$expected = self::$pdo;
 
 		$db = new DB($expected);
 		$actual = $db->uri();
@@ -41,9 +43,28 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	 *  @testdox Can insert XML into DB
 	 */
 	public function testCanInsertXMLintoDB(){
-		$xml = new XML(file_get_contents("{$this->dataDir}/xml/sample.xml"));
-		$db  = new DB($this->pdo, new MicrosoftSQLServer);
+		$data = self::$dataDir;
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
+		$db  = new DB(self::$pdo, new MicrosoftSQLServer);
 
 		$this->assertTrue($db->insert($xml));
+	}
+
+	/**
+	 *  @testdox Can insert XML into prefixed DB
+	 */
+	public function testCanInsertXMLintoPrefixedDB(){
+		$data = self::$dataDir;
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
+		$db  = new DB(self::$pdo, ['prefix'=>'tmp'], new MicrosoftSQLServer);
+
+		$this->assertTrue($db->insert($xml));
+
+		$sql = 'SELECT COUNT(*) AS cntdata FROM tmpDataRecordSAMPLESUPP_DEPDEP';
+		foreach (self::$pdo->query($sql) as $result){
+			$count = $result['cntdata'];
+		}
+
+		$this->assertSame('3',$count);
 	}
 }

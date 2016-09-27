@@ -2,17 +2,12 @@
 namespace jpuck\etl\Sources;
 
 use jpuck\etl\Sources\Transceiver;
-use jpuck\etl\Schemata\Datatypes\Datatyper;
-use jpuck\etl\Schemata\Datatypes\DatatyperHandler;
 
 abstract class Source implements Transceiver {
-	use DatatyperHandler;
-
 	protected $uri;
 
-	public function __construct($uri, ...$options){
+	public function __construct($uri){
 		$this->uri($uri);
-		$this->handleDatatyperOptions($options);
 	}
 
 	public function uri($uri=null){
@@ -22,16 +17,6 @@ abstract class Source implements Transceiver {
 			}
 		}
 		return $this->uri;
-	}
-
-	protected function quote(String $entity, Bool $chars = false){
-		if (isset($this->datatyper)){
-			return $this->datatyper->quote($entity, $chars);
-		}
-		if ($chars){
-			return ['',''];
-		}
-		return $entity;
 	}
 
 	/**

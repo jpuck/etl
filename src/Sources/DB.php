@@ -107,7 +107,7 @@ class DB extends Source {
 	}
 
 	protected function insertExecute(Array &$query){
-		$table = $this->quote($query[0]);
+		$table = $this->quote($this->prefix().$query[0]);
 		$sql   = "INSERT INTO $table ";
 		foreach ($query as $key => $value) {
 			if (!is_int($key)) {

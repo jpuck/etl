@@ -15,6 +15,7 @@
 			<file>tests/SchemaMergerTest.php</file>
 			<file>tests/MSDatatyperTest.php</file>
 			<file>tests/DDLwithoutStageTest.php</file>
+			<file>tests/DDLwithStageTest.php</file>
 			<file>tests/SchematizerUtilitiesTest.php</file>
 			<file>tests/SchematizerTest.php</file>
 			<file>tests/XMLTest.php</file>

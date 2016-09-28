@@ -37,7 +37,7 @@ abstract class DDL {
 		return $this->stage;
 	}
 
-	public function generate(Schema $schema, ...$options) : String {
+	public function toSQL(Schema $schema) : Array {
 		if ($this->stage()){
 			if (empty($this->prefix())){
 				$this->prefix('tmp');
@@ -50,11 +50,18 @@ abstract class DDL {
 		$prod = $this->build($schema->toArray());
 
 		if (isset($stage)){
-			$ddl['drop']   = $stage['drop']   . $prod['drop'];
-			$ddl['create'] = $stage['create'] . $prod['create'];
+			$sql['drop']   = $stage['drop']   . $prod['drop'];
+			$sql['create'] = $stage['create'] . $prod['create'];
 		} else {
-			$ddl = $prod;
+			$sql = $prod;
 		}
+
+		return $sql;
+	}
+
+	// convenience method for single drop/create DDL script
+	public function generate(Schema $schema, ...$options) : String {
+		$ddl = $this->toSQL($schema);
 
 		if (empty($options) || empty($options[0])){
 			return $ddl['drop'].$ddl['create'];

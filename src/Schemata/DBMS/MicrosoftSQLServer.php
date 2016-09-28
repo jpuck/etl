@@ -79,7 +79,7 @@ class MicrosoftSQLServer extends DDL {
 
 	public function identity(Bool $enabled = null) : String {
 		if ($enabled === true){
-			$this->identity = 'IDENTITY ';
+			$this->identity = 'IDENTITY';
 		} elseif ($enabled === false){
 			$this->identity = '';
 		}

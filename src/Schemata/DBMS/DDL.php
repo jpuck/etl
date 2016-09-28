@@ -30,15 +30,32 @@ abstract class DDL {
 		}
 	}
 
-	public function stage(Bool $stage) : Bool {
+	public function stage(Bool $stage = null) : Bool {
 		if (isset($stage)){
 			$this->stage = $stage;
 		}
-		return $stage;
+		return $this->stage;
 	}
 
 	public function generate(Schema $schema, ...$options) : String {
-		$ddl = $this->build($schema->toArray());
+		if ($this->stage()){
+			if (empty($this->prefix())){
+				$this->prefix('tmp');
+			}
+			$stage = $this->build($schema->toArray());
+			$this->prefix('');
+			$this->identity(false);
+		}
+
+		$prod = $this->build($schema->toArray());
+
+		if (isset($stage)){
+			$ddl['drop']   = $stage['drop']   . $prod['drop'];
+			$ddl['create'] = $stage['create'] . $prod['create'];
+		} else {
+			$ddl = $prod;
+		}
+
 		if (empty($options) || empty($options[0])){
 			return $ddl['drop'].$ddl['create'];
 		}
@@ -117,7 +134,8 @@ abstract class DDL {
 
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
-			$create .= "	jpetl_id int IDENTITY PRIMARY KEY\n);";
+			$identity = $this->identity();
+			$create .= "	jpetl_id int $identity PRIMARY KEY\n);";
 			$creates .= $this->wrapCheckIfNotExists($prefix.$path.$name,$create);
 
 			// get children and multi-values

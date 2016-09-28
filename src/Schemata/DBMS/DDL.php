@@ -98,8 +98,7 @@ abstract class DDL {
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
-					$column  = $this->quote($key);
-					$create .= "	$column ".$this->getDatatype($attribute);
+					$create .= $this->columnize($key, $attribute);
 				}
 			}
 
@@ -115,21 +114,18 @@ abstract class DDL {
 						$recurse[$key] = $element;
 					} else {
 						// get single, childless child-element value
-						$column  = $this->quote($key);
-						$create .= "	$column ".$this->getDatatype($element);
+						$create .= $this->columnize($key, $element);
 						// flatten single child attributes
 						if (isset($element['attributes'])){
 							foreach ($element['attributes'] as $k => $att){
-								$column  = $this->quote($key.$k);
-								$create .= "	$column ".$this->getDatatype($att);
+								$create .= $this->columnize($key.$k, $att);
 							}
 						}
 					}
 				}
 			} else {
 				// get childless element value
-				$column  = $this->quote($name);
-				$create .= "	$column ".$this->getDatatype($node);
+				$create .= $this->columnize($name, $node);
 			}
 
 			// close table definition with surrogate primary key
@@ -147,6 +143,11 @@ abstract class DDL {
 			}
 		}
 		return ['drop' => $drops, 'create' => $creates];
+	}
+
+	protected function columnize(String $col, Array $type) : String {
+		$column = $this->quote($col);
+		return "	$column ".$this->getDatatype($type);
 	}
 
 	protected function getDatatype(Array $attribute) : String {

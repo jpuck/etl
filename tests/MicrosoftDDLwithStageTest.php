@@ -1,12 +1,12 @@
 <?php
 use jpuck\etl\Schemata\DDL;
 use jpuck\etl\Schemata\Schema;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox DDL with stage
+ * @testdox Microsoft DDL with stage
  */
-class DDLwithStageTest extends PHPUnit_Framework_TestCase {
+class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 	public $dataDir = __DIR__.'/data';
 
 	/**
@@ -16,7 +16,7 @@ class DDLwithStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.stage.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL;
+		$ddl      = new MicrosoftSQLServer;
 
 		$actual   = $ddl->generate($schema);
 

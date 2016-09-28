@@ -1,12 +1,11 @@
 <?php
-use jpuck\etl\Schemata\DDL;
 use jpuck\etl\Schemata\Schema;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox DDL without stage
+ * @testdox Microsoft DDL without stage
  */
-class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
+class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 	public $dataDir = __DIR__.'/data';
 
 	public function createAndDropParametersDataProvider(){
@@ -25,7 +24,7 @@ class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL;
+		$ddl      = new MicrosoftSQLServer;
 		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, ...$params);
@@ -40,7 +39,7 @@ class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.drop.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL(new MicrosoftSQLServer);
+		$ddl      = new MicrosoftSQLServer;
 		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, 'drop');
@@ -55,7 +54,7 @@ class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.create.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL(new MicrosoftSQLServer);
+		$ddl      = new MicrosoftSQLServer;
 		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, 'create');
@@ -63,23 +62,14 @@ class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame($expected,$actual);
 	}
 
-	public function tablePrefixOptionsDataProvider(){
-		return [
-			'(datatyper, prefix)' => [new MicrosoftSQLServer, ['prefix'=>'tmp']],
-			'(prefix, datatyper)' => [['prefix'=>'tmp'], new MicrosoftSQLServer],
-			'(prefix)'            => [['prefix'=>'tmp']],
-		];
-	}
-
 	/**
-	 *  @testdox Can generate prefixed DDL from Schema with options
-	 *  @dataProvider tablePrefixOptionsDataProvider
+	 *  @testdox Can generate prefixed DDL from Schema
 	 */
-	public function testCanGeneratePrefixedDDLfromSchema(...$params){
+	public function testCanGeneratePrefixedDDLfromSchema(){
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.tmp.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new DDL(...$params);
+		$ddl      = new MicrosoftSQLServer(['prefix'=>'tmp']);
 		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema);

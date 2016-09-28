@@ -1,22 +1,25 @@
 <?php
-namespace jpuck\etl\Schemata;
+namespace jpuck\etl\Schemata\DBMS;
 
-use jpuck\etl\Schemata\Datatypes\Datatyper;
-use jpuck\etl\Schemata\Datatypes\DatatyperHandler;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\Schema;
+use jpuck\etl\Schemata\DBMS\PrefixTrait;
 use InvalidArgumentException;
 
-class DDL {
-	use DatatyperHandler;
+abstract class DDL {
+	use PrefixTrait;
 
+	protected $default_varchar_size = 100;
+	// TODO: set minimum size
 	protected $stage = true;
 
 	public function __construct(...$options){
-		$this->handleDatatyperOptions($options);
-
-		// defaults
-		if (is_null($this->datatyper())){
-			$this->datatyper(new MicrosoftSQLServer);
+		foreach ($options as $option){
+			if (is_array($option) && isset($option['prefix'])){
+				$this->prefix($option['prefix']);
+			}
+			if (is_array($option) && isset($option['stage'])){
+				$this->stage($option['prefix']);
+			}
 		}
 	}
 
@@ -51,8 +54,8 @@ class DDL {
 
 		foreach ($nodes as $name => $node){
 			// drop table definition
-			$parent = $this->datatyper->quote($prefix.$path);
-			$table  = $this->datatyper->quote($prefix.$path.$name);
+			$parent = $this->quote($prefix.$path);
+			$table  = $this->quote($prefix.$path.$name);
 			$drop   = "\nDROP TABLE $table;";
 			$drops .= $this->wrapCheckIfExists($prefix.$path.$name,$drop);
 
@@ -71,7 +74,7 @@ class DDL {
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
-					$column  = $this->datatyper->quote($key);
+					$column  = $this->quote($key);
 					$create .= "	$column ".$this->getDatatype($attribute);
 				}
 			}
@@ -88,12 +91,12 @@ class DDL {
 						$recurse[$key] = $element;
 					} else {
 						// get single, childless child-element value
-						$column  = $this->datatyper->quote($key);
+						$column  = $this->quote($key);
 						$create .= "	$column ".$this->getDatatype($element);
 						// flatten single child attributes
 						if (isset($element['attributes'])){
 							foreach ($element['attributes'] as $k => $att){
-								$column  = $this->datatyper->quote($key.$k);
+								$column  = $this->quote($key.$k);
 								$create .= "	$column ".$this->getDatatype($att);
 							}
 						}
@@ -101,7 +104,7 @@ class DDL {
 				}
 			} else {
 				// get childless element value
-				$column  = $this->datatyper->quote($name);
+				$column  = $this->quote($name);
 				$create .= "	$column ".$this->getDatatype($node);
 			}
 
@@ -127,10 +130,10 @@ class DDL {
 
 		if ($this->validateDatetimes($attribute)){
 			$datatype = $attribute['datetime']['max']['value'];
-			$datatype = $this->datatyper->getDatetime($datatype);
+			$datatype = $this->getDatetime($datatype);
 			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['int'])){
-			$datatype = $this->datatyper->getInteger($attribute['int']['max']['value']);
+			$datatype = $this->getInteger($attribute['int']['max']['value']);
 			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['decimal'])){
 			$precision = $attribute['precision']['max']['measure'];
@@ -138,7 +141,7 @@ class DDL {
 			$datatype = "decimal($scale,$precision),\n";
 		} else {
 			$vsize = $attribute['varchar']['max']['measure'] ?? null;
-			$datatype = $this->datatyper->getVarchar($vsize);
+			$datatype = $this->getVarchar($vsize);
 			$datatype = "$datatype,\n";
 		}
 		return $datatype;
@@ -149,14 +152,14 @@ class DDL {
 			return false;
 		}
 
-		$max = $this->datatyper->getDatetime($attribute['datetime']['max']['value']);
+		$max = $this->getDatetime($attribute['datetime']['max']['value']);
 		if ($max === false){
 			return   false;
 		}
 
 		$min = $attribute['datetime']['min']['value'] ?? null;
 		if (isset($min)){
-			$min = $this->datatyper->getDatetime($min);
+			$min = $this->getDatetime($min);
 			if ($min === false){
 				return   false;
 			}
@@ -189,4 +192,9 @@ class DDL {
 	protected function wrapCheckIfNotExists(String $table, String $stmt) : String {
 		return $this->wrapCheckIfExists($table,$stmt,'NOT');
 	}
+
+	abstract public function getInteger($value) : String;
+	abstract public function getDatetime($value);
+	abstract public function getVarchar($length = null) : String;
+	abstract public function quote(String $entity, Bool $chars = false);
 }

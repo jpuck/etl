@@ -1,6 +1,6 @@
 <?php
 use jpuck\etl\Schemata\DDL;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
 
 /**
  * @testdox Microsoft SQL Server Datatyper

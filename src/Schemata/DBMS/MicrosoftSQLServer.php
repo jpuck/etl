@@ -76,4 +76,13 @@ class MicrosoftSQLServer extends DDL {
 
 		return "varchar($length)";
 	}
+
+	public function identity(Bool $enabled = null) : String {
+		if ($enabled === true){
+			$this->identity = 'IDENTITY ';
+		} elseif ($enabled === false){
+			$this->identity = '';
+		}
+		return $this->identity;
+	}
 }

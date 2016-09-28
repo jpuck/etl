@@ -11,11 +11,16 @@ abstract class DDL {
 	protected $default_varchar_size = 100;
 	// TODO: set minimum size
 	protected $stage = true;
+	protected $identity;
 
 	public function __construct(...$options){
 		foreach ($options as $option){
 			$this->set($option, 'prefix');
 			$this->set($option, 'stage');
+			$this->set($option, 'identity');
+		}
+		if (is_null($this->identity)){
+			$this->identity(true);
 		}
 	}
 
@@ -199,4 +204,5 @@ abstract class DDL {
 	abstract public function getDatetime($value);
 	abstract public function getVarchar($length = null) : String;
 	abstract public function quote(String $entity, Bool $chars = false);
+	abstract public function identity(Bool $enabled = null) : String;
 }

@@ -9,6 +9,8 @@ use InvalidArgumentException;
 class DDL {
 	use DatatyperHandler;
 
+	protected $stage = true;
+
 	public function __construct(...$options){
 		$this->handleDatatyperOptions($options);
 
@@ -16,6 +18,13 @@ class DDL {
 		if (is_null($this->datatyper())){
 			$this->datatyper(new MicrosoftSQLServer);
 		}
+	}
+
+	public function stage(Bool $stage) : Bool {
+		if (isset($stage)){
+			$this->stage = $stage;
+		}
+		return $stage;
 	}
 
 	public function generate(Schema $schema, ...$options) : String {

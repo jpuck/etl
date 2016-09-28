@@ -4,9 +4,9 @@ use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
 
 /**
- * @testdox DDL
+ * @testdox DDL without stage
  */
-class DDLTest extends PHPUnit_Framework_TestCase {
+class DDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 	public $dataDir = __DIR__.'/data';
 
 	public function createAndDropParametersDataProvider(){
@@ -26,6 +26,7 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
 		$ddl      = new DDL;
+		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, ...$params);
 
@@ -40,6 +41,7 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
 		$ddl      = new DDL(new MicrosoftSQLServer);
+		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, 'drop');
 
@@ -54,6 +56,7 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
 		$ddl      = new DDL(new MicrosoftSQLServer);
+		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema, 'create');
 
@@ -77,6 +80,7 @@ class DDLTest extends PHPUnit_Framework_TestCase {
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
 		$ddl      = new DDL(...$params);
+		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema);
 

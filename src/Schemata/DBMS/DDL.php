@@ -14,12 +14,14 @@ abstract class DDL {
 
 	public function __construct(...$options){
 		foreach ($options as $option){
-			if (is_array($option) && isset($option['prefix'])){
-				$this->prefix($option['prefix']);
-			}
-			if (is_array($option) && isset($option['stage'])){
-				$this->stage($option['prefix']);
-			}
+			$this->set($option, 'prefix');
+			$this->set($option, 'stage');
+		}
+	}
+
+	protected function set($option, String $function){
+		if (is_array($option) && isset($option["$function"])){
+			$this->$function($option["$function"]);
 		}
 	}
 

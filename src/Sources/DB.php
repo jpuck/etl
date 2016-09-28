@@ -7,24 +7,23 @@ use jpuck\etl\Data\Datum;
 use jpuck\etl\Data\XML;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
-use jpuck\etl\Schemata\Datatypes\DatatyperHandler;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\DBMS\MicrosoftSQLServerTrait;
+use jpuck\etl\Schemata\DBMS\PrefixTrait;
 use PDO;
 use InvalidArgumentException;
 
 class DB extends Source {
-	use DatatyperHandler;
+	use MicrosoftSQLServerTrait;
+	use PrefixTrait;
 
 	private $DEBUG = false;
 
-	public function __construct($uri, ...$options){
+	public function __construct(PDO $uri, ...$options){
 		parent::__construct($uri);
-
-		$this->handleDatatyperOptions($options);
-
-		// defaults
-		if (is_null($this->datatyper())){
-			$this->datatyper(new MicrosoftSQLServer);
+		foreach ($options as $option){
+			if (is_array($option) && isset($option['prefix'])){
+				$this->prefix($option['prefix']);
+			}
 		}
 	}
 
@@ -121,7 +120,7 @@ class DB extends Source {
 	}
 
 	protected function insertExecute(Array &$query){
-		$table = $this->datatyper->quote($this->prefix().$query[0]);
+		$table = $this->quote($this->prefix().$query[0]);
 		$sql   = "INSERT INTO $table ";
 		foreach ($query as $key => $value) {
 			if (!is_int($key)) {
@@ -131,8 +130,8 @@ class DB extends Source {
 				unset($query[$key]);
 			}
 		}
-		$qo   = $this->datatyper->quote('',true)[0];
-		$qc   = $this->datatyper->quote('',true)[1];
+		$qo   = $this->quote('',true)[0];
+		$qc   = $this->quote('',true)[1];
 		$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
 		$sql .= ' OUTPUT INSERTED.jpetl_id ';
 		$sql .= "VALUES ('".implode("','",$vals)."')";

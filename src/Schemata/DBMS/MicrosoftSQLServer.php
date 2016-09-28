@@ -1,11 +1,10 @@
 <?php
-namespace jpuck\etl\Schemata\Datatypes;
+namespace jpuck\etl\Schemata\DBMS;
 
 use InvalidArgumentException;
 
-class MicrosoftSQLServer implements Datatyper {
-	protected $default_varchar_size = 100;
-	// TODO: set minimum size
+class MicrosoftSQLServer extends DDL {
+	use MicrosoftSQLServerTrait;
 
 	public function getInteger ($value) : String {
 		$value = str_replace(',','',$value);
@@ -78,10 +77,12 @@ class MicrosoftSQLServer implements Datatyper {
 		return "varchar($length)";
 	}
 
-	public function quote(String $entity, Bool $chars = false){
-		if ($chars) {
-			return ['[',']'];
+	public function identity(Bool $enabled = null) : String {
+		if ($enabled === true){
+			$this->identity = 'IDENTITY';
+		} elseif ($enabled === false){
+			$this->identity = '';
 		}
-		return "[$entity]";
+		return $this->identity;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 use jpuck\etl\Sources\DB;
 use jpuck\etl\Data\XML;
-use jpuck\etl\Schemata\Datatypes\MicrosoftSQLServer;
+use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
 
 /**
  * @testdox DB
@@ -23,7 +23,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	 *  @testdox Can invalidate DB URI in constructor
 	 */
 	public function testCanInvalidateDBURIinConstructor(){
-		$this->expectException(InvalidArgumentException::class);
+		$this->expectException(TypeError::class);
 		$db = new DB(['username'=>'user','password'=>'pass']);
 	}
 
@@ -45,7 +45,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new DB(self::$pdo, new MicrosoftSQLServer);
+		$db  = new DB(self::$pdo);
 
 		$this->assertTrue($db->insert($xml));
 	}
@@ -56,7 +56,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoPrefixedDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new DB(self::$pdo, ['prefix'=>'tmp'], new MicrosoftSQLServer);
+		$db  = new DB(self::$pdo, ['prefix'=>'tmp']);
 
 		$this->assertTrue($db->insert($xml));
 

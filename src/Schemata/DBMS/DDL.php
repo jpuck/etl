@@ -52,6 +52,7 @@ abstract class DDL {
 		if (isset($stage)){
 			$sql['drop']   = $stage['drop']   . $prod['drop'];
 			$sql['create'] = $stage['create'] . $prod['create'];
+			$sql['insert'] = $stage['insert'] . $prod['insert'];
 		} else {
 			$sql = $prod;
 		}
@@ -82,16 +83,21 @@ abstract class DDL {
 		// initialize recursor
 		$drops = '';
 		$creates = '';
+		$inserts = '';
 
 		foreach ($nodes as $name => $node){
-			// drop table definition
+			// entity names
 			$parent = $this->quote($prefix.$path);
 			$table  = $this->quote($prefix.$path.$name);
+
+			// drop table definition
 			$drop   = "\nDROP TABLE $table;";
 			$drops .= $this->wrapCheckIfExists($prefix.$path.$name,$drop);
 
-			// open table definition
+			// create table definition
 			$create = "\nCREATE TABLE $table (\n";
+
+			$insert  = '';
 
 			// surrogate parent foreign key
 			// TODO: use natural key if unique values
@@ -100,12 +106,15 @@ abstract class DDL {
 				$create .= "	CONSTRAINT fk_$prefix$path$name\n";
 				$create .= "		FOREIGN KEY (jpetl_pid)\n";
 				$create .= "		REFERENCES $parent(jpetl_id),\n";
+
+				$insert .= "\tjpetl_pid,\n";
 			}
 
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
 					$create .= $this->columnize($key, $attribute);
+					$insert .= "\t".$this->quote($key).",\n";
 				}
 			}
 
@@ -122,10 +131,12 @@ abstract class DDL {
 					} else {
 						// get single, childless child-element value
 						$create .= $this->columnize($key, $element);
+						$insert .= "\t".$this->quote($key).",\n";
 						// flatten single child attributes
 						if (isset($element['attributes'])){
 							foreach ($element['attributes'] as $k => $att){
 								$create .= $this->columnize($key.$k, $att);
+								$insert .= "\t".$this->quote($key.$k).",\n";
 							}
 						}
 					}
@@ -133,23 +144,42 @@ abstract class DDL {
 			} else {
 				// get childless element value
 				$create .= $this->columnize($name, $node);
+				$insert .= "\t".$this->quote($name).",\n";
 			}
 
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
 			$identity = $this->identity();
-			$create .= "	jpetl_id int $identity PRIMARY KEY\n);";
+			$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
 			$creates .= $this->wrapCheckIfNotExists($prefix.$path.$name,$create);
+			$insert  .= "\tjpetl_id\n";
+
+			// insert
+			if (!empty($prefix)){
+				$stage = $this->quote($prefix.$path.$name);
+				$prod  = $this->quote($path.$name);
+				$inserts .= "\nINSERT INTO $prod (\n";
+				$inserts .= $insert;
+				$inserts .= ") SELECT\n";
+				$inserts .= $insert;
+				$inserts .= "FROM $stage;\n";
+			}
 
 			// get children and multi-values
 			if (isset($recurse)){
 				$children = $this->build($recurse, $path.$name);
 				$drops = $children['drop'] . $drops;
 				$creates .= $children['create'];
+				$inserts .= $children['insert'];
 				unset($recurse);
 			}
 		}
-		return ['drop' => $drops, 'create' => $creates];
+
+		return [
+			'drop'   => $drops,
+			'create' => $creates,
+			'insert' => $inserts,
+		];
 	}
 
 	protected function columnize(String $col, Array $type) : String {

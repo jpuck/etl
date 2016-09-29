@@ -19,6 +19,12 @@ class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 		$expected['create'] = file_get_contents(
 			"{$this->dataDir}/sql/sample.mssql.stage.create.ddl.sql"
 		);
+		$expected['delete']['tmp'] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.delete.tmp.sql"
+		);
+		$expected['delete'][''] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.delete.prod.sql"
+		);
 		$expected['insert'] = file_get_contents(
 			"{$this->dataDir}/sql/sample.mssql.stage.insert.sql"
 		);

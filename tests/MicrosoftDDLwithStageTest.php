@@ -13,13 +13,28 @@ class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 	 *  @testdox Can generate staging and production DDL from Schema
 	 */
 	public function testCanGenerateStagingAndProductionDDLfromSchema(){
-		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.stage.ddl.sql");
-		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
-		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer;
+		$expected['drop'] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.drop.ddl.sql"
+		);
+		$expected['create'] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.create.ddl.sql"
+		);
+		$expected['delete']['tmp'] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.delete.tmp.sql"
+		);
+		$expected['delete'][''] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.delete.prod.sql"
+		);
+		$expected['insert'] = file_get_contents(
+			"{$this->dataDir}/sql/sample.mssql.stage.insert.sql"
+		);
 
-		$actual   = $ddl->generate($schema);
+		$schema = require "{$this->dataDir}/schemata/sample.schema.php";
+		$schema = new Schema($schema);
+		$dbms   = new MicrosoftSQLServer;
 
-		$this->assertSame($expected,$actual);
+		$actual = $dbms->toSQL($schema);
+
+		$this->assertEquals($expected,$actual);
 	}
 }

@@ -38,9 +38,10 @@ abstract class DDL {
 	}
 
 	public function toSQL(Schema $schema) : Array {
+		$prefix = $this->prefix();
 		if ($this->stage()){
-			if (empty($this->prefix())){
-				$this->prefix('tmp');
+			if (empty($prefix)){
+				$prefix = $this->prefix('tmp');
 			}
 			$stage = $this->build($schema->toArray());
 			$this->prefix('');
@@ -52,6 +53,10 @@ abstract class DDL {
 		if (isset($stage)){
 			$sql['drop']   = $stage['drop']   . $prod['drop'];
 			$sql['create'] = $stage['create'] . $prod['create'];
+
+			$sql['delete'][$prefix] = $stage['delete'];
+			$sql['delete'][  ''   ] = $prod ['delete'];
+
 			$sql['insert'] = $stage['insert'] . $prod['insert'];
 		} else {
 			$sql = $prod;
@@ -83,6 +88,7 @@ abstract class DDL {
 		// initialize recursor
 		$drops = '';
 		$creates = '';
+		$deletes = '';
 		$inserts = '';
 
 		foreach ($nodes as $name => $node){
@@ -97,6 +103,8 @@ abstract class DDL {
 			// create table definition
 			$create = "\nCREATE TABLE $table (\n";
 
+			// delete
+			$deletes .= "DELETE FROM $table;\n";
 			$insert  = '';
 
 			// surrogate parent foreign key
@@ -171,6 +179,7 @@ abstract class DDL {
 				$drops = $children['drop'] . $drops;
 				$creates .= $children['create'];
 				$inserts .= $children['insert'];
+				$deletes = $children['delete'] . $deletes;
 				unset($recurse);
 			}
 		}
@@ -178,6 +187,7 @@ abstract class DDL {
 		return [
 			'drop'   => $drops,
 			'create' => $creates,
+			'delete' => $deletes,
 			'insert' => $inserts,
 		];
 	}

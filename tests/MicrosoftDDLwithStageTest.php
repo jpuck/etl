@@ -35,6 +35,6 @@ class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 
 		$actual = $dbms->toSQL($schema);
 
-		$this->assertSame($expected,$actual);
+		$this->assertEquals($expected,$actual);
 	}
 }

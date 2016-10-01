@@ -1,0 +1,9 @@
+sudo: required
+dist: trusty
+install:
+  - sudo ./install/travis.trusty.bash || true
+  - ln -s travis.pdo.php tests/data/pdos/pdo.php
+  - wget https://getcomposer.org/download/1.2.1/composer.phar
+  - /usr/bin/php composer.phar install
+script:
+  - /usr/bin/php vendor/bin/phpunit

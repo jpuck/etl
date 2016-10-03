@@ -3,6 +3,11 @@
 This is a collection of PHP 7 classes useful for
 [extracting, transforming, and loading][1] data between sources.
 
+Branch      | Tests                     | Code Coverage
+----------- | --------------------------|--------------
+[master][9] | [![Build Status][12]][11] | [![Codecov][16]][14]
+[dev][10]   | [![Build Status][13]][11] | [![Codecov][17]][15]
+
 ## Requirements
 
 PHP >= 7.0
@@ -184,3 +189,12 @@ return (function(){
   [6]:https://en.wikipedia.org/wiki/Data_definition_language
   [7]:http://stackoverflow.com/q/39260573/4233593
   [8]:http://php.net/manual/en/book.pdo.php
+  [9]:https://github.com/jpuck/etl/tree/master
+  [10]:https://github.com/jpuck/etl/tree/dev
+  [11]:https://travis-ci.org/jpuck/etl
+  [12]:https://travis-ci.org/jpuck/etl.svg?branch=master
+  [13]:https://travis-ci.org/jpuck/etl.svg?branch=dev
+  [14]:https://codecov.io/gh/jpuck/etl/branch/master
+  [15]:https://codecov.io/gh/jpuck/etl/branch/dev
+  [16]:https://img.shields.io/codecov/c/github/jpuck/etl/master.svg?maxAge=2592000
+  [17]:https://img.shields.io/codecov/c/github/jpuck/etl/dev.svg?maxAge=2592000

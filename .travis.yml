@@ -6,4 +6,6 @@ install:
   - wget https://getcomposer.org/download/1.2.1/composer.phar
   - /usr/bin/php composer.phar install
 script:
-  - /usr/bin/php vendor/bin/phpunit
+  - /usr/bin/php vendor/bin/phpunit --coverage-clover=coverage.xml
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

@@ -196,5 +196,5 @@ return (function(){
   [13]:https://travis-ci.org/jpuck/etl.svg?branch=dev
   [14]:https://codecov.io/gh/jpuck/etl/branch/master
   [15]:https://codecov.io/gh/jpuck/etl/branch/dev
-  [16]:https://img.shields.io/codecov/c/github/jpuck/etl/master.svg?maxAge=2592000
-  [17]:https://img.shields.io/codecov/c/github/jpuck/etl/dev.svg?maxAge=2592000
+  [16]:https://img.shields.io/codecov/c/github/jpuck/etl/master.svg
+  [17]:https://img.shields.io/codecov/c/github/jpuck/etl/dev.svg

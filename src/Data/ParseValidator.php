@@ -16,10 +16,20 @@ class ParseValidator {
 			);
 		}
 
-		if (isset($array['attributes']) && !is_array($array['attributes'])){
-			throw new InvalidArgumentException(
-				'Attributes must be an array.', 3
-			);
+		if (isset($array['attributes'])){
+			if (!is_array($array['attributes'])){
+				throw new InvalidArgumentException(
+					'Attributes must be an array.', 3
+				);
+			}
+
+			foreach ($array['attributes'] as $key=>$val){
+				if (is_numeric($key)){
+					throw new InvalidArgumentException(
+						'Attributes must not be numerically indexed.', 4
+					);
+				}
+			}
 		}
 
 		if (is_array($array['value'])){

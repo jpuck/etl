@@ -16,6 +16,12 @@ class ParseValidator {
 			);
 		}
 
+		if (empty($array['name'])){
+			throw new InvalidArgumentException(
+				'Name value cannot be empty.', 6
+			);
+		}
+
 		if (!array_key_exists('value',$array)){
 			throw new InvalidArgumentException(
 				'Array must have "value" index.', 2

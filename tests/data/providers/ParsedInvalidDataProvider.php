@@ -25,4 +25,13 @@ return [
 	'7) name is array' => [
 		5, ['name'=>['one'],'value'=>1]
 	],
+	'8) name is null' => [
+		6, ['name'=>null,'value'=>1]
+	],
+	'9) name is nothing' => [
+		6, ['name'=>'','value'=>1]
+	],
+	'10) name is false' => [
+		6, ['name'=>false,'value'=>1]
+	],
 ];

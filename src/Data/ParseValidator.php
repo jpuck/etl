@@ -10,6 +10,12 @@ class ParseValidator {
 			);
 		}
 
+		if (is_array($array['name'])){
+			throw new InvalidArgumentException(
+				'Name value cannot be an array.', 5
+			);
+		}
+
 		if (!array_key_exists('value',$array)){
 			throw new InvalidArgumentException(
 				'Array must have "value" index.', 2

@@ -22,4 +22,7 @@ return [
 	'6) numerically indexed attributes' => [
 		4, ['name'=>'one','value'=>1,'attributes'=>['something']]
 	],
+	'7) name is array' => [
+		5, ['name'=>['one'],'value'=>1]
+	],
 ];

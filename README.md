@@ -17,7 +17,7 @@ PHP >= 7.0
 This library is registered on [packagist][5] and can be easily installed into
 your project using [composer][2].
 
-    php composer.phar require jpuck/etl
+    composer require jpuck/etl
 
 --------------
 
@@ -29,8 +29,6 @@ There are 3 basic groups of interrelated classes:
 1. Sources
 
 	Sources extend the `Source` class and implement the `Tranceiver` interface.
-	A Source also has an optional property object that implements the
-	`Datatyper` interface, which is most useful for the `DB` class.
 
 2. Data
 
@@ -41,8 +39,8 @@ There are 3 basic groups of interrelated classes:
 
 	A `Schema` is a concrete class with a `Validator` to enforce structure.
 	The `Merger` class is for combining Schemas to create super-set Schemas.
-	The `DDL` class generates [SQL Data Definition Language][6] with guidance
-	from a class that implements the `Datatyper` interface.
+	The `DDL` extended classes generate [SQL Data Definition Language][6] and
+	are specific to a database management system.
 
 ## Schematizer
 
@@ -121,7 +119,7 @@ The `DB` class requires an instance of [`PDO`][8] in the constructor.
 ## SQL Data Definition Language
 
 When one-to-many XML nodes are used to represent one-to-one relationships, then
-the `Schematizer` recognizes this and the `DDL` class flattens them as columns
+the `Schematizer` recognizes this and a `DDL` class flattens them as columns
 on a table. If a node has more than one if its name or grandchildren, then the
 one-to-many relationship is preserved in a separate normalized table. Surrogate
 keys are created to maintain the Primary/Foreign Key referential integrity.
@@ -133,7 +131,7 @@ keys are created to maintain the Primary/Foreign Key referential integrity.
 The development dependencies can be installed by running [composer][2] with or
 without the `--dev` option (enabled by default).
 
-    php composer.phar install --dev
+    composer install --dev
 
 ## Testing
 

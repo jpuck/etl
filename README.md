@@ -34,7 +34,7 @@ There are 3 basic groups of interrelated classes:
 
 2. Data
 
-	Data classes extend `Datum` and must implement the `Parser` interface.
+	Data classes extend `Datum` and must implement a valid parser.
 	It uses the `Schematizer` to construct the object from raw data.
 
 3. Schemata

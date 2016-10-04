@@ -11,6 +11,14 @@ class JSON extends Datum {
 			);
 		}
 
-		return $json;
+		$parsed = ['name'=>'root'];
+
+		foreach ($json as $key => $value){
+			if (!is_array($value)){
+				$parsed['value'] []= ['name'=>$key,'value'=>$value];
+			}
+		}
+
+		return $parsed;
 	}
 }

@@ -18,6 +18,7 @@
 			<file>tests/MicrosoftDDLwithStageTest.php</file>
 			<file>tests/SchematizerUtilitiesTest.php</file>
 			<file>tests/SchematizerTest.php</file>
+			<file>tests/ParseValidatorTest.php</file>
 			<file>tests/XMLTest.php</file>
 			<file>tests/FolderTest.php</file>
 			<file>tests/DBTest.php</file>

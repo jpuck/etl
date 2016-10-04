@@ -16,6 +16,12 @@ class ParseValidator {
 			);
 		}
 
+		if (is_array($array['value'])){
+			foreach ($array['value'] as $value){
+				$this->validate($value);
+			}
+		}
+
 		return true;
 	}
 }

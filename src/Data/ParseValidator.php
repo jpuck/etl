@@ -28,6 +28,12 @@ class ParseValidator {
 			);
 		}
 
+		if (!is_string($array['name'])){
+			throw new InvalidArgumentException(
+				'Name must be a string.', 8
+			);
+		}
+
 		if (!array_key_exists('value',$array)){
 			throw new InvalidArgumentException(
 				'Array must have "value" index.', 2

@@ -16,6 +16,12 @@ class ParseValidator {
 			);
 		}
 
+		if (isset($array['attributes']) && !is_array($array['attributes'])){
+			throw new InvalidArgumentException(
+				'Attributes must be an array.', 3
+			);
+		}
+
 		if (is_array($array['value'])){
 			foreach ($array['value'] as $value){
 				$this->validate($value);

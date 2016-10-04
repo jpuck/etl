@@ -16,4 +16,7 @@ return [
 			[['name'=>'two']]
 		]
 	],
+	'5) non-array attributes' => [
+		3, ['name'=>'one','value'=>1,'attributes'=>'something']
+	],
 ];

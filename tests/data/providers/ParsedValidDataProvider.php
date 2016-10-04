@@ -8,4 +8,9 @@ return [
 			[['name'=>'two','value'=>2]]
 		]
 	],
+	'3) attributes' => [
+		['name'=>'one','value'=>1,'attributes'=>
+			['something'=>'anything']
+		]
+	],
 ];

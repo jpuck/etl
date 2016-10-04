@@ -22,6 +22,12 @@ class ParseValidator {
 			);
 		}
 
+		if (is_numeric($array['name'])){
+			throw new InvalidArgumentException(
+				'Name cannot be numeric.', 7
+			);
+		}
+
 		if (!array_key_exists('value',$array)){
 			throw new InvalidArgumentException(
 				'Array must have "value" index.', 2

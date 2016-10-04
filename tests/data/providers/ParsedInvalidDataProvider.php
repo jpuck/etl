@@ -34,4 +34,7 @@ return [
 	'10) name is false' => [
 		6, ['name'=>false,'value'=>1]
 	],
+	'11) name is numeric' => [
+		7, ['name'=>42,'value'=>1]
+	],
 ];

@@ -13,12 +13,20 @@ class JSON extends Datum {
 
 		$parsed = ['name'=>'root'];
 
+		$this->parseRecursively($json, $parsed);
+
+		return $parsed;
+	}
+
+	protected function parseRecursively(Array &$json, Array &$parsed){
 		foreach ($json as $key => $value){
 			if (!is_array($value)){
 				$parsed['value'] []= ['name'=>$key,'value'=>$value];
+			} else {
+				// TODO: check if numerically indexed array
+				$parsed['value'] []= ['name'=>$key];
+				$this->parseRecursively($json[$key], $parsed['value'][max(array_keys($parsed['value']))]);
 			}
 		}
-
-		return $parsed;
 	}
 }

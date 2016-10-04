@@ -90,6 +90,7 @@ class Schematizer {
 	];
 
 	private function measure(&$array, &$result){
+		$local = [];
 		// get collection of subnodes
 		foreach ($array as $node){
 			$name = $this->stripNamespace($node['name']);

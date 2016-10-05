@@ -130,11 +130,20 @@ class DB extends Source {
 				unset($query[$key]);
 			}
 		}
-		$qo   = $this->quote('',true)[0];
-		$qc   = $this->quote('',true)[1];
-		$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
+
+		if (!empty($cols)){
+			$qo   = $this->quote('',true)[0];
+			$qc   = $this->quote('',true)[1];
+			$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
+		}
+
 		$sql .= ' OUTPUT INSERTED.jpetl_id ';
-		$sql .= "VALUES ('".implode("','",$vals)."')";
+
+		if (empty($cols)){
+			$sql .= "DEFAULT VALUES";
+		} else {
+			$sql .= "VALUES ('".implode("','",$vals)."')";
+		}
 
 		try {
 			$stmt = $this->uri->prepare($sql);

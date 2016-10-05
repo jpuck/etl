@@ -57,13 +57,13 @@ class MSDatatyperTest extends PHPUnit_Framework_TestCase {
 	public function microsoftValidateDatetimeDataProvider(){
 		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
 		return [
-			['12 months',            false],
-			['12:12:12',            'datetime'],
-			['12/12/2012',          'datetime'],
-			['12/12/2012 12:12:12', 'datetime'],
-			['2012-12-12',          'datetime'],
-			['2012-12-12 12:12:12', 'datetime'],
-			['2012-12-12T12:12:12', 'datetime'],
+			['12 months',                  false],
+			['12:12:12',                  'datetime'],
+			['12/12/2012',                'datetime'],
+			['12/12/2012 12:12:12',       'datetime'],
+			['2012-12-12',                'datetime'],
+			['2012-12-12 12:12:12',       'datetime'],
+			['2012-12-12T12:12:12+05:00', 'datetimeoffset'],
 		];
 	}
 

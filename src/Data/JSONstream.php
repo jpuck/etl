@@ -1,5 +1,6 @@
 <?php
 namespace jpuck\etl\Data;
+use InvalidArgumentException;
 use jpuck\phpdev\Functions as jp;
 
 class JSONstream {
@@ -8,7 +9,7 @@ class JSONstream {
 	public function __construct(String $file){
 		$this->file = fopen($file, 'r');
 		if (!$this->file){
-			throw new Exception("Failed to open $file");
+			throw new InvalidArgumentException("Failed to open $file");
 		}
 		$this->assertResource($this->file);
 	}

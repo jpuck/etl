@@ -18,7 +18,7 @@ class JSONstream {
 		fclose($this->file);
 	}
 
-	public function trim(Int $count){
+	public function combine(Int $count = null){
 		$i = 1;
 		$json = "[";
 		while (($row = fgets($this->file)) !== false){

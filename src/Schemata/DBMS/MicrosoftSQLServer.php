@@ -48,14 +48,18 @@ class MicrosoftSQLServer extends DDL {
 		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
 
 		// filter out alphabetic chars per relative format symbols
-		// except for 'T' per ISO8601
+		// except for 'T' per ISO8601 and '+' for timezone offset
 		// http://php.net/manual/en/datetime.formats.relative.php
-		if (preg_match('/^[\s\dT:\/-]*$/', $value) !== 1){
+		if (preg_match('/^[\s\dT+:\/-]*$/', $value) !== 1){
 			return false;
 		}
 
 		if (strtotime($value) === false){
 			return false;
+		}
+
+		if (strpos($value, '+') !== false){
+			return 'datetimeoffset';
 		}
 
 		return 'datetime';

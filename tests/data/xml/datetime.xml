@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dt>
+	<datetime>
+		2016-06-08T15:54:19
+	</datetime>
+	<datetime>
+		2016-06-08T15:54:20
+	</datetime>
+	<timezone>
+		2016-06-09T15:54:19+00:00
+	</timezone>
+	<timezone>
+		2016-06-09T15:54:19+05:00
+	</timezone>
+	<mixed>
+		2016-06-10T15:54:19
+	</mixed>
+	<mixed>
+		2016-06-10T15:54:19+05:00
+	</mixed>
+</dt>

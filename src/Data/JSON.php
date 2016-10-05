@@ -23,11 +23,49 @@ class JSON extends Datum {
 			if (!is_array($value)){
 				$parsed['value'] []= ['name'=>$key,'value'=>$value];
 			} else {
-				// TODO: check if numerically indexed array
-				$parsed['value'] []= ['name'=>$key];
-				$index = max(array_keys($parsed['value']));
-				$this->parseRecursively($json[$key], $parsed['value'][$index]);
+				// check if key-value pairs
+				foreach ($value as $k => $v){
+					if (is_numeric($k) && !is_array($v)){
+						$kv = true;
+					} else {
+						$kv = false;
+						break;
+					}
+				}
+				if ($kv){
+					// check if plain numerically indexed array
+					if ((count($value)-1) === max(array_keys($value))){
+						foreach ($value as $k => $v){
+							$parsed['value'] []= ['name'=>$key,'value'=>$v];
+						}
+					} else {
+						// else preserve custom keys
+						if (isset($parsed['value']) && is_array($parsed['value'])){
+							$parsed['value'] = array_merge($parsed['value'],$this->kvflip($key, $value));
+						} else {
+							$parsed['value'] = $this->kvflip($key, $value);
+						}
+					}
+				} else {
+					$parsed['value'] []= ['name'=>$key];
+					$index = max(array_keys($parsed['value']));
+					$this->parseRecursively($json[$key], $parsed['value'][$index]);
+				}
 			}
 		}
+	}
+
+	protected function kvflip(String $name, Array $array) : Array {
+		$return = [];
+		foreach ($array as $key => $value){
+			$return []= [
+				'name'  => $name,
+				'value' => [
+					['name'=>'key',  'value'=>$key],
+					['name'=>'value','value'=>$value],
+				]
+			];
+		}
+		return $return;
 	}
 }

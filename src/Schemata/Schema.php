@@ -8,8 +8,10 @@ class Schema {
 		methodName(Type $parameter)            ReturnType $description
 
 		// public
-		__construct(Array $schema)             Schema $schema
+		__construct($schema)                   Schema $schema
 		toArray()                              Array  $schema
+		toJSON(...$options)                    String $schema
+		__toString()                           String $schema
 		filter(String ...$filters)             Schema $schema
 
 		// protected
@@ -25,14 +27,36 @@ class Schema {
 	protected $complete = [];
 	protected $filtered = [];
 
-	public function __construct(Array $schema){
-		(new Validator)->validate($schema);
-		$this->sort($schema);
-		$this->filtered = $this->complete = $schema;
+	public function __construct($schema){
+		if (is_string($schema)){
+			$schema = json_decode($schema, true);
+			if (!is_array($schema)){
+				throw new InvalidArgumentException(
+					"Bad JSON: ".json_last_error_msg()
+				);
+			}
+		}
+		if (is_array($schema)){
+			(new Validator)->validate($schema);
+			$this->sort($schema);
+			$this->filtered = $this->complete = $schema;
+		} else {
+			throw new InvalidArgumentException(
+				"Cannot parse Schema to Array."
+			);
+		}
 	}
 
 	public function toArray(){
 		return $this->filtered;
+	}
+
+	public function toJSON(...$options){
+		return json_encode($this->filtered, ...$options);
+	}
+
+	public function __toString(){
+		return $this->toJSON(JSON_PRETTY_PRINT);
 	}
 
 	public function filter(String ...$filters) : Schema {

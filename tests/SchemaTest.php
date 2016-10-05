@@ -31,6 +31,20 @@ class SchemaTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	/**
+	 *  @testdox Can export and import JSON
+	 *  @dataProvider validSchemaDataProvider
+	 */
+	public function testCanExportAndImportJSON($endpoint){
+		$expected = require "{$this->schemataDir}/$endpoint.schema.php";
+		$orig     = new Schema($expected);
+
+		$new      = new Schema($orig->toJSON());
+		$actual   = $new->toArray();
+
+		$this->assertEquals($expected, $actual);
+	}
+
 	public function filterDataProvider(){
 		return [
 			'varchar'           => ['varchar'],

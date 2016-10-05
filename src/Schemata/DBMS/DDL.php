@@ -202,7 +202,10 @@ abstract class DDL {
 		// TODO: check if 'datatype' override set
 
 		if ($this->validateDatetimes($attribute)){
-			$datatype = $attribute['datetime']['max']['value'];
+			// check longer varchar value first in case of mixed timezone offset
+			$datatype =
+				$attribute['varchar' ]['max']['value'] ??
+				$attribute['datetime']['max']['value'];
 			$datatype = $this->getDatetime($datatype);
 			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['int'])){

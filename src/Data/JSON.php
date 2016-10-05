@@ -20,8 +20,13 @@ class JSON extends Datum {
 
 	protected function parseRecursively(Array &$json, Array &$parsed){
 		foreach ($json as $key => $value){
+			if (is_numeric($key)){
+				$name = 'root';
+			} else {
+				$name = $key;
+			}
 			if (!is_array($value)){
-				$parsed['value'] []= ['name'=>$key,'value'=>$value];
+				$parsed['value'] []= ['name'=>$name,'value'=>$value];
 			} else {
 				// check if key-value pairs
 				foreach ($value as $k => $v){
@@ -36,18 +41,18 @@ class JSON extends Datum {
 					// check if plain numerically indexed array
 					if ((count($value)-1) === max(array_keys($value))){
 						foreach ($value as $k => $v){
-							$parsed['value'] []= ['name'=>$key,'value'=>$v];
+							$parsed['value'] []= ['name'=>$name,'value'=>$v];
 						}
 					} else {
 						// else preserve custom keys
 						if (isset($parsed['value']) && is_array($parsed['value'])){
-							$parsed['value'] = array_merge($parsed['value'],$this->kvflip($key, $value));
+							$parsed['value'] = array_merge($parsed['value'],$this->kvflip($name, $value));
 						} else {
-							$parsed['value'] = $this->kvflip($key, $value);
+							$parsed['value'] = $this->kvflip($name, $value);
 						}
 					}
 				} else {
-					$parsed['value'] []= ['name'=>$key];
+					$parsed['value'] []= ['name'=>$name];
 					$index = max(array_keys($parsed['value']));
 					$this->parseRecursively($json[$key], $parsed['value'][$index]);
 				}

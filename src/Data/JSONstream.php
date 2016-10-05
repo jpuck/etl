@@ -22,7 +22,6 @@ class JSONstream {
 		$i = 1;
 		$json = "[";
 		while (($row = fgets($this->file)) !== false){
-			$arr = json_decode($row, true);
 			$json .= $row;
 			if (isset($count) && ++$i > $count){
 				break;

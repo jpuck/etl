@@ -15,4 +15,13 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 		$json = new JSON($raw);
 		$this->assertTrue($json instanceof JSON);
 	}
+
+	/**
+	 * @testdox Can create JSON from array of objects
+	 */
+	public function testCanCreateJSONfromArrayOfObjects(){
+		$raw  = file_get_contents("{$this->jsonDir}/items.json");
+		$json = new JSON($raw);
+		$this->assertTrue($json instanceof JSON);
+	}
 }

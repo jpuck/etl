@@ -25,7 +25,8 @@ class JSON extends Datum {
 			} else {
 				// TODO: check if numerically indexed array
 				$parsed['value'] []= ['name'=>$key];
-				$this->parseRecursively($json[$key], $parsed['value'][max(array_keys($parsed['value']))]);
+				$index = max(array_keys($parsed['value']));
+				$this->parseRecursively($json[$key], $parsed['value'][$index]);
 			}
 		}
 	}

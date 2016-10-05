@@ -10,6 +10,8 @@ class Schema {
 		// public
 		__construct(Array $schema)             Schema $schema
 		toArray()                              Array  $schema
+		toJSON(...$options)                    String $schema
+		__toString()                           String $schema
 		filter(String ...$filters)             Schema $schema
 
 		// protected
@@ -33,6 +35,14 @@ class Schema {
 
 	public function toArray(){
 		return $this->filtered;
+	}
+
+	public function toJSON(...$options){
+		return json_encode($this->filtered, ...$options);
+	}
+
+	public function __toString(){
+		return $this->toJSON(JSON_PRETTY_PRINT);
 	}
 
 	public function filter(String ...$filters) : Schema {

@@ -14,6 +14,10 @@ class JSONstream {
 		$this->assertResource($this->file);
 	}
 
+	public function __destruct() {
+		fclose($this->file);
+	}
+
 	public function trim(Int $count){
 		$i = 1;
 		$json = "[";

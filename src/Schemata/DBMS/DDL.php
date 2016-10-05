@@ -239,11 +239,9 @@ abstract class DDL {
 			if ($min === false){
 				return   false;
 			}
-		} else {
-			return true;
 		}
 
-		return ($max === $min);
+		return true;
 	}
 
 	protected function wrapCheckIfExists(String $table, String $stmt, String $not=null) : String {

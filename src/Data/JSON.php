@@ -11,8 +11,10 @@ class JSON extends Datum {
 			);
 		}
 
-		$parsed = ['name'=>'root'];
+		$defaults = array_replace_recursive(['name'=>'root'], $this->options());
+		$this->options($defaults);
 
+		$parsed['name'] = $this->options['name'];
 		$this->parseRecursively($json, $parsed);
 
 		return $parsed;

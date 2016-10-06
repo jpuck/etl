@@ -9,7 +9,11 @@ abstract class Datum {
 	protected $raw;
 	protected $parsed;
 	protected $schema;
-	protected $validate_parse = true;
+	protected $options = [
+		'validate' => [
+			'parse' => true
+		]
+	];
 
 	public function __construct($raw, ...$options){
 		if (isset($options)){
@@ -19,12 +23,14 @@ abstract class Datum {
 						$schema = $option;
 						break;
 					case (is_bool($option)):
-						$validate_parse = $option;
+						$this->options['validate']['parse'] = $option;
+						break;
+					case (is_array($option)):
+						$this->options($option);
 						break;
 				}
 			}
 		}
-		$this->validate_parse = $validate_parse ?? true;
 		$schema = $schema ?? null;
 		$this->raw($raw, $schema);
 	}
@@ -33,7 +39,7 @@ abstract class Datum {
 		if (isset($raw)){
 			$this->parsed = $this->parse($raw);
 
-			if ($this->validate_parse){
+			if ($this->options['validate']['parse']){
 				(new ParseValidator)->validate($this->parsed);
 			}
 
@@ -58,6 +64,13 @@ abstract class Datum {
 			$this->schema = $schema;
 		}
 		return $this->schema;
+	}
+
+	public function options(Array $options = null) : Array {
+		if (isset($options)){
+			$this->options = array_replace_recursive($this->options, $options);
+		}
+		return $this->options;
 	}
 
 	abstract protected function parse($raw) : Array;

@@ -15,15 +15,14 @@ class JSON extends Datum {
 		$this->options($defaults);
 
 		$parsed['name'] = $this->options['name'];
-		$this->parseRecursively($json, $parsed);
-
+		$this->parseRecursively($json, $parsed, $this->options['name']);
 		return $parsed;
 	}
 
-	protected function parseRecursively(Array &$json, Array &$parsed){
+	protected function parseRecursively(Array &$json, Array &$parsed, String $parent){
 		foreach ($json as $key => $value){
 			if (is_numeric($key)){
-				$name = 'root';
+				$name = $parent;
 			} else {
 				$name = $key;
 			}
@@ -56,7 +55,7 @@ class JSON extends Datum {
 				} else {
 					$parsed['value'] []= ['name'=>$name];
 					$index = max(array_keys($parsed['value']));
-					$this->parseRecursively($json[$key], $parsed['value'][$index]);
+					$this->parseRecursively($json[$key], $parsed['value'][$index], $name);
 				}
 			}
 		}

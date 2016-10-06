@@ -24,4 +24,18 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 		$json = new JSON($raw);
 		$this->assertTrue($json instanceof JSON);
 	}
+
+	/**
+	 * @testdox Can create JSON with name
+	 */
+	public function testCanCreateJSONwithName(){
+		$raw = file_get_contents("{$this->jsonDir}/item.json");
+		$schema = "{$this->jsonDir}/../schemata/item.schema.json";
+		$expected = file_get_contents($schema);
+
+		$json = new JSON($raw, ['name'=>'item']);
+		$actual = $json->schema()->toJSON(JSON_PRETTY_PRINT);
+
+		$this->assertSame($expected, $actual);
+	}
 }

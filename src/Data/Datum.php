@@ -4,6 +4,7 @@ namespace jpuck\etl\Data;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
 use jpuck\etl\Data\ParseValidator;
+use Exception;
 
 abstract class Datum {
 	protected $raw;
@@ -21,9 +22,6 @@ abstract class Datum {
 				switch (true){
 					case ($option instanceof Schema):
 						$schema = $option;
-						break;
-					case (is_bool($option)):
-						$this->options['validate']['parse'] = $option;
 						break;
 					case (is_array($option)):
 						$this->options($option);

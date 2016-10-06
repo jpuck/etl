@@ -1,0 +1,50 @@
+{
+	"id": "i5757c9c29a5a1450023177",
+	"invoice_id": "I000293912",
+	"po_number": "3314071",
+	"invoice_date": "2016-06-07T06:00:00+00:00",
+	"total_amount": 240,
+	"total_amount_calc": 240,
+	"line_items_subtotal": 10,
+	"line_items_subtotal_calc": 10,
+	"subtotal_excluding_line_items": 230,
+	"subtotal_excluding_line_items_calc": 230,
+	"number_of_line_items": 1,
+	"handling_amount": 0,
+	"freight_amount": "230.00",
+	"sales_tax_amount": 0,
+	"terms": {
+		"type": "05",
+		"basis_date": "2016-06-07T06:00:00+00:00",
+		"net_due_date": "2016-07-02T06:00:00+00:00",
+		"net_days": "25"
+	},
+	"ship": {
+		"carrier": "UPS",
+		"method": "GROUND"
+	},
+	"line_items": [
+		{
+			"title": "Ozark Enterprises 42 Cubby Large Bookshelf - Black",
+			"unit_price": "240.00",
+			"quantity": "1",
+			"unit_of_measure": "EA",
+			"expected_amount": 240,
+			"item_id": 1021037324,
+			"sku": "OE001-BLK",
+			"extended_amount_calc": 240,
+			"extended_amount": 240,
+			"subtotal_calc": 240,
+			"subtotal": 240,
+			"expected_difference": 0
+		}
+	],
+	"expected_order_total_amount": 240,
+	"expected_order_total_difference": 230,
+	"create_date": "2016-06-08T07:31:14+00:00",
+	"last_update": "2016-06-08T07:31:14+00:00",
+	"supplier_id": 1000000660,
+	"retailer_id": 1000000454,
+	"suborder_id": 1050727,
+	"status": "created"
+}

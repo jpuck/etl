@@ -4,23 +4,40 @@ namespace jpuck\etl\Data;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
 use jpuck\etl\Data\ParseValidator;
+use Exception;
 
 abstract class Datum {
 	protected $raw;
 	protected $parsed;
 	protected $schema;
-	protected $validate_parse = true;
+	protected $options = [
+		'validate' => [
+			'parse' => true
+		]
+	];
 
-	public function __construct($raw, Schema $override=null, Bool $validate_parse=true){
-		$this->validate_parse = $validate_parse;
-		$this->raw($raw, $override);
+	public function __construct($raw, ...$options){
+		if (isset($options)){
+			foreach ($options as $option){
+				switch (true){
+					case ($option instanceof Schema):
+						$schema = $option;
+						break;
+					case (is_array($option)):
+						$this->options($option);
+						break;
+				}
+			}
+		}
+		$schema = $schema ?? null;
+		$this->raw($raw, $schema);
 	}
 
 	public function raw($raw=null, Schema $override=null){
 		if (isset($raw)){
 			$this->parsed = $this->parse($raw);
 
-			if ($this->validate_parse){
+			if ($this->options['validate']['parse']){
 				(new ParseValidator)->validate($this->parsed);
 			}
 
@@ -45,6 +62,13 @@ abstract class Datum {
 			$this->schema = $schema;
 		}
 		return $this->schema;
+	}
+
+	public function options(Array $options = null) : Array {
+		if (isset($options)){
+			$this->options = array_replace_recursive($this->options, $options);
+		}
+		return $this->options;
 	}
 
 	abstract protected function parse($raw) : Array;

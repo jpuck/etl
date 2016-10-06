@@ -11,9 +11,22 @@ abstract class Datum {
 	protected $schema;
 	protected $validate_parse = true;
 
-	public function __construct($raw, Schema $override=null, Bool $validate_parse=true){
-		$this->validate_parse = $validate_parse;
-		$this->raw($raw, $override);
+	public function __construct($raw, ...$options){
+		if (isset($options)){
+			foreach ($options as $option){
+				switch (true){
+					case ($option instanceof Schema):
+						$schema = $option;
+						break;
+					case (is_bool($option)):
+						$validate_parse = $option;
+						break;
+				}
+			}
+		}
+		$this->validate_parse = $validate_parse ?? true;
+		$schema = $schema ?? null;
+		$this->raw($raw, $schema);
 	}
 
 	public function raw($raw=null, Schema $override=null){

@@ -137,8 +137,7 @@ class DB extends Source {
 		}
 
 		try {
-			$stmt = $this->uri->prepare($sql);
-			$stmt->execute();
+			$stmt = $this->uri->query($sql);
 		} catch (\PDOException $e) {
 			echo $sql.PHP_EOL;
 			throw $e;

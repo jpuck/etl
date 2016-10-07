@@ -126,16 +126,7 @@ abstract class DDL {
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
-					// check if set as primary key
-					if (!empty($node['attributes'][$key]['primaryKey'])){
-						$primaryKey['col'] = $this->quote($key);
-						$primaryKey['fk'] = $this->quote($key.'fk');
-						$primaryKey['dt']  = $this->getDatatype($attribute);
-						$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
-					} else {
-						$create .= $this->columnize($key, $attribute);
-					}
-					$insert .= "\t".$this->quote($key).",\n";
+					$this->checkPrimaryKey($node,'attributes',$key,$primaryKey,$create,$insert);
 				}
 			}
 
@@ -151,16 +142,7 @@ abstract class DDL {
 						$recurse[$key] = $element;
 					} else {
 						// get single, childless child-element value
-						// check if set as primary key
-						if (!empty($node['elements'][$key]['primaryKey'])){
-							$primaryKey['col'] = $this->quote($key);
-							$primaryKey['fk'] = $this->quote($key.'fk');
-							$primaryKey['dt']  = $this->getDatatype($element);
-							$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
-						} else {
-							$create .= $this->columnize($key, $element);
-						}
-						$insert .= "\t".$this->quote($key).",\n";
+						$this->checkPrimaryKey($node,'elements',$key,$primaryKey,$create,$insert);
 						// flatten single child attributes
 						if (isset($element['attributes'])){
 							foreach ($element['attributes'] as $k => $att){
@@ -225,6 +207,18 @@ abstract class DDL {
 	protected function columnize(String $col, Array $type) : String {
 		$column = $this->quote($col);
 		return "	$column ".$this->getDatatype($type).",\n";
+	}
+
+	protected function checkPrimaryKey(&$node,$ae,&$key,&$primaryKey,&$create,&$insert){
+		if (!empty($node[$ae][$key]['primaryKey'])){
+			$primaryKey['col'] = $this->quote($key);
+			$primaryKey['fk'] = $this->quote($key.'fk');
+			$primaryKey['dt']  = $this->getDatatype($node[$ae][$key]);
+			$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
+		} else {
+			$create .= $this->columnize($key, $node[$ae][$key]);
+		}
+		$insert .= "\t".$this->quote($key).",\n";
 	}
 
 	protected function getDatatype(Array $attribute) : String {

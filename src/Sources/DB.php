@@ -75,7 +75,7 @@ class DB extends Source {
 			$name = Schematizer::stripNamespace($node['name']);
 			$query[0] .= $query[] = $name;
 
-			$this->getAttributes($node, $query);
+			$primaryKey = $this->getAttributes($node, $query, '', $schema);
 
 			// get the children
 			if (isset($node['value'])){
@@ -86,7 +86,7 @@ class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$this->getAttributes($value, $query, $key);
+							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $key, $schema);
 							$this->setValues($value,$key,$query);
 						}
 					}
@@ -96,7 +96,7 @@ class DB extends Source {
 			}
 
 			// execute query
-			$this->insertExecute($query);
+			$this->insertExecute($query, $primaryKey);
 
 			// recurse children
 			if (isset($recurse)){
@@ -160,14 +160,19 @@ class DB extends Source {
 		}
 	}
 
-	protected function getAttributes(Array &$node, Array &$query, String $prefix=''){
+	protected function getAttributes(Array &$node, Array &$query, String $prefix='', $schema){
+		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
 				$key = Schematizer::stripNamespace($key);
 				$query[$prefix.$key] = $value;
+				if ($this->isPrimaryKey($key, $schema, $query)){
+					$primaryKey = $prefix.$key;
+				}
 			}
 		}
+		return $primaryKey;
 	}
 
 	protected function hasGrandChildren(String $node, Array $schema, Array $query){
@@ -188,6 +193,37 @@ class DB extends Source {
 			$stack[$node]['count']['max']['measure'] > 1 ||
 			isset($stack[$node]['children'])
 		){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	protected function isPrimaryKey(String $node, Array $schema, Array $query){
+		// copy schema from root node
+		$attrs = $schema[$query[1]]['attributes'] ?? null;
+		$stack = $schema[$query[1]]['elements'];
+
+		// walk down schema popping the stack
+		foreach ($query as $key => $value){
+			// ignore associative keys (columns)
+			if (is_numeric($key) && $key > 1){
+				// pop & walk
+				$attrs = $stack[$query[$key]]['attributes'] ?? null;
+				$stack = $stack[$query[$key]]['elements'];
+			}
+		}
+
+		if (isset($attrs)) {
+			foreach ($attrs as $k => $v) {
+				if (!empty($attrs[$node]['primaryKey'])) {
+					return true;
+				}
+			}
+		}
+
+		// check if single leaf
+		if (!empty($stack[$node]['primaryKey'])) {
 			return true;
 		} else {
 			return false;

@@ -1,6 +1,8 @@
 <?php
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Data\XML;
+use jpuck\etl\Sources\DB;
 use jpuck\phpdev\Functions as jp;
 
 /**
@@ -32,5 +34,19 @@ class MicrosoftDDLprimaryKeyTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertSame($expected,$actual);
 		$this->assertNotFalse(self::$pdo->exec($actual));
+	}
+
+	/**
+	 *  @testdox Can insert records with primary key in Schema
+	 */
+	public function testCanInsertRecordsWithPrimaryKeyInSchema(){
+		$schema =
+			require self::$data."/schemata/sample.schema.primaryKey.php";
+		$schema = new Schema($schema);
+		$xml = file_get_contents(self::$data."/xml/sample.xml");
+		$xml = new XML($xml, $schema);
+		$db  = new DB(self::$pdo);
+
+		$this->assertTrue($db->insert($xml));
 	}
 }

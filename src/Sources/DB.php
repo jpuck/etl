@@ -87,15 +87,11 @@ class DB extends Source {
 							$recurse []= $value;
 						} else {
 							$this->getAttributes($value, $query, $key);
-							if (is_numeric($value['value']) || !empty($value['value'])){
-								$query[$key] = $value['value'];
-							}
+							$this->setValues($value,$key,$query);
 						}
 					}
 				} else {
-					if (is_numeric($node['value']) || !empty($node['value'])){
-						$query[$name] = $node['value'];
-					}
+					$this->setValues($node,$name,$query);
 				}
 			}
 
@@ -145,6 +141,12 @@ class DB extends Source {
 
 		// pass parent id for child
 		$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+	}
+
+	protected function setValues($node,$name,&$query){
+		if (is_numeric($node['value']) || !empty($node['value'])){
+			$query[$name] = $node['value'];
+		}
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, String $prefix=''){

@@ -106,9 +106,14 @@ class DB extends Source {
 			}
 	}
 
-	protected function insertExecute(Array &$query){
+	protected function insertExecute(Array &$query, String $primaryKey = null){
 		$table = $this->quote($this->prefix().$query[0]);
 		$sql   = "INSERT INTO $table ";
+
+		if (isset($primaryKey)) {
+			$primaryVal = $query[$primaryKey];
+		}
+
 		foreach ($query as $key => $value) {
 			if (!is_int($key)) {
 				$cols []= $key;
@@ -124,12 +129,14 @@ class DB extends Source {
 			$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
 		}
 
-		$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		if (!isset($primaryKey)) {
+			$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		}
 
 		if (empty($cols)){
-			$sql .= "DEFAULT VALUES";
+			$sql .= " DEFAULT VALUES";
 		} else {
-			$sql .= "VALUES ('".implode("','",$vals)."')";
+			$sql .= " VALUES ('".implode("','",$vals)."')";
 		}
 
 		try {
@@ -140,7 +147,11 @@ class DB extends Source {
 		}
 
 		// pass parent id for child
-		$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+		if (isset($primaryKey)) {
+			$query[$primaryKey.'fk'] = $primaryVal;
+		} else {
+			$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+		}
 	}
 
 	protected function setValues($node,$name,&$query){

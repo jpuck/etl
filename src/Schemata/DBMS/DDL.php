@@ -194,7 +194,7 @@ abstract class DDL {
 
 	protected function columnize(String $col, Array $type) : String {
 		$column = $this->quote($col);
-		return "	$column ".$this->getDatatype($type);
+		return "	$column ".$this->getDatatype($type).",\n";
 	}
 
 	protected function getDatatype(Array $attribute) : String {
@@ -207,18 +207,15 @@ abstract class DDL {
 				$attribute['varchar' ]['max']['value'] ??
 				$attribute['datetime']['max']['value'];
 			$datatype = $this->getDatetime($datatype);
-			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['int'])){
 			$datatype = $this->getInteger($attribute['int']['max']['value']);
-			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['decimal'])){
 			$precision = $attribute['precision']['max']['measure'];
 			$scale = $attribute['scale']['max']['measure'] + $precision;
-			$datatype = "decimal($scale,$precision),\n";
+			$datatype = "decimal($scale,$precision)";
 		} else {
 			$vsize = $attribute['varchar']['max']['measure'] ?? null;
 			$datatype = $this->getVarchar($vsize);
-			$datatype = "$datatype,\n";
 		}
 		return $datatype;
 	}

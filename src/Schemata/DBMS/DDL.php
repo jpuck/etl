@@ -3,6 +3,8 @@ namespace jpuck\etl\Schemata\DBMS;
 
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\DBMS\PrefixTrait;
+use Exception;
+use jpuck\phpdev\Functions as jp;
 use InvalidArgumentException;
 
 abstract class DDL {
@@ -82,7 +84,7 @@ abstract class DDL {
 		return $return;
 	}
 
-	protected function build(Array $nodes, String $path='') : Array {
+	protected function build(Array $nodes, String $path='', Array $pfk=null) : Array {
 		$prefix = $this->prefix();
 
 		// initialize recursor
@@ -92,6 +94,9 @@ abstract class DDL {
 		$inserts = '';
 
 		foreach ($nodes as $name => $node){
+			// reset primary key detector
+			unset($primaryKey);
+
 			// entity names
 			$parent = $this->quote($prefix.$path);
 			$table  = $this->quote($prefix.$path.$name);
@@ -110,18 +115,26 @@ abstract class DDL {
 			// surrogate parent foreign key
 			// TODO: use natural key if unique values
 			if (!empty($path)){
-				$create .= "	jpetl_pid int,\n";
+				$create .= "	$pfk[fk] $pfk[dt],\n";
 				$create .= "	CONSTRAINT fk_$prefix$path$name\n";
-				$create .= "		FOREIGN KEY (jpetl_pid)\n";
-				$create .= "		REFERENCES $parent(jpetl_id),\n";
+				$create .= "		FOREIGN KEY ($pfk[fk])\n";
+				$create .= "		REFERENCES $parent($pfk[col]),\n";
 
-				$insert .= "\tjpetl_pid,\n";
+				$insert .= "\t$pfk[fk],\n";
 			}
 
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
-					$create .= $this->columnize($key, $attribute);
+					// check if set as primary key
+					if (!empty($node['attributes'][$key]['primaryKey'])){
+						$primaryKey['col'] = $this->quote($key);
+						$primaryKey['fk'] = $this->quote($key.'fk');
+						$primaryKey['dt']  = $this->getDatatype($attribute);
+						$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
+					} else {
+						$create .= $this->columnize($key, $attribute);
+					}
 					$insert .= "\t".$this->quote($key).",\n";
 				}
 			}
@@ -138,7 +151,15 @@ abstract class DDL {
 						$recurse[$key] = $element;
 					} else {
 						// get single, childless child-element value
-						$create .= $this->columnize($key, $element);
+						// check if set as primary key
+						if (!empty($node['elements'][$key]['primaryKey'])){
+							$primaryKey['col'] = $this->quote($key);
+							$primaryKey['fk'] = $this->quote($key.'fk');
+							$primaryKey['dt']  = $this->getDatatype($element);
+							$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
+						} else {
+							$create .= $this->columnize($key, $element);
+						}
 						$insert .= "\t".$this->quote($key).",\n";
 						// flatten single child attributes
 						if (isset($element['attributes'])){
@@ -157,10 +178,19 @@ abstract class DDL {
 
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
-			$identity = $this->identity();
-			$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
+			if (empty($primaryKey)){
+				$identity = $this->identity();
+				$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
+
+				$primaryKey['col'] = 'jpetl_id';
+				$primaryKey['fk']  = 'jpetl_pid';
+				$primaryKey['dt']  = 'int';
+
+				$insert  .= "\tjpetl_id\n";
+			} else {
+				$create = rtrim($create, ",\n")."\n);";
+			}
 			$creates .= $this->wrapCheckIfNotExists($prefix.$path.$name,$create);
-			$insert  .= "\tjpetl_id\n";
 
 			// insert
 			if (!empty($prefix)){
@@ -175,7 +205,7 @@ abstract class DDL {
 
 			// get children and multi-values
 			if (isset($recurse)){
-				$children = $this->build($recurse, $path.$name);
+				$children = $this->build($recurse, $path.$name, $primaryKey);
 				$drops = $children['drop'] . $drops;
 				$creates .= $children['create'];
 				$inserts .= $children['insert'];

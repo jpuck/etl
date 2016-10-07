@@ -17,6 +17,7 @@
 			<file>tests/MicrosoftDDLdatetimeTest.php</file>
 			<file>tests/MicrosoftDDLwithoutStageTest.php</file>
 			<file>tests/MicrosoftDDLwithStageTest.php</file>
+			<file>tests/MicrosoftDDLprimaryKeyTest.php</file>
 			<file>tests/SchematizerUtilitiesTest.php</file>
 			<file>tests/SchematizerTest.php</file>
 			<file>tests/ParseValidatorTest.php</file>

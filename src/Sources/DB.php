@@ -16,8 +16,6 @@ class DB extends Source {
 	use MicrosoftSQLServerTrait;
 	use PrefixTrait;
 
-	private $DEBUG = false;
-
 	public function __construct(PDO $uri, ...$options){
 		parent::__construct($uri);
 		foreach ($options as $option){
@@ -70,13 +68,6 @@ class DB extends Source {
 	public function replace (Datum $data) : bool {
 		throw new Unimplemented(__METHOD__);
 		return false;
-	}
-
-	public function debug(Bool $on = null){
-		if (isset($on)){
-			$this->DEBUG = $on;
-		}
-		return $this->DEBUG;
 	}
 
 	protected function insertData(Array $node, Array $schema, Array $query){
@@ -149,9 +140,7 @@ class DB extends Source {
 			$stmt = $this->uri->prepare($sql);
 			$stmt->execute();
 		} catch (\PDOException $e) {
-			if ($this->debug()) {
-				echo $sql.PHP_EOL;
-			}
+			echo $sql.PHP_EOL;
 			throw $e;
 		}
 

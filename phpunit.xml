@@ -23,6 +23,7 @@
 			<file>tests/ParseValidatorTest.php</file>
 			<file>tests/XMLTest.php</file>
 			<file>tests/JSONTest.php</file>
+			<file>tests/JSONstreamTest.php</file>
 			<file>tests/FolderTest.php</file>
 			<file>tests/DBTest.php</file>
 		</testsuite>

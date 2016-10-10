@@ -87,11 +87,11 @@ class DB extends Source {
 							$recurse []= $value;
 						} else {
 							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $key, $schema);
-							$this->setValues($value,$key,$query);
+							$primaryKey = $primaryKey ?? $this->setValues($value,$key,$query,$schema);
 						}
 					}
 				} else {
-					$this->setValues($node,$name,$query);
+					$primaryKey = $primaryKey ?? $this->setValues($node,$name,$query,$schema);
 				}
 			}
 
@@ -154,10 +154,15 @@ class DB extends Source {
 		}
 	}
 
-	protected function setValues($node,$name,&$query){
+	protected function setValues($node,$name,&$query,$schema){
+		$primaryKey = null;
 		if (is_numeric($node['value']) || !empty($node['value'])){
 			$query[$name] = $node['value'];
+			if ($this->isPrimaryKey($name, $schema, $query)){
+				$primaryKey = $name;
+			}
 		}
+		return $primaryKey;
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, String $prefix='', $schema){
@@ -210,7 +215,7 @@ class DB extends Source {
 			if (is_numeric($key) && $key > 1){
 				// pop & walk
 				$attrs = $stack[$query[$key]]['attributes'] ?? null;
-				$stack = $stack[$query[$key]]['elements'];
+				$stack = $stack[$query[$key]][ 'elements' ] ?? null;
 			}
 		}
 

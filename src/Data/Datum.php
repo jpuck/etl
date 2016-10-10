@@ -46,7 +46,11 @@ abstract class Datum {
 			if (isset($override)){
 				$this->schema($override);
 			} else {
-				$this->schema((new Schematizer)->schematize($this));
+				$schematizer = new Schematizer;
+				if(isset($this->options['schematizer'])){
+					$schematizer->options($this->options['schematizer']);
+				}
+				$this->schema($schematizer->schematize($this));
 			}
 		}
 

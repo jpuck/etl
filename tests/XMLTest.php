@@ -30,4 +30,17 @@ class XMLTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($xml instanceof XML);
 	}
+
+	/**
+	 * @testdox Can create XML without uniques
+	 */
+	public function testCanCreateXMLwithoutUniques(){
+		$raw      = file_get_contents("{$this->xmlDir}/sample.xml");
+		$expected = require "{$this->schemataDir}/sample.schema.nounique.php";
+		$xml      = new XML($raw, ['schematizer'=>['unique'=>false]]);
+		$actual   = $xml->schema()->toArray();
+
+		$this->assertTrue($xml instanceof XML);
+		$this->assertSame($expected, $actual);
+	}
 }

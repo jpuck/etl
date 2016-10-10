@@ -27,6 +27,13 @@ class Schematizer {
 			dropMinIfEqualsMax   (Array &$array, $key)                     null
 	*/
 	protected $datum;
+	protected $options = [
+		'unique' => true,
+	];
+
+	public function __construct(Array $options = null){
+		$this->options($options);
+	}
 
 	public static function stripNamespace(String $string){
 		return preg_replace("/(^{.*?})/", "", $string);
@@ -55,7 +62,15 @@ class Schematizer {
 		return [(int)$scale,(int)$precision];
 	}
 
-	public function schematize(Datum $datum) : Schema {
+	public function options(Array $options = null) : Array {
+		if(isset($options)){
+			$this->options = array_replace_recursive($this->options,$options);
+		}
+		return $this->options;
+	}
+
+	public function schematize(Datum $datum, Array $options = null) : Schema {
+		$this->options($options);
 		$array[0] = $datum->parsed();
 
 		// get root node name
@@ -75,7 +90,9 @@ class Schematizer {
 
 			$this->filter($result, 'dropMinIfEqualsMax');
 
-		$this->filter($result, 'unique');
+		if($this->options['unique']){
+			$this->filter($result, 'unique');
+		}
 
 		return new Schema($result);
 	}
@@ -131,7 +148,10 @@ class Schematizer {
 		private function evaluate($value, &$result){
 			if (isset($value)){
 				$candidate['value'] = $value;
-				$result['unique'] []= $value;
+
+				if($this->options['unique']){
+					$result['unique'] []= $value;
+				}
 
 				// varchar
 				$candidate['measure'] = strlen($value);

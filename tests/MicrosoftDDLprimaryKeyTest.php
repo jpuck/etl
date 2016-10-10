@@ -17,15 +17,22 @@ class MicrosoftDDLprimaryKeyTest extends PHPUnit_Framework_TestCase {
 		jp::CleanMsSQLdb(self::$pdo);
 	}
 
+	public function primaryKeyDataProvider(){
+		return [
+			'attributes' =>
+			[
+				'sample.mssql.primaryKey.ddl.sql','sample.schema.primaryKey.php'
+			],
+		];
+	}
+
 	/**
 	 *  @testdox Can generate DDL with primary key from Schema
+	 *  @dataProvider primaryKeyDataProvider
 	 */
-	public function testCanGenerateDDLwithPrimaryKeyfromSchema(){
-		$expected = file_get_contents(
-			self::$data."/sql/sample.mssql.primaryKey.ddl.sql"
-		);
-		$schema =
-			require self::$data."/schemata/sample.schema.primaryKey.php";
+	public function testCanGenerateDDLwithPrimaryKeyfromSchema($ddl, $schema){
+		$expected = file_get_contents(self::$data."/sql/$ddl");
+		$schema   = require self::$data."/schemata/$schema";
 		$schema   = new Schema($schema);
 		$ddl      = new MicrosoftSQLServer;
 		$ddl->stage(false);

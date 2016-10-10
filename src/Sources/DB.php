@@ -180,23 +180,34 @@ class DB extends Source {
 		return $primaryKey;
 	}
 
-	protected function hasGrandChildren(String $node, Array $schema, Array $query){
+	protected function walkSchema(Array $schema, Array $query) : Array {
 		// copy schema from root node
-		$stack = $schema[$query[1]]['elements'];
+		$attrs = $schema[$query[1]]['attributes'] ?? null;
+		$elems = $schema[$query[1]]['elements'];
 
 		// walk down schema popping the stack
 		foreach ($query as $key => $value){
 			// ignore associative keys (columns)
 			if (is_numeric($key) && $key > 1){
 				// pop & walk
-				$stack = $stack[$query[$key]]['elements'];
+				$attrs = $elems[$query[$key]]['attributes'] ?? null;
+				$elems = $elems[$query[$key]][ 'elements' ] ?? null;
 			}
 		}
 
+		return [
+			'attributes' => $attrs,
+			 'elements'  => $elems,
+		];
+	}
+
+	protected function hasGrandChildren(String $name, Array $schema, Array $query){
+		$elements = $this->walkSchema($schema, $query)['elements'];
+
 		// check if single leaf
 		if (
-			$stack[$node]['count']['max']['measure'] > 1 ||
-			isset($stack[$node]['children'])
+			$elements[$name]['count']['max']['measure'] > 1 ||
+			isset($elements[$name]['children'])
 		){
 			return true;
 		} else {
@@ -204,31 +215,19 @@ class DB extends Source {
 		}
 	}
 
-	protected function isPrimaryKey(String $node, Array $schema, Array $query){
-		// copy schema from root node
-		$attrs = $schema[$query[1]]['attributes'] ?? null;
-		$stack = $schema[$query[1]]['elements'];
+	protected function isPrimaryKey(String $name, Array $schema, Array $query){
+		$stack = $this->walkSchema($schema, $query);
 
-		// walk down schema popping the stack
-		foreach ($query as $key => $value){
-			// ignore associative keys (columns)
-			if (is_numeric($key) && $key > 1){
-				// pop & walk
-				$attrs = $stack[$query[$key]]['attributes'] ?? null;
-				$stack = $stack[$query[$key]][ 'elements' ] ?? null;
-			}
-		}
-
-		if (isset($attrs)) {
-			foreach ($attrs as $k => $v) {
-				if (!empty($attrs[$node]['primaryKey'])) {
+		if (isset($stack['attributes'])) {
+			foreach ($stack['attributes'] as $k => $v) {
+				if (!empty($stack['attributes'][$name]['primaryKey'])) {
 					return true;
 				}
 			}
 		}
 
 		// check if single leaf
-		if (!empty($stack[$node]['primaryKey'])) {
+		if (!empty($stack['elements'][$name]['primaryKey'])) {
 			return true;
 		} else {
 			return false;

@@ -14,6 +14,9 @@ class MicrosoftDDLprimaryKeyTest extends PHPUnit_Framework_TestCase {
 
 	public static function setUpBeforeClass(){
 		self::$pdo = require self::$data."/pdos/pdo.php";
+	}
+
+	public function setUp(){
 		jp::CleanMsSQLdb(self::$pdo);
 	}
 
@@ -21,39 +24,37 @@ class MicrosoftDDLprimaryKeyTest extends PHPUnit_Framework_TestCase {
 		return [
 			'attributes' =>
 			[
-				'sample.mssql.primaryKey.ddl.sql','sample.schema.primaryKey.php'
+				'sample.xml',
+				'sample.schema.primaryKey.php',
+				'sample.mssql.primaryKey.ddl.sql',
+			],
+			'elements' =>
+			[
+				'sample.pkeid.xml',
+				'sample.schema.pkeid.php',
+				'sample.mssql.pkeid.ddl.sql',
 			],
 		];
 	}
 
 	/**
-	 *  @testdox Can generate DDL with primary key from Schema
+	 *  @testdox Can generate DDL and insert with primary key from Schema
 	 *  @dataProvider primaryKeyDataProvider
 	 */
-	public function testCanGenerateDDLwithPrimaryKeyfromSchema($ddl, $schema){
+	public function testCanGenerateDDLandInsertWithPrimaryKeyfromSchema($xml, $schema, $ddl){
 		$expected = file_get_contents(self::$data."/sql/$ddl");
 		$schema   = require self::$data."/schemata/$schema";
 		$schema   = new Schema($schema);
 		$ddl      = new MicrosoftSQLServer;
 		$ddl->stage(false);
+		$xml = file_get_contents(self::$data."/xml/$xml");
+		$xml = new XML($xml, $schema);
+		$db  = new DB(self::$pdo);
 
 		$actual   = $ddl->generate($schema);
 
 		$this->assertSame($expected,$actual);
 		$this->assertNotFalse(self::$pdo->exec($actual));
-	}
-
-	/**
-	 *  @testdox Can insert records with primary key in Schema
-	 */
-	public function testCanInsertRecordsWithPrimaryKeyInSchema(){
-		$schema =
-			require self::$data."/schemata/sample.schema.primaryKey.php";
-		$schema = new Schema($schema);
-		$xml = file_get_contents(self::$data."/xml/sample.xml");
-		$xml = new XML($xml, $schema);
-		$db  = new DB(self::$pdo);
-
 		$this->assertTrue($db->insert($xml));
 	}
 }

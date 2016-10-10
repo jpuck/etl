@@ -1,0 +1,290 @@
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESUPP_DEPDEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLESUPP_DEPDEP];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLEADMIN_DEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLEADMIN_DEP];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESUPP_DEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLESUPP_DEP];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLETITLE'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLETITLE];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESAMPLE_AUTH'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLESAMPLE_AUTH];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESAMPLE_EDITOR'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLESAMPLE_EDITOR];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLE'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecordSAMPLE];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecord'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [DataRecord];
+END
+
+IF (
+	EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'Data'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	DROP TABLE [Data];
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'Data'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [Data] (
+		[date] datetime PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecord'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecord] (
+		[datefk] datetime,
+		CONSTRAINT fk_DataRecord
+			FOREIGN KEY ([datefk])
+			REFERENCES [Data]([date]),
+		[id] tinyint PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLE'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLE] (
+		[idfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLE
+			FOREIGN KEY ([idfk])
+			REFERENCES [DataRecord]([id]),
+		[created] datetime,
+		[eid] tinyint PRIMARY KEY,
+		[CONTRACT_TERM] varchar(8),
+		[PRICE] decimal(6,3),
+		[ABSTRACT] varchar(100)
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLEADMIN_DEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLEADMIN_DEP] (
+		[eidfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLEADMIN_DEP
+			FOREIGN KEY ([eidfk])
+			REFERENCES [DataRecordSAMPLE]([eid]),
+		[id] bigint,
+		[primaryKey] varchar(10),
+		[DEP] varchar(10),
+		jpetl_id int IDENTITY PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESUPP_DEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLESUPP_DEP] (
+		[eidfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLESUPP_DEP
+			FOREIGN KEY ([eidfk])
+			REFERENCES [DataRecordSAMPLE]([eid]),
+		[id] bigint,
+		[primaryKey] varchar(19),
+		jpetl_id int IDENTITY PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESUPP_DEPDEP'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLESUPP_DEPDEP] (
+		jpetl_pid int,
+		CONSTRAINT fk_DataRecordSAMPLESUPP_DEPDEP
+			FOREIGN KEY (jpetl_pid)
+			REFERENCES [DataRecordSAMPLESUPP_DEP](jpetl_id),
+		[DEP] varchar(19),
+		jpetl_id int IDENTITY PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLETITLE'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLETITLE] (
+		[eidfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLETITLE
+			FOREIGN KEY ([eidfk])
+			REFERENCES [DataRecordSAMPLE]([eid]),
+		[TITLE] varchar(19),
+		jpetl_id int IDENTITY PRIMARY KEY
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESAMPLE_AUTH'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLESAMPLE_AUTH] (
+		[eidfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLESAMPLE_AUTH
+			FOREIGN KEY ([eidfk])
+			REFERENCES [DataRecordSAMPLE]([eid]),
+		[id] tinyint PRIMARY KEY,
+		[FACULTY_NAME] smallint,
+		[FACULTY_NAMEfid] smallint,
+		[FNAME] varchar(4),
+		[MNAME] varchar(100),
+		[LNAME] varchar(3),
+		[ISSTUDENT] varchar(100),
+		[DISPLAY] varchar(2),
+		[INITIATION] datetime
+	);
+END
+
+IF (
+	NOT EXISTS (
+		SELECT *
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_NAME = 'DataRecordSAMPLESAMPLE_EDITOR'
+		-- AND TABLE_SCHEMA = 'dbo'
+	)
+)
+BEGIN
+	CREATE TABLE [DataRecordSAMPLESAMPLE_EDITOR] (
+		[eidfk] tinyint,
+		CONSTRAINT fk_DataRecordSAMPLESAMPLE_EDITOR
+			FOREIGN KEY ([eidfk])
+			REFERENCES [DataRecordSAMPLE]([eid]),
+		[id] tinyint PRIMARY KEY,
+		[FACULTY_NAME] varchar(100),
+		[FNAME] varchar(100),
+		[MNAME] varchar(100),
+		[LNAME] varchar(100),
+		[DISPLAY] varchar(100)
+	);
+END

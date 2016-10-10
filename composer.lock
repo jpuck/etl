@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d3a9a5ca38cf497304837b348d00074",
-    "content-hash": "0373f5704197c181379263fdd8d8df67",
+    "hash": "f3057e56c576a3f2b12401393204f451",
+    "content-hash": "9b3946b4d5df8a2ca5c527f39c203ffb",
     "packages": [
         {
             "name": "jpuck/phpdev",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jpuck/phpdev.git",
-                "reference": "e057619df833bc326c9d1277758426211ae309d9"
+                "reference": "c22498262debcfc0a90eda3c6b27ce5005000c36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jpuck/phpdev/zipball/e057619df833bc326c9d1277758426211ae309d9",
-                "reference": "e057619df833bc326c9d1277758426211ae309d9",
+                "url": "https://api.github.com/repos/jpuck/phpdev/zipball/c22498262debcfc0a90eda3c6b27ce5005000c36",
+                "reference": "c22498262debcfc0a90eda3c6b27ce5005000c36",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 }
             ],
             "description": "A collection of classes useful for code under construction.",
-            "time": "2016-10-07 17:59:00"
+            "time": "2016-10-10 19:49:45"
         },
         {
             "name": "sabre/uri",

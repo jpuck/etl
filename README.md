@@ -69,6 +69,7 @@ in PHP, so *trailing zeros should be represented in the precision values*.
 	│       ├── measure
 	│       └── value
 	├── unique (all values)
+	├── primaryKey
 	├── varchar          ────┐
 	│   ├── max              │
 	│   │   ├── measure      │
@@ -123,6 +124,12 @@ the `Schematizer` recognizes this and a `DDL` class flattens them as columns
 on a table. If a node has more than one if its name or grandchildren, then the
 one-to-many relationship is preserved in a separate normalized table. Surrogate
 keys are created to maintain the Primary/Foreign Key referential integrity.
+
+If the `Schema` has a `primaryKey` set, then that field will be used for DDL
+generation instead of the surrogate. However, this `Schema` must also be passed
+to the `Datum` constructor prior to being used in a `Transceiver` method,
+otherwise the surrogate keys will be used by default and will result in a failed
+insertion if the surrogate columns don't exist.
 
 --------------
 

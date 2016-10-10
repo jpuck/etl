@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data xmlns="http://www.digitalmeasures.com/schema/data" xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata" dmd:date="2016-08-23">
+	<Record id="20">
+		<SAMPLE created="2016-09-11">
+			<eid>1</eid>
+			<ADMIN_DEP id="131951073242" dmd:primaryKey="Management">
+				<DEP>Management</DEP>
+			</ADMIN_DEP>
+			<SUPP_DEP id="131951073241" dmd:primaryKey="Information Systems">
+				<DEP>Information Systems</DEP>
+			</SUPP_DEP>
+			<CONTRACT_TERM>9 month</CONTRACT_TERM>
+			<TITLE>Superior Title</TITLE>
+			<SAMPLE_AUTH id="7">
+				<FACULTY_NAME fid="4242">4242</FACULTY_NAME>
+				<FNAME>John</FNAME>
+				<MNAME></MNAME>
+				<LNAME>Doe</LNAME>
+				<ISSTUDENT/>
+				<DISPLAY>No</DISPLAY>
+				<INITIATION>2016-08-01T14:00:04</INITIATION>
+			</SAMPLE_AUTH>
+			<PRICE>42.21</PRICE>
+			<SAMPLE_EDITOR id="11">
+				<FACULTY_NAME/>
+				<FNAME/>
+				<MNAME/>
+				<LNAME/>
+				<DISPLAY/>
+			</SAMPLE_EDITOR>
+			<ABSTRACT/>
+			<SAMPLE_AUTH id="8">
+				<FACULTY_NAME fid="4141">4141</FACULTY_NAME>
+				<FNAME>Jane</FNAME>
+				<MNAME></MNAME>
+				<LNAME>Doe</LNAME>
+				<ISSTUDENT/>
+				<DISPLAY>No</DISPLAY>
+				<INITIATION/>
+			</SAMPLE_AUTH>
+			<SAMPLE_EDITOR id="12">
+				<FACULTY_NAME/>
+				<FNAME/>
+				<MNAME/>
+				<LNAME/>
+				<DISPLAY/>
+			</SAMPLE_EDITOR>
+		</SAMPLE>
+	</Record>
+	<Record id="22">
+		<SAMPLE created="2016-09-16 11:00:00">
+			<eid>5</eid>
+			<ADMIN_DEP id="131951073242" dmd:primaryKey="Management">
+				<DEP>Management</DEP>
+			</ADMIN_DEP>
+			<SUPP_DEP id="131951073241" dmd:primaryKey="Information Systems">
+				<DEP>Information Systems</DEP>
+				<DEP>Management</DEP>
+			</SUPP_DEP>
+			<CONTRACT_TERM>12 month</CONTRACT_TERM>
+			<TITLE>Interesting Title</TITLE>
+			<PRICE>-210.12</PRICE>
+			<SAMPLE_AUTH id="9">
+				<FACULTY_NAME fid="4242">4242</FACULTY_NAME>
+				<FNAME>John</FNAME>
+				<MNAME></MNAME>
+				<LNAME>Doe</LNAME>
+				<ISSTUDENT/>
+				<DISPLAY>No</DISPLAY>
+				<INITIATION>2016-08-01T14:00:06</INITIATION>
+			</SAMPLE_AUTH>
+			<SAMPLE_EDITOR id="13">
+				<FACULTY_NAME/>
+				<FNAME/>
+				<MNAME/>
+				<LNAME/>
+				<DISPLAY/>
+			</SAMPLE_EDITOR>
+			<ABSTRACT/>
+		</SAMPLE>
+		<SAMPLE created="2016-09-16 12:00:00">
+			<eid>6</eid>
+			<ADMIN_DEP id="131951073242" dmd:primaryKey="Management">
+				<DEP>Management</DEP>
+			</ADMIN_DEP>
+			<CONTRACT_TERM></CONTRACT_TERM>
+			<TITLE>Another Title</TITLE>
+			<SAMPLE_AUTH id="10">
+				<FACULTY_NAME fid="4141">4141</FACULTY_NAME>
+				<FNAME>Jane</FNAME>
+				<MNAME></MNAME>
+				<LNAME>Doe</LNAME>
+				<ISSTUDENT/>
+				<DISPLAY>1</DISPLAY>
+				<INITIATION>2016-08-01T14:00:02</INITIATION>
+			</SAMPLE_AUTH>
+			<TITLE>Just One More Title</TITLE>
+			<SAMPLE_EDITOR id="14">
+				<FACULTY_NAME/>
+				<FNAME/>
+				<MNAME/>
+				<LNAME/>
+				<DISPLAY/>
+			</SAMPLE_EDITOR>
+			<PRICE>2.300</PRICE>
+			<ABSTRACT/>
+		</SAMPLE>
+	</Record>
+</Data>

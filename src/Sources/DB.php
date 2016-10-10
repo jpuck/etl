@@ -75,7 +75,7 @@ class DB extends Source {
 			$name = Schematizer::stripNamespace($node['name']);
 			$query[0] .= $query[] = $name;
 
-			$this->getAttributes($node, $query);
+			$primaryKey = $this->getAttributes($node, $query, '', $schema);
 
 			// get the children
 			if (isset($node['value'])){
@@ -86,21 +86,17 @@ class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$this->getAttributes($value, $query, $key);
-							if (is_numeric($value['value']) || !empty($value['value'])){
-								$query[$key] = $value['value'];
-							}
+							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $key, $schema);
+							$primaryKey = $primaryKey ?? $this->setValues($value,$key,$query,$schema);
 						}
 					}
 				} else {
-					if (is_numeric($node['value']) || !empty($node['value'])){
-						$query[$name] = $node['value'];
-					}
+					$primaryKey = $primaryKey ?? $this->setValues($node,$name,$query,$schema);
 				}
 			}
 
 			// execute query
-			$this->insertExecute($query);
+			$this->insertExecute($query, $primaryKey);
 
 			// recurse children
 			if (isset($recurse)){
@@ -110,9 +106,14 @@ class DB extends Source {
 			}
 	}
 
-	protected function insertExecute(Array &$query){
+	protected function insertExecute(Array &$query, String $primaryKey = null){
 		$table = $this->quote($this->prefix().$query[0]);
 		$sql   = "INSERT INTO $table ";
+
+		if (isset($primaryKey)) {
+			$primaryVal = $query[$primaryKey];
+		}
+
 		foreach ($query as $key => $value) {
 			if (!is_int($key)) {
 				$cols []= $key;
@@ -128,12 +129,14 @@ class DB extends Source {
 			$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
 		}
 
-		$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		if (!isset($primaryKey)) {
+			$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		}
 
 		if (empty($cols)){
-			$sql .= "DEFAULT VALUES";
+			$sql .= " DEFAULT VALUES";
 		} else {
-			$sql .= "VALUES ('".implode("','",$vals)."')";
+			$sql .= " VALUES ('".implode("','",$vals)."')";
 		}
 
 		try {
@@ -144,37 +147,87 @@ class DB extends Source {
 		}
 
 		// pass parent id for child
-		$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+		if (isset($primaryKey)) {
+			$query[$primaryKey.'fk'] = $primaryVal;
+		} else {
+			$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+		}
 	}
 
-	protected function getAttributes(Array &$node, Array &$query, String $prefix=''){
+	protected function setValues($node,$name,&$query,$schema){
+		$primaryKey = null;
+		if (is_numeric($node['value']) || !empty($node['value'])){
+			$query[$name] = $node['value'];
+			if ($this->isPrimaryKey($name, $schema, $query)){
+				$primaryKey = $name;
+			}
+		}
+		return $primaryKey;
+	}
+
+	protected function getAttributes(Array &$node, Array &$query, String $prefix='', $schema){
+		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
 				$key = Schematizer::stripNamespace($key);
 				$query[$prefix.$key] = $value;
+				if ($this->isPrimaryKey($key, $schema, $query)){
+					$primaryKey = $prefix.$key;
+				}
 			}
 		}
+		return $primaryKey;
 	}
 
-	protected function hasGrandChildren(String $node, Array $schema, Array $query){
+	protected function walkSchema(Array $schema, Array $query) : Array {
 		// copy schema from root node
-		$stack = $schema[$query[1]]['elements'];
+		$attrs = $schema[$query[1]]['attributes'] ?? null;
+		$elems = $schema[$query[1]]['elements'];
 
 		// walk down schema popping the stack
 		foreach ($query as $key => $value){
 			// ignore associative keys (columns)
 			if (is_numeric($key) && $key > 1){
 				// pop & walk
-				$stack = $stack[$query[$key]]['elements'];
+				$attrs = $elems[$query[$key]]['attributes'] ?? null;
+				$elems = $elems[$query[$key]][ 'elements' ] ?? null;
+			}
+		}
+
+		return [
+			'attributes' => $attrs,
+			 'elements'  => $elems,
+		];
+	}
+
+	protected function hasGrandChildren(String $name, Array $schema, Array $query){
+		$elements = $this->walkSchema($schema, $query)['elements'];
+
+		// check if single leaf
+		if (
+			$elements[$name]['count']['max']['measure'] > 1 ||
+			isset($elements[$name]['children'])
+		){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	protected function isPrimaryKey(String $name, Array $schema, Array $query){
+		$stack = $this->walkSchema($schema, $query);
+
+		if (isset($stack['attributes'])) {
+			foreach ($stack['attributes'] as $k => $v) {
+				if (!empty($stack['attributes'][$name]['primaryKey'])) {
+					return true;
+				}
 			}
 		}
 
 		// check if single leaf
-		if (
-			$stack[$node]['count']['max']['measure'] > 1 ||
-			isset($stack[$node]['children'])
-		){
+		if (!empty($stack['elements'][$name]['primaryKey'])) {
 			return true;
 		} else {
 			return false;

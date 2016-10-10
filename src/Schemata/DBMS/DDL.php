@@ -3,6 +3,8 @@ namespace jpuck\etl\Schemata\DBMS;
 
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\DBMS\PrefixTrait;
+use Exception;
+use jpuck\phpdev\Functions as jp;
 use InvalidArgumentException;
 
 abstract class DDL {
@@ -82,7 +84,7 @@ abstract class DDL {
 		return $return;
 	}
 
-	protected function build(Array $nodes, String $path='') : Array {
+	protected function build(Array $nodes, String $path='', Array $pfk=null) : Array {
 		$prefix = $this->prefix();
 
 		// initialize recursor
@@ -92,6 +94,9 @@ abstract class DDL {
 		$inserts = '';
 
 		foreach ($nodes as $name => $node){
+			// reset primary key detector
+			unset($primaryKey);
+
 			// entity names
 			$parent = $this->quote($prefix.$path);
 			$table  = $this->quote($prefix.$path.$name);
@@ -110,19 +115,18 @@ abstract class DDL {
 			// surrogate parent foreign key
 			// TODO: use natural key if unique values
 			if (!empty($path)){
-				$create .= "	jpetl_pid int,\n";
+				$create .= "	$pfk[fk] $pfk[dt],\n";
 				$create .= "	CONSTRAINT fk_$prefix$path$name\n";
-				$create .= "		FOREIGN KEY (jpetl_pid)\n";
-				$create .= "		REFERENCES $parent(jpetl_id),\n";
+				$create .= "		FOREIGN KEY ($pfk[fk])\n";
+				$create .= "		REFERENCES $parent($pfk[col]),\n";
 
-				$insert .= "\tjpetl_pid,\n";
+				$insert .= "\t$pfk[fk],\n";
 			}
 
 			// get attributes
 			if (isset($node['attributes'])){
 				foreach ($node['attributes'] as $key => $attribute){
-					$create .= $this->columnize($key, $attribute);
-					$insert .= "\t".$this->quote($key).",\n";
+					$this->checkPrimaryKey($node,'attributes',$key,$primaryKey,$create,$insert);
 				}
 			}
 
@@ -138,8 +142,7 @@ abstract class DDL {
 						$recurse[$key] = $element;
 					} else {
 						// get single, childless child-element value
-						$create .= $this->columnize($key, $element);
-						$insert .= "\t".$this->quote($key).",\n";
+						$this->checkPrimaryKey($node,'elements',$key,$primaryKey,$create,$insert);
 						// flatten single child attributes
 						if (isset($element['attributes'])){
 							foreach ($element['attributes'] as $k => $att){
@@ -157,10 +160,19 @@ abstract class DDL {
 
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
-			$identity = $this->identity();
-			$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
+			if (empty($primaryKey)){
+				$identity = $this->identity();
+				$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
+
+				$primaryKey['col'] = 'jpetl_id';
+				$primaryKey['fk']  = 'jpetl_pid';
+				$primaryKey['dt']  = 'int';
+
+				$insert  .= "\tjpetl_id\n";
+			} else {
+				$create = rtrim($create, ",\n")."\n);";
+			}
 			$creates .= $this->wrapCheckIfNotExists($prefix.$path.$name,$create);
-			$insert  .= "\tjpetl_id\n";
 
 			// insert
 			if (!empty($prefix)){
@@ -175,7 +187,7 @@ abstract class DDL {
 
 			// get children and multi-values
 			if (isset($recurse)){
-				$children = $this->build($recurse, $path.$name);
+				$children = $this->build($recurse, $path.$name, $primaryKey);
 				$drops = $children['drop'] . $drops;
 				$creates .= $children['create'];
 				$inserts .= $children['insert'];
@@ -194,7 +206,19 @@ abstract class DDL {
 
 	protected function columnize(String $col, Array $type) : String {
 		$column = $this->quote($col);
-		return "	$column ".$this->getDatatype($type);
+		return "	$column ".$this->getDatatype($type).",\n";
+	}
+
+	protected function checkPrimaryKey(&$node,$ae,&$key,&$primaryKey,&$create,&$insert){
+		if (!empty($node[$ae][$key]['primaryKey'])){
+			$primaryKey['col'] = $this->quote($key);
+			$primaryKey['fk'] = $this->quote($key.'fk');
+			$primaryKey['dt']  = $this->getDatatype($node[$ae][$key]);
+			$create .= "\t$primaryKey[col] $primaryKey[dt] PRIMARY KEY,\n";
+		} else {
+			$create .= $this->columnize($key, $node[$ae][$key]);
+		}
+		$insert .= "\t".$this->quote($key).",\n";
 	}
 
 	protected function getDatatype(Array $attribute) : String {
@@ -207,18 +231,15 @@ abstract class DDL {
 				$attribute['varchar' ]['max']['value'] ??
 				$attribute['datetime']['max']['value'];
 			$datatype = $this->getDatetime($datatype);
-			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['int'])){
 			$datatype = $this->getInteger($attribute['int']['max']['value']);
-			$datatype = "$datatype,\n";
 		} elseif (isset($attribute['decimal'])){
 			$precision = $attribute['precision']['max']['measure'];
 			$scale = $attribute['scale']['max']['measure'] + $precision;
-			$datatype = "decimal($scale,$precision),\n";
+			$datatype = "decimal($scale,$precision)";
 		} else {
 			$vsize = $attribute['varchar']['max']['measure'] ?? null;
 			$datatype = $this->getVarchar($vsize);
-			$datatype = "$datatype,\n";
 		}
 		return $datatype;
 	}

@@ -56,7 +56,7 @@ class JSONstream {
 		return false;
 	}
 
-	public function schematize(Int $count = null){
+	public function schematize(Int $count = null) : Schema {
 		$merger = new Merger;
 		while($json = $this->fetch($count)){
 			if(empty($schema)){

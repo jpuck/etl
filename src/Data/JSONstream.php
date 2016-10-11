@@ -18,6 +18,14 @@ class JSONstream {
 		fclose($this->file);
 	}
 
+	public function fetch(){
+		while (($line = fgets($this->file)) !== false){
+			return new JSON($line);
+		}
+		fseek($this->file, 0);
+		return false;
+	}
+
 	public function combine(Int $count = null){
 		$i = 1;
 		$json = "[";

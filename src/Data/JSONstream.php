@@ -1,12 +1,29 @@
 <?php
 namespace jpuck\etl\Data;
 use InvalidArgumentException;
+use jpuck\etl\Schemata\Merger;
+use jpuck\etl\Schemata\Schema;
 use jpuck\phpdev\Functions as jp;
 
 class JSONstream {
 	protected $file;
+	protected $options;
+	protected $schema;
+	protected $cursor = 0;
 
-	public function __construct(String $file){
+	public function __construct(String $file, ...$options){
+		if (isset($options)){
+			foreach ($options as $option){
+				switch (true){
+					case ($option instanceof Schema):
+						$this->schema = $option;
+						break;
+					case (is_array($option)):
+						$this->options($option);
+						break;
+				}
+			}
+		}
 		$this->file = fopen($file, 'r');
 		if (!$this->file){
 			throw new InvalidArgumentException("Failed to open $file");
@@ -14,8 +31,41 @@ class JSONstream {
 		$this->assertResource($this->file);
 	}
 
+	public function options(Array $options = null) : Array {
+		if (isset($options)){
+			$this->options = array_replace_recursive($this->options, $options);
+		}
+		return $this->options;
+	}
+
 	public function __destruct() {
 		fclose($this->file);
+	}
+
+	public function fetch(Int $count = null){
+		$opts = $this->schema ?? ['schematizer'=>['unique'=>false]];
+		while (($line = fgets($this->file)) !== false){
+			$this->cursor++;
+			if(isset($count) && $this->cursor > $count){
+				break;
+			}
+			return new JSON($line, $opts);
+		}
+		fseek($this->file, 0);
+		$this->cursor = 0;
+		return false;
+	}
+
+	public function schematize(Int $count = null) : Schema {
+		$merger = new Merger;
+		while($json = $this->fetch($count)){
+			if(empty($schema)){
+				$schema = $json->schema();
+			} else {
+				$schema = $merger->merge($schema,$json->schema());
+			}
+		}
+		return $this->schema = $schema;
 	}
 
 	public function combine(Int $count = null){
@@ -34,7 +84,7 @@ class JSONstream {
 		return $json;
 	}
 
-	public function count(String $elem = null){
+	public function count(String $elem = null) : Int {
 		if (!isset($elem)){
 			return $this->countLines();
 		}
@@ -45,17 +95,17 @@ class JSONstream {
 				$max = max($max,count($arr[$elem]));
 			}
 		}
-		echo "Max Count $elem: $max\n";
 		fseek($this->file, 0);
+		return $max;
 	}
 
-	public function countLines(){
+	public function countLines() : Int {
 		$i = 0;
 		while (($row = fgets($this->file)) !== false) {
 			$i++;
 		}
-		echo "Count: $i\n";
 		fseek($this->file, 0);
+		return $i;
 	}
 
 	public function print(Int $count = null){

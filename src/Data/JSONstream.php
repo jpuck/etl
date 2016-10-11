@@ -34,7 +34,7 @@ class JSONstream {
 		return $json;
 	}
 
-	public function count(String $elem = null){
+	public function count(String $elem = null) : Int {
 		if (!isset($elem)){
 			return $this->countLines();
 		}
@@ -45,17 +45,17 @@ class JSONstream {
 				$max = max($max,count($arr[$elem]));
 			}
 		}
-		echo "Max Count $elem: $max\n";
 		fseek($this->file, 0);
+		return $max;
 	}
 
-	public function countLines(){
+	public function countLines() : Int {
 		$i = 0;
 		while (($row = fgets($this->file)) !== false) {
 			$i++;
 		}
-		echo "Count: $i\n";
 		fseek($this->file, 0);
+		return $i;
 	}
 
 	public function print(Int $count = null){

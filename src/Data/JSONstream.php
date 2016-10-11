@@ -1,6 +1,7 @@
 <?php
 namespace jpuck\etl\Data;
 use InvalidArgumentException;
+use jpuck\etl\Schemata\Merger;
 use jpuck\phpdev\Functions as jp;
 
 class JSONstream {
@@ -20,10 +21,22 @@ class JSONstream {
 
 	public function fetch(){
 		while (($line = fgets($this->file)) !== false){
-			return new JSON($line);
+			return new JSON($line, ['schematizer'=>['unique'=>false]]);
 		}
 		fseek($this->file, 0);
 		return false;
+	}
+
+	public function schematize(){
+		$merger = new Merger;
+		while($json = $this->fetch()){
+			if(empty($schema)){
+				$schema = $json->schema();
+			} else {
+				$schema = $merger->merge($schema,$json->schema());
+			}
+		}
+		return $schema;
 	}
 
 	public function combine(Int $count = null){

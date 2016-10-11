@@ -9,6 +9,7 @@ class JSONstream {
 	protected $file;
 	protected $options;
 	protected $schema;
+	protected $cursor = 0;
 
 	public function __construct(String $file, ...$options){
 		if (isset($options)){
@@ -41,18 +42,23 @@ class JSONstream {
 		fclose($this->file);
 	}
 
-	public function fetch(){
+	public function fetch(Int $count = null){
 		$opts = $this->schema ?? ['schematizer'=>['unique'=>false]];
 		while (($line = fgets($this->file)) !== false){
+			$this->cursor++;
+			if(isset($count) && $this->cursor > $count){
+				break;
+			}
 			return new JSON($line, $opts);
 		}
 		fseek($this->file, 0);
+		$this->cursor = 0;
 		return false;
 	}
 
-	public function schematize(){
+	public function schematize(Int $count = null){
 		$merger = new Merger;
-		while($json = $this->fetch()){
+		while($json = $this->fetch($count)){
 			if(empty($schema)){
 				$schema = $json->schema();
 			} else {

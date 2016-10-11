@@ -42,8 +42,9 @@ class JSONstream {
 	}
 
 	public function fetch(){
+		$opts = $this->schema ?? ['schematizer'=>['unique'=>false]];
 		while (($line = fgets($this->file)) !== false){
-			return new JSON($line, ['schematizer'=>['unique'=>false]]);
+			return new JSON($line, $opts);
 		}
 		fseek($this->file, 0);
 		return false;
@@ -58,7 +59,7 @@ class JSONstream {
 				$schema = $merger->merge($schema,$json->schema());
 			}
 		}
-		return $schema;
+		return $this->schema = $schema;
 	}
 
 	public function combine(Int $count = null){

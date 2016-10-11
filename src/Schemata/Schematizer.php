@@ -88,8 +88,6 @@ class Schematizer {
 
 		$this->filter($result, 'setIntOrDecimal');
 
-			$this->filter($result, 'dropMinIfEqualsMax');
-
 		if($this->options['unique']){
 			$this->filter($result, 'unique');
 		}
@@ -266,31 +264,6 @@ class Schematizer {
 						$array[$key]['unique'] = 1;
 				} else {
 					unset($array[$key]['unique']);
-				}
-			}
-		}
-
-		private function dropMinIfEqualsMax(&$array, $key){
-			foreach (self::$keys as $metric){
-				if (
-					isset($array[$key][$metric]['max']['measure']) &&
-					isset($array[$key][$metric]['min']['measure']) &&
-					(
-						$array[$key][$metric]['max']['measure'] ===
-						$array[$key][$metric]['min']['measure']
-					)
-				){
-					unset($array[$key][$metric]['min']);
-				} elseif (
-					!isset($array[$key][$metric]['max']['measure']) &&
-					 isset($array[$key][$metric]['max'][ 'value' ]) &&
-					 isset($array[$key][$metric]['min'][ 'value' ]) &&
-					 (
-						$array[$key][$metric]['max']['value'] ===
-						$array[$key][$metric]['min']['value']
-					 )
-				){
-					unset($array[$key][$metric]['min']);
 				}
 			}
 		}

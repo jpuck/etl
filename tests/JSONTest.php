@@ -34,7 +34,7 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents($schema);
 
 		$json = new JSON($raw, ['name'=>'item']);
-		$actual = $json->schema()->toJSON(JSON_PRETTY_PRINT);
+		$actual = $json->schema()->filter('minmax')->toJSON(JSON_PRETTY_PRINT);
 
 		$this->assertSame($expected, $actual);
 	}

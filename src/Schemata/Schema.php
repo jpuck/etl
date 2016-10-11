@@ -22,6 +22,7 @@ class Schema {
 		varchar(&Array, String $key)           null
 		mins   (&Array, String $key)           null
 		singles(&Array, String $key)           null
+		minmax (&Array, String $key)           null
 	*/
 
 	protected $complete = [];
@@ -142,6 +143,31 @@ class Schema {
 		}
 		if (isset($array[$key]['attributes'])){
 			      $array[$key]['attributes'] = [];
+		}
+	}
+
+	private function minmax(&$array, $key){
+		foreach (self::$keys as $metric){
+			if (
+				isset($array[$key][$metric]['max']['measure']) &&
+				isset($array[$key][$metric]['min']['measure']) &&
+				(
+					$array[$key][$metric]['max']['measure'] ===
+					$array[$key][$metric]['min']['measure']
+				)
+			){
+				unset($array[$key][$metric]['min']);
+			} elseif (
+				!isset($array[$key][$metric]['max']['measure']) &&
+					isset($array[$key][$metric]['max'][ 'value' ]) &&
+					isset($array[$key][$metric]['min'][ 'value' ]) &&
+					(
+					$array[$key][$metric]['max']['value'] ===
+					$array[$key][$metric]['min']['value']
+					)
+			){
+				unset($array[$key][$metric]['min']);
+			}
 		}
 	}
 }

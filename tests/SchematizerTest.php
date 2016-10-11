@@ -16,7 +16,7 @@ class SchematizerTest extends PHPUnit_Framework_TestCase {
 		$expected = require "{$this->schemataDir}/sample.schema.php";
 
 		$schema = (new Schematizer)->schematize($xml);
-		$actual = $schema->toArray();
+		$actual = $schema->filter('minmax')->toArray();
 
 		$this->assertTrue($schema instanceof Schema);
 		$this->assertEquals($expected, $actual);
@@ -31,7 +31,7 @@ class SchematizerTest extends PHPUnit_Framework_TestCase {
 		$expected = require "{$this->schemataDir}/sample.schema.nounique.php";
 
 		$schema = (new Schematizer)->schematize($xml, ['unique'=>false]);
-		$actual = $schema->toArray();
+		$actual = $schema->filter('minmax')->toArray();
 
 		$this->assertTrue($schema instanceof Schema);
 		$this->assertEquals($expected, $actual);

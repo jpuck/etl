@@ -38,7 +38,7 @@ class XMLTest extends PHPUnit_Framework_TestCase {
 		$raw      = file_get_contents("{$this->xmlDir}/sample.xml");
 		$expected = require "{$this->schemataDir}/sample.schema.nounique.php";
 		$xml      = new XML($raw, ['schematizer'=>['unique'=>false]]);
-		$actual   = $xml->schema()->toArray();
+		$actual   = $xml->schema()->filter('minmax')->toArray();
 
 		$this->assertTrue($xml instanceof XML);
 		$this->assertSame($expected, $actual);

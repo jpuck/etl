@@ -23,9 +23,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [dtmixed] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_dtmixed
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [dt](jpetl_id),
 		[mixed] datetimeoffset,
 		jpetl_id int IDENTITY PRIMARY KEY
@@ -42,9 +42,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [dttimezone] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_dttimezone
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [dt](jpetl_id),
 		[timezone] datetimeoffset,
 		jpetl_id int IDENTITY PRIMARY KEY
@@ -61,9 +61,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [dtdatetime] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_dtdatetime
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [dt](jpetl_id),
 		[datetime] datetime,
 		jpetl_id int IDENTITY PRIMARY KEY

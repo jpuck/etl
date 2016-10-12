@@ -82,9 +82,11 @@ class MicrosoftSQLServer extends DB {
 	}
 
 	public function identity(Bool $enabled = null) : String {
-		if ($enabled === true){
+		$identity = &$this->options['identity'];
+		$identity = $enabled = $enabled ?? $identity;
+		if ($enabled){
 			$this->identity = 'IDENTITY';
-		} elseif ($enabled === false){
+		} else {
 			$this->identity = '';
 		}
 		return $this->identity;

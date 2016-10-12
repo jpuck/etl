@@ -14,13 +14,15 @@ use InvalidArgumentException;
 
 abstract class DB extends Source {
 	use DDL;
+	protected $surrogateCount = 0;
 
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
 		$defaults = [
-			'identity' => true,
-			'stage'    => true,
-			'prefix'   => '',
+			'identity'  => false,
+			'stage'     => true,
+			'prefix'    => '',
+			'surrogate' => 'jpetl_id',
 		];
 		$this->options($defaults);
 		$this->options(...$options);
@@ -81,6 +83,11 @@ abstract class DB extends Source {
 				}
 			}
 
+			// generate surrogate key, or use DB identity
+			if(empty($this->options['identity'])){
+				$query[$this->options['surrogate']] = ++$this->surrogateCount;
+			}
+
 			// execute query
 			$this->insertExecute($query, $primaryKey);
 
@@ -93,6 +100,7 @@ abstract class DB extends Source {
 	}
 
 	protected function insertExecute(Array &$query, String $primaryKey = null){
+		$surrogate = $this->options['surrogate'];
 		$table = $this->quote($this->options['prefix'].$query[0]);
 		$sql   = "INSERT INTO $table ";
 
@@ -115,8 +123,8 @@ abstract class DB extends Source {
 			$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
 		}
 
-		if (!isset($primaryKey)) {
-			$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		if (!isset($primaryKey) && !empty($this->options['identity'])) {
+			$sql .= " OUTPUT INSERTED.$surrogate ";
 		}
 
 		if (empty($cols)){
@@ -135,8 +143,10 @@ abstract class DB extends Source {
 		// pass parent id for child
 		if (isset($primaryKey)) {
 			$query[$primaryKey.'fk'] = $primaryVal;
+		} elseif(!empty($this->options['identity'])) {
+			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
 		} else {
-			$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+			$query[$surrogate.'fk'] = $this->surrogateCount;
 		}
 	}
 

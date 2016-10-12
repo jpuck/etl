@@ -212,9 +212,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [DataRecordSAMPLESUPP_DEPDEP] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_DataRecordSAMPLESUPP_DEPDEP
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [DataRecordSAMPLESUPP_DEP](jpetl_id),
 		[DEP] varchar(19),
 		jpetl_id int IDENTITY PRIMARY KEY

@@ -8,21 +8,18 @@ use jpuck\etl\Data\XML;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
 use jpuck\etl\Schemata\DBMS\MicrosoftSQLServerTrait;
-use jpuck\etl\Schemata\DBMS\PrefixTrait;
+use jpuck\etl\Utilities\Options;
 use PDO;
 use InvalidArgumentException;
 
 class DB extends Source {
+	use Options;
 	use MicrosoftSQLServerTrait;
-	use PrefixTrait;
 
 	public function __construct(PDO $uri, ...$options){
 		parent::__construct($uri);
-		foreach ($options as $option){
-			if (is_array($option) && isset($option['prefix'])){
-				$this->prefix($option['prefix']);
-			}
-		}
+		$this->options(['prefix'=>'']);
+		$this->options(...$options);
 	}
 
 	/**
@@ -107,7 +104,7 @@ class DB extends Source {
 	}
 
 	protected function insertExecute(Array &$query, String $primaryKey = null){
-		$table = $this->quote($this->prefix().$query[0]);
+		$table = $this->quote($this->options['prefix'].$query[0]);
 		$sql   = "INSERT INTO $table ";
 
 		if (isset($primaryKey)) {

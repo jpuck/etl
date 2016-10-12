@@ -102,7 +102,7 @@ abstract class DB extends Source {
 	protected function insertExecute(Array &$query, String $primaryKey = null){
 		$surrogate = $this->options['surrogate'];
 		$table = $this->quote($this->options['prefix'].$query[0]);
-		$sql   = "INSERT INTO $table ";
+		$sql   = " INSERT INTO $table ";
 
 		if (isset($primaryKey)) {
 			$primaryVal = $query[$primaryKey];
@@ -130,7 +130,7 @@ abstract class DB extends Source {
 		if (empty($cols)){
 			$sql .= " DEFAULT VALUES";
 		} else {
-			$sql .= " VALUES ('".implode("','",$vals)."')";
+			$sql .= " VALUES ('".implode("','",$vals)."'); ";
 		}
 
 		try {

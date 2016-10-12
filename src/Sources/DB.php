@@ -19,7 +19,7 @@ abstract class DB extends Source {
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
 		$defaults = [
-			'identity'  => true,
+			'identity'  => false,
 			'stage'     => true,
 			'prefix'    => '',
 			'surrogate' => 'jpetl_id',

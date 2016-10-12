@@ -8,17 +8,17 @@ INSERT INTO [Data] (
 FROM [tmpData];
 
 INSERT INTO [DataRecord] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	jpetl_id
 FROM [tmpDataRecord];
 
 INSERT INTO [DataRecordSAMPLE] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[created],
 	[CONTRACT_TERM],
@@ -26,7 +26,7 @@ INSERT INTO [DataRecordSAMPLE] (
 	[ABSTRACT],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[created],
 	[CONTRACT_TERM],
@@ -36,13 +36,13 @@ INSERT INTO [DataRecordSAMPLE] (
 FROM [tmpDataRecordSAMPLE];
 
 INSERT INTO [DataRecordSAMPLEADMIN_DEP] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[primaryKey],
 	[DEP],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[primaryKey],
 	[DEP],
@@ -50,39 +50,39 @@ INSERT INTO [DataRecordSAMPLEADMIN_DEP] (
 FROM [tmpDataRecordSAMPLEADMIN_DEP];
 
 INSERT INTO [DataRecordSAMPLESUPP_DEP] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[primaryKey],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[primaryKey],
 	jpetl_id
 FROM [tmpDataRecordSAMPLESUPP_DEP];
 
 INSERT INTO [DataRecordSAMPLESUPP_DEPDEP] (
-	jpetl_pid,
+	jpetl_idfk,
 	[DEP],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[DEP],
 	jpetl_id
 FROM [tmpDataRecordSAMPLESUPP_DEPDEP];
 
 INSERT INTO [DataRecordSAMPLETITLE] (
-	jpetl_pid,
+	jpetl_idfk,
 	[TITLE],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[TITLE],
 	jpetl_id
 FROM [tmpDataRecordSAMPLETITLE];
 
 INSERT INTO [DataRecordSAMPLESAMPLE_AUTH] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[FACULTY_NAME],
 	[FACULTY_NAMEfid],
@@ -94,7 +94,7 @@ INSERT INTO [DataRecordSAMPLESAMPLE_AUTH] (
 	[INITIATION],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[FACULTY_NAME],
 	[FACULTY_NAMEfid],
@@ -108,7 +108,7 @@ INSERT INTO [DataRecordSAMPLESAMPLE_AUTH] (
 FROM [tmpDataRecordSAMPLESAMPLE_AUTH];
 
 INSERT INTO [DataRecordSAMPLESAMPLE_EDITOR] (
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[FACULTY_NAME],
 	[FNAME],
@@ -117,7 +117,7 @@ INSERT INTO [DataRecordSAMPLESAMPLE_EDITOR] (
 	[DISPLAY],
 	jpetl_id
 ) SELECT
-	jpetl_pid,
+	jpetl_idfk,
 	[id],
 	[FACULTY_NAME],
 	[FNAME],

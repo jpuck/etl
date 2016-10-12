@@ -132,9 +132,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecord] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecord
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpData](jpetl_id),
 		[id] tinyint,
 		jpetl_id int IDENTITY PRIMARY KEY
@@ -151,9 +151,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLE] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLE
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecord](jpetl_id),
 		[id] tinyint,
 		[created] datetime,
@@ -174,9 +174,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLEADMIN_DEP] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLEADMIN_DEP
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLE](jpetl_id),
 		[id] bigint,
 		[primaryKey] varchar(10),
@@ -195,9 +195,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLESUPP_DEP] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLESUPP_DEP
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLE](jpetl_id),
 		[id] bigint,
 		[primaryKey] varchar(19),
@@ -215,9 +215,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLESUPP_DEPDEP] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLESUPP_DEPDEP
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLESUPP_DEP](jpetl_id),
 		[DEP] varchar(19),
 		jpetl_id int IDENTITY PRIMARY KEY
@@ -234,9 +234,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLETITLE] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLETITLE
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLE](jpetl_id),
 		[TITLE] varchar(19),
 		jpetl_id int IDENTITY PRIMARY KEY
@@ -253,9 +253,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLESAMPLE_AUTH] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLESAMPLE_AUTH
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLE](jpetl_id),
 		[id] tinyint,
 		[FACULTY_NAME] smallint,
@@ -280,9 +280,9 @@ IF (
 )
 BEGIN
 	CREATE TABLE [tmpDataRecordSAMPLESAMPLE_EDITOR] (
-		jpetl_pid int,
+		jpetl_idfk int,
 		CONSTRAINT fk_tmpDataRecordSAMPLESAMPLE_EDITOR
-			FOREIGN KEY (jpetl_pid)
+			FOREIGN KEY (jpetl_idfk)
 			REFERENCES [tmpDataRecordSAMPLE](jpetl_id),
 		[id] tinyint,
 		[FACULTY_NAME] varchar(100),

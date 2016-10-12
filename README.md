@@ -28,19 +28,23 @@ There are 3 basic groups of interrelated classes:
 
 1. Sources
 
-	Sources extend the `Source` class and implement the `Tranceiver` interface.
+	Sources extend the abstract `Source` class and transport `Datum` objects.
+	In particular, the abstract `DB` class has concrete class implementations
+	such as `MicrosoftSQLServer`.
 
 2. Data
 
-	Data classes extend `Datum` and must implement a valid parser.
-	It uses the `Schematizer` to construct the object from raw data.
+	Data classes extend `Datum` and must implement a valid parser, satisfied by
+	`ParseValidator`. It uses the `Schematizer` to construct the object from raw
+	data, which can be overridden by passing an existing `Schema`.
 
 3. Schemata
 
 	A `Schema` is a concrete class with a `Validator` to enforce structure.
 	The `Merger` class is for combining Schemas to create super-set Schemas.
-	The `DDL` extended classes generate [SQL Data Definition Language][6] and
-	are specific to a database management system.
+	The `DDL` trait is used by the `DB` class to generate
+	[SQL Data Definition Language][6] which contains abstract methods to be
+	implemented by a specific database management system.
 
 ## Schematizer
 
@@ -115,21 +119,22 @@ in PHP, so *trailing zeros should be represented in the precision values*.
 
 ## Database Connections
 
-The `DB` class requires an instance of [`PDO`][8] in the constructor.
+The `DB` class requires an instance of [`PDO`][8] in the constructor to connect,
+but it is possible to pass a `null` value if only utilizing the class for DDL.
 
 ## SQL Data Definition Language
 
 When one-to-many XML nodes are used to represent one-to-one relationships, then
 the `Schematizer` recognizes this and a `DDL` class flattens them as columns
-on a table. If a node has more than one if its name or grandchildren, then the
+on a table. If a node has more than one of its name or grandchildren, then the
 one-to-many relationship is preserved in a separate normalized table. Surrogate
 keys are created to maintain the Primary/Foreign Key referential integrity.
 
 If the `Schema` has a `primaryKey` set, then that field will be used for DDL
 generation instead of the surrogate. However, this `Schema` must also be passed
-to the `Datum` constructor prior to being used in a `Transceiver` method,
-otherwise the surrogate keys will be used by default and will result in a failed
-insertion if the surrogate columns don't exist.
+to the `Datum` constructor prior to being used with `DB::insert`, otherwise the
+surrogate keys will be used by default and will result in a failed insertion if
+the surrogate columns don't exist.
 
 --------------
 
@@ -152,6 +157,11 @@ You might also be interested in an easy to read checklist output:
 
     php vendor/bin/phpunit --testdox
 
+When stepping through breakpoints in an IDE, like Netbeans, it's helpful to see
+the current test name output by setting the run configuration to debug:
+
+    php vendor/bin/phpunit --debug
+
 A code coverage report is available if you have the [`xdebug` extension][4]
 installed. In addition to the console text summary report, a full HTML GUI is
 generated to explore in the `coverage` folder. The easiest way to view this is
@@ -161,8 +171,9 @@ to boot up a dev server:
 
 ### Database Testing
 
-You must create the file `tests/data/pdos/pdo.php` in order to run the database
-tests. This should simply return a `PDO` instance, for example:
+You must create the file (or symbolic link) `tests/data/pdos/pdo.php` in order
+to run the database tests. This should simply return a `PDO` instance,
+for example:
 
 ```php
 <?php

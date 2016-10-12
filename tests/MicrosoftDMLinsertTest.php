@@ -68,4 +68,22 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertSame('3',$count);
 	}
+
+	/**
+	 *  @testdox Can insert XML with generated surrogate keys
+	 */
+	public function testCanInsertXMLwithGeneratedSurrogateKeys(){
+		jp::CleanMsSQLdb(static::$pdo);
+		$data = self::$dataDir;
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
+		$db  = new MicrosoftSQLServer(
+			self::$pdo,
+			['stage'=>false,'identity'=>false]
+		);
+
+		$ddl = $db->toSQL($xml->schema())['create'];
+
+		$this->assertNotFalse(static::$pdo->exec($ddl));
+		$this->assertTrue($db->insert($xml));
+	}
 }

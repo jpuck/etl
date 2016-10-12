@@ -145,6 +145,7 @@ abstract class DB extends Source {
 			$query[$primaryKey.'fk'] = $primaryVal;
 		} elseif(!empty($this->options['identity'])) {
 			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
+			$stmt->closeCursor();
 		} else {
 			$query[$surrogate.'fk'] = $this->surrogateCount;
 		}

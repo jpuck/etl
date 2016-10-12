@@ -14,13 +14,15 @@ use InvalidArgumentException;
 
 abstract class DB extends Source {
 	use DDL;
+	protected $surrogateCount = 0;
 
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
 		$defaults = [
-			'identity' => true,
-			'stage'    => true,
-			'prefix'   => '',
+			'identity'  => true,
+			'stage'     => true,
+			'prefix'    => '',
+			'surrogate' => 'jpetl_id',
 		];
 		$this->options($defaults);
 		$this->options(...$options);
@@ -79,6 +81,11 @@ abstract class DB extends Source {
 				} else {
 					$primaryKey = $primaryKey ?? $this->setValues($node,$name,$query,$schema);
 				}
+			}
+
+			// generate surrogate key, or use DB identity
+			if(empty($this->options['identity'])){
+				$query[$this->options['surrogate']] = ++$this->surrogateCount;
 			}
 
 			// execute query

@@ -5,7 +5,6 @@ use jpuck\etl\Data\Datum;
 use jpuck\etl\Schemata\Schema;
 use Exception;
 use InvalidArgumentException;
-use jpuck\phpdev\Exceptions\Unimplemented;
 
 class REST extends Source {
 	/**
@@ -54,14 +53,5 @@ class REST extends Source {
 		curl_close($curl);
 
 		return new $datumClass($responseData, $schema);
-	}
-
-	public function insert  (Datum $data) : bool {
-		throw new Unimplemented(__METHOD__);
-		return false;
-	}
-	public function replace (Datum $data) : bool {
-		throw new Unimplemented(__METHOD__);
-		return false;
 	}
 }

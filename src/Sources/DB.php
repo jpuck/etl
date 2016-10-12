@@ -32,11 +32,6 @@ abstract class DB extends Source {
 		return true;
 	}
 
-	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
-		throw new Unimplemented(__METHOD__);
-		return new XML;
-	}
-
 	public function insert  (Datum $datum) : bool {
 	/*
 		foreach nodes as node
@@ -59,11 +54,6 @@ abstract class DB extends Source {
 		$data   = $datum->parsed();
 		$this->insertData($data, $schema, ['']);
 		return true;
-	}
-
-	public function replace (Datum $data) : bool {
-		throw new Unimplemented(__METHOD__);
-		return false;
 	}
 
 	protected function insertData(Array $node, Array $schema, Array $query){

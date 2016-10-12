@@ -4,32 +4,24 @@ namespace jpuck\etl\Data;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
 use jpuck\etl\Data\ParseValidator;
+use jpuck\etl\Utilities\Options;
 use Exception;
 
 abstract class Datum {
+	use Options;
 	protected $raw;
 	protected $parsed;
 	protected $schema;
-	protected $options = [
-		'validate' => [
-			'parse' => true
-		]
-	];
 
 	public function __construct($raw, ...$options){
-		if (isset($options)){
-			foreach ($options as $option){
-				switch (true){
-					case ($option instanceof Schema):
-						$schema = $option;
-						break;
-					case (is_array($option)):
-						$this->options($option);
-						break;
-				}
-			}
-		}
-		$schema = $schema ?? null;
+		$defaults = [
+			'validate' => [
+				'parse' => true
+			]
+		];
+		$this->options($defaults);
+		$this->options(...$options);
+		$schema = $this->schema ?? null;
 		$this->raw($raw, $schema);
 	}
 
@@ -66,13 +58,6 @@ abstract class Datum {
 			$this->schema = $schema;
 		}
 		return $this->schema;
-	}
-
-	public function options(Array $options = null) : Array {
-		if (isset($options)){
-			$this->options = array_replace_recursive($this->options, $options);
-		}
-		return $this->options;
 	}
 
 	abstract protected function parse($raw) : Array;

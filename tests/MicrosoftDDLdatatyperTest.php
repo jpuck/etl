@@ -1,11 +1,10 @@
 <?php
-use jpuck\etl\Schemata\DDL;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox Microsoft SQL Server Datatyper
+ * @testdox Microsoft DDL Datatyper
  */
-class MSDatatyperTest extends PHPUnit_Framework_TestCase {
+class MicrosoftDDLdatatyperTest extends PHPUnit_Framework_TestCase {
 	public function testCanInvalidateIntegerDatatype(){
 		$this->expectException(InvalidArgumentException::class);
 

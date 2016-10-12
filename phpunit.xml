@@ -13,7 +13,7 @@
 			<file>tests/SchemaValidatorTest.php</file>
 			<file>tests/SchemaTest.php</file>
 			<file>tests/SchemaMergerTest.php</file>
-			<file>tests/MSDatatyperTest.php</file>
+			<file>tests/MicrosoftDDLdatatyperTest.php</file>
 			<file>tests/MicrosoftDDLdatetimeTest.php</file>
 			<file>tests/MicrosoftDDLwithoutStageTest.php</file>
 			<file>tests/MicrosoftDDLwithStageTest.php</file>
@@ -25,7 +25,7 @@
 			<file>tests/JSONTest.php</file>
 			<file>tests/JSONstreamTest.php</file>
 			<file>tests/FolderTest.php</file>
-			<file>tests/DBTest.php</file>
+			<file>tests/MicrosoftDMLinsertTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>

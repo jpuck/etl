@@ -1,9 +1,7 @@
 <?php
 namespace jpuck\etl\Sources;
 
-use jpuck\etl\Sources\Transceiver;
-
-abstract class Source implements Transceiver {
+abstract class Source {
 	protected $uri;
 
 	public function __construct($uri){

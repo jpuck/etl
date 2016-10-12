@@ -3,7 +3,6 @@ namespace jpuck\etl\Sources;
 
 use InvalidArgumentException;
 
-use jpuck\phpdev\Exceptions\Unimplemented;
 use jpuck\etl\Data\Datum;
 use jpuck\etl\Data\XML;
 use jpuck\etl\Schemata\Schema;
@@ -30,13 +29,5 @@ class Folder extends Source {
 		}
 
 		return new XML(file_get_contents("{$this->uri['path']}/$endpoint"), $schema);
-	}
-	public function insert  (Datum $data) : bool {
-		throw new Unimplemented(__METHOD__);
-		return false;
-	}
-	public function replace (Datum $data) : bool {
-		throw new Unimplemented(__METHOD__);
-		return false;
 	}
 }

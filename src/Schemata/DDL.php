@@ -1,5 +1,5 @@
 <?php
-namespace jpuck\etl\Schemata\DBMS;
+namespace jpuck\etl\Schemata;
 
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\DBMS\PrefixTrait;
@@ -8,29 +8,12 @@ use Exception;
 use jpuck\phpdev\Functions as jp;
 use InvalidArgumentException;
 
-abstract class DDL {
+trait DDL {
 	use Options;
 
 	protected $default_varchar_size = 100;
 	// TODO: set minimum size
 	protected $identity = '';
-
-	public function __construct(...$options){
-		$defaults = [
-			'identity' => true,
-			'stage'    => true,
-			'prefix'   => '',
-		];
-		$this->options($defaults);
-		$this->options(...$options);
-		$this->identity($this->options['identity']);
-	}
-
-	protected function set($option, String $function){
-		if (is_array($option) && isset($option["$function"])){
-			$this->$function($option["$function"]);
-		}
-	}
 
 	public function stage(Bool $stage = null) : Bool {
 		if (isset($stage)){

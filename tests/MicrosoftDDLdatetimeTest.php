@@ -1,10 +1,9 @@
 <?php
 use jpuck\etl\Data\XML;
-use jpuck\etl\Schemata\DDL;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox Microsoft SQL Server Datetime
+ * @testdox Microsoft DDL Datetime
  */
 class MicrosoftDDLdatetimeTest extends PHPUnit_Framework_TestCase {
 	public function testCanEvaluateMixedDatetimeTypes(){

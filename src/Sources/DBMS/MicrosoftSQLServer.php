@@ -1,10 +1,10 @@
 <?php
-namespace jpuck\etl\Schemata\DBMS;
+namespace jpuck\etl\Sources\DBMS;
 
+use jpuck\etl\Sources\DB;
 use InvalidArgumentException;
 
-class MicrosoftSQLServer extends DDL {
-	use MicrosoftSQLServerTrait;
+class MicrosoftSQLServer extends DB {
 
 	public function getInteger ($value) : String {
 		$value = str_replace(',','',$value);
@@ -88,5 +88,12 @@ class MicrosoftSQLServer extends DDL {
 			$this->identity = '';
 		}
 		return $this->identity;
+	}
+
+	public function quote(String $entity, Bool $chars = false){
+		if ($chars) {
+			return ['[',']'];
+		}
+		return "[$entity]";
 	}
 }

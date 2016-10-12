@@ -144,14 +144,15 @@ trait DDL {
 			// close table definition with surrogate primary key
 			// TODO: use natural key if unique values
 			if (empty($primaryKey)){
-				$identity = $this->identity();
-				$create  .= "	jpetl_id int $identity PRIMARY KEY\n);";
+				$identity  = $this->identity();
+				$surrogate = $this->options['surrogate'];
+				$create   .= "	$surrogate int $identity PRIMARY KEY\n);";
 
-				$primaryKey['col'] = 'jpetl_id';
-				$primaryKey['fk']  = 'jpetl_pid';
+				$primaryKey['col'] = $surrogate;
+				$primaryKey['fk']  = $surrogate.'fk';
 				$primaryKey['dt']  = 'int';
 
-				$insert  .= "\tjpetl_id\n";
+				$insert  .= "\t$surrogate\n";
 			} else {
 				$create = rtrim($create, ",\n")."\n);";
 			}

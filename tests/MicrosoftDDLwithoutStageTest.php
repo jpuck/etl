@@ -1,9 +1,9 @@
 <?php
 use jpuck\etl\Schemata\Schema;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox Microsoft DDL without stage
+ * @testdox Microsoft DDL Without Stage
  */
 class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 	public $dataDir = __DIR__.'/data';
@@ -69,7 +69,7 @@ class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.tmp.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer(['prefix'=>'tmp']);
+		$ddl      = new MicrosoftSQLServer(null, ['prefix'=>'tmp']);
 		$ddl->stage(false);
 
 		$actual   = $ddl->generate($schema);

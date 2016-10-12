@@ -1,13 +1,12 @@
 <?php
-use jpuck\etl\Sources\DB;
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 use jpuck\etl\Data\XML;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
 use jpuck\phpdev\Functions as jp;
 
 /**
- * @testdox DB
+ * @testdox Microsoft DML Insert
  */
-class DBTest extends PHPUnit_Framework_TestCase {
+class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 	public static $dataDir = __DIR__.'/data';
 	public static $pdo;
 
@@ -26,7 +25,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanInvalidateDBURIinConstructor(){
 		$this->expectException(TypeError::class);
-		$db = new DB(['username'=>'user','password'=>'pass']);
+		$db = new MicrosoftSQLServer(['username'=>'user','password'=>'pass']);
 	}
 
 	/**
@@ -35,7 +34,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	public function testCanValidateDBURIinConstructor(){
 		$expected = self::$pdo;
 
-		$db = new DB($expected);
+		$db = new MicrosoftSQLServer($expected);
 		$actual = $db->uri();
 
 		$this->assertEquals($expected, $actual);
@@ -47,7 +46,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new DB(self::$pdo);
+		$db  = new MicrosoftSQLServer(self::$pdo);
 
 		$this->assertTrue($db->insert($xml));
 	}
@@ -58,7 +57,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoPrefixedDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new DB(self::$pdo, ['prefix'=>'tmp']);
+		$db  = new MicrosoftSQLServer(self::$pdo, ['prefix'=>'tmp']);
 
 		$this->assertTrue($db->insert($xml));
 

@@ -5,34 +5,33 @@ use jpuck\phpdev\Exceptions\Unimplemented;
 use jpuck\phpdev\Functions as jp;
 use jpuck\etl\Data\Datum;
 use jpuck\etl\Data\XML;
+use jpuck\etl\Schemata\DDL;
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\Schematizer;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServerTrait;
 use jpuck\etl\Utilities\Options;
 use PDO;
 use InvalidArgumentException;
 
-class DB extends Source {
-	use Options;
-	use MicrosoftSQLServerTrait;
+abstract class DB extends Source {
+	use DDL;
 
-	public function __construct(PDO $uri, ...$options){
+	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
-		$this->options(['prefix'=>'']);
+		$defaults = [
+			'identity' => true,
+			'stage'    => true,
+			'prefix'   => '',
+		];
+		$this->options($defaults);
 		$this->options(...$options);
+		$this->identity($this->options['identity']);
 	}
 
-	/**
-	 * @throws InvalidArgumentException
-	 */
+	// use PHP7 strict type
 	protected function validateURI($uri) : Bool {
-		if (!$uri instanceof PDO){
-			throw new InvalidArgumentException(
-				'DB uri must be instance of PDO.'
-			);
-		}
 		return true;
 	}
+
 	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
 		throw new Unimplemented(__METHOD__);
 		return new XML;

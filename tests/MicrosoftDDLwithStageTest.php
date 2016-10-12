@@ -1,10 +1,9 @@
 <?php
-use jpuck\etl\Schemata\DDL;
 use jpuck\etl\Schemata\Schema;
-use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 
 /**
- * @testdox Microsoft DDL with stage
+ * @testdox Microsoft DDL With Stage
  */
 class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 	public $dataDir = __DIR__.'/data';

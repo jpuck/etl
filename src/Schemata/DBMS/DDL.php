@@ -3,27 +3,27 @@ namespace jpuck\etl\Schemata\DBMS;
 
 use jpuck\etl\Schemata\Schema;
 use jpuck\etl\Schemata\DBMS\PrefixTrait;
+use jpuck\etl\Utilities\Options;
 use Exception;
 use jpuck\phpdev\Functions as jp;
 use InvalidArgumentException;
 
 abstract class DDL {
-	use PrefixTrait;
+	use Options;
 
 	protected $default_varchar_size = 100;
 	// TODO: set minimum size
-	protected $stage = true;
-	protected $identity;
+	protected $identity = '';
 
 	public function __construct(...$options){
-		foreach ($options as $option){
-			$this->set($option, 'prefix');
-			$this->set($option, 'stage');
-			$this->set($option, 'identity');
-		}
-		if (is_null($this->identity)){
-			$this->identity(true);
-		}
+		$defaults = [
+			'identity' => true,
+			'stage'    => true,
+			'prefix'   => '',
+		];
+		$this->options($defaults);
+		$this->options(...$options);
+		$this->identity($this->options['identity']);
 	}
 
 	protected function set($option, String $function){
@@ -34,19 +34,19 @@ abstract class DDL {
 
 	public function stage(Bool $stage = null) : Bool {
 		if (isset($stage)){
-			$this->stage = $stage;
+			$this->options['stage'] = $stage;
 		}
-		return $this->stage;
+		return $this->options['stage'];
 	}
 
 	public function toSQL(Schema $schema) : Array {
-		$prefix = $this->prefix();
+		$prefix = $this->options['prefix'];
 		if ($this->stage()){
 			if (empty($prefix)){
-				$prefix = $this->prefix('tmp');
+				$prefix = $this->options['prefix'] = 'tmp';
 			}
 			$stage = $this->build($schema->toArray());
-			$this->prefix('');
+			$this->options['prefix'] = '';
 			$this->identity(false);
 		}
 
@@ -85,7 +85,7 @@ abstract class DDL {
 	}
 
 	protected function build(Array $nodes, String $path='', Array $pfk=null) : Array {
-		$prefix = $this->prefix();
+		$prefix = $this->options['prefix'];
 
 		// initialize recursor
 		$drops = '';

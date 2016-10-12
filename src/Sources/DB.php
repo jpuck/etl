@@ -15,6 +15,7 @@ use InvalidArgumentException;
 abstract class DB extends Source {
 	use DDL;
 	protected $surrogateCount = 0;
+	protected $statements = '';
 
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
@@ -55,6 +56,10 @@ abstract class DB extends Source {
 		$schema = $datum->schema()->toArray();
 		$data   = $datum->parsed();
 		$this->insertData($data, $schema, ['']);
+		if(!empty($this->statements)){
+			$this->uri->query($this->statements)->closeCursor();
+			$this->statements = '';
+		}
 		return true;
 	}
 
@@ -133,11 +138,15 @@ abstract class DB extends Source {
 			$sql .= " VALUES ('".implode("','",$vals)."'); ";
 		}
 
-		try {
-			$stmt = $this->uri->query($sql);
-		} catch (\PDOException $e) {
-			echo $sql.PHP_EOL;
-			throw $e;
+		if(!empty($this->options['identity'])){
+			try {
+				$stmt = $this->uri->query($sql);
+			} catch (\PDOException $e) {
+				echo $sql.PHP_EOL;
+				throw $e;
+			}
+		} else {
+			$this->statements .= $sql;
 		}
 
 		// pass parent id for child

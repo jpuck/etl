@@ -1,6 +1,7 @@
 <?php
 namespace jpuck\etl\Schemata;
 
+use jpuck\etl\Utilities\Options;
 use jpuck\etl\Data\Datum;
 
 class Schematizer {
@@ -26,12 +27,14 @@ class Schematizer {
 			setIntOrDecimal      (Array &$array, $key)                     null
 			dropMinIfEqualsMax   (Array &$array, $key)                     null
 	*/
+	use Options;
 	protected $datum;
-	protected $options = [
-		'unique' => true,
-	];
 
 	public function __construct(Array $options = null){
+		$defaults = [
+			'unique' => true,
+		];
+		$this->options($defaults);
 		$this->options($options);
 	}
 
@@ -60,13 +63,6 @@ class Schematizer {
 		) - $precision;
 
 		return [(int)$scale,(int)$precision];
-	}
-
-	public function options(Array $options = null) : Array {
-		if(isset($options)){
-			$this->options = array_replace_recursive($this->options,$options);
-		}
-		return $this->options;
 	}
 
 	public function schematize(Datum $datum, Array $options = null) : Schema {

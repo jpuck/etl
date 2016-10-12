@@ -3,39 +3,22 @@ namespace jpuck\etl\Data;
 use InvalidArgumentException;
 use jpuck\etl\Schemata\Merger;
 use jpuck\etl\Schemata\Schema;
+use jpuck\etl\Utilities\Options;
 use jpuck\phpdev\Functions as jp;
 
 class JSONstream {
+	use Options;
 	protected $file;
-	protected $options;
 	protected $schema;
 	protected $cursor = 0;
 
 	public function __construct(String $file, ...$options){
-		if (isset($options)){
-			foreach ($options as $option){
-				switch (true){
-					case ($option instanceof Schema):
-						$this->schema = $option;
-						break;
-					case (is_array($option)):
-						$this->options($option);
-						break;
-				}
-			}
-		}
+		$this->options(...$options);
 		$this->file = fopen($file, 'r');
 		if (!$this->file){
 			throw new InvalidArgumentException("Failed to open $file");
 		}
 		$this->assertResource($this->file);
-	}
-
-	public function options(Array $options = null) : Array {
-		if (isset($options)){
-			$this->options = array_replace_recursive($this->options, $options);
-		}
-		return $this->options;
 	}
 
 	public function __destruct() {

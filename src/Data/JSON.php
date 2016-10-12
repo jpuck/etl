@@ -3,6 +3,12 @@ namespace jpuck\etl\Data;
 use InvalidArgumentException;
 
 class JSON extends Datum {
+	public function __construct($raw, ...$options){
+		$defaults = ['name'=>'root'];
+		$this->options($defaults);
+		parent::__construct($raw, ...$options);
+	}
+
 	protected function parse($raw) : Array {
 		$json = json_decode($raw, true);
 		if (!is_array($json)){
@@ -10,9 +16,6 @@ class JSON extends Datum {
 				"Bad JSON: ".json_last_error_msg()
 			);
 		}
-
-		$defaults = array_replace_recursive(['name'=>'root'], $this->options());
-		$this->options($defaults);
 
 		$parsed['name'] = $this->options['name'];
 		$this->parseRecursively($json, $parsed, $this->options['name']);

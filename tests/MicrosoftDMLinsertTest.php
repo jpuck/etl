@@ -46,7 +46,7 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new MicrosoftSQLServer(self::$pdo);
+		$db  = new MicrosoftSQLServer(self::$pdo, ['identity'=>true]);
 
 		$this->assertTrue($db->insert($xml));
 	}
@@ -57,7 +57,10 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 	public function testCanInsertXMLintoPrefixedDB(){
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new MicrosoftSQLServer(self::$pdo, ['prefix'=>'tmp']);
+		$db  = new MicrosoftSQLServer(
+			self::$pdo,
+			['prefix'=>'tmp','identity'=>true]
+		);
 
 		$this->assertTrue($db->insert($xml));
 
@@ -119,10 +122,11 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 		jp::CleanMsSQLdb(static::$pdo);
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new MicrosoftSQLServer(
-			self::$pdo,
-			['stage'=>false,'surrogate'=>'test_sid']
-		);
+		$db  = new MicrosoftSQLServer(self::$pdo, [
+			'stage'     => false,
+			'surrogate' => 'test_sid',
+			'identity'  => true,
+		]);
 
 		$ddl = $db->toSQL($xml->schema())['create'];
 

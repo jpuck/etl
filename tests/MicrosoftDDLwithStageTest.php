@@ -30,7 +30,7 @@ class MicrosoftDDLwithStageTest extends PHPUnit_Framework_TestCase {
 
 		$schema = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema = new Schema($schema);
-		$dbms   = new MicrosoftSQLServer;
+		$dbms   = new MicrosoftSQLServer(null,['identity'=>true]);
 
 		$actual = $dbms->toSQL($schema);
 

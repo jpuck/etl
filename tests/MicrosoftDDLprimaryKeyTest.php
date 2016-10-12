@@ -44,8 +44,10 @@ class MicrosoftDDLprimaryKeyTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents(self::$data."/sql/$ddl");
 		$schema   = require self::$data."/schemata/$schema";
 		$schema   = new Schema($schema);
-		$db       = new MicrosoftSQLServer(self::$pdo);
-		$db->stage(false);
+		$db       = new MicrosoftSQLServer(self::$pdo, [
+			'stage'    => false,
+			'identity' => true,
+		]);
 		$xml = file_get_contents(self::$data."/xml/$xml");
 		$xml = new XML($xml, $schema);
 

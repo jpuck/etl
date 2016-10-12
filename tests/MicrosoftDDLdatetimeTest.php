@@ -16,6 +16,7 @@ class MicrosoftDDLdatetimeTest extends PHPUnit_Framework_TestCase {
 
 		$gen = new MicrosoftSQLServer;
 		$gen->stage(false);
+		$gen->options(['identity'=>true]);
 
 		$actual = $gen->toSQL($xml->schema())['create'];
 

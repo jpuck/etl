@@ -24,10 +24,13 @@ class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer;
-		$ddl->stage(false);
+		$db       = new MicrosoftSQLServer;
+		$db->options([
+			'identity' => true,
+			'stage'    => false,
+		]);
 
-		$actual   = $ddl->generate($schema, ...$params);
+		$actual = $db->generate($schema, ...$params);
 
 		$this->assertSame($expected,$actual);
 	}
@@ -39,10 +42,13 @@ class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.drop.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer;
-		$ddl->stage(false);
+		$db       = new MicrosoftSQLServer;
+		$db->options([
+			'identity' => true,
+			'stage'    => false,
+		]);
 
-		$actual   = $ddl->generate($schema, 'drop');
+		$actual = $db->generate($schema, 'drop');
 
 		$this->assertSame($expected,$actual);
 	}
@@ -54,10 +60,13 @@ class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.create.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer;
-		$ddl->stage(false);
+		$db       = new MicrosoftSQLServer;
+		$db->options([
+			'identity' => true,
+			'stage'    => false,
+		]);
 
-		$actual   = $ddl->generate($schema, 'create');
+		$actual = $db->generate($schema, 'create');
 
 		$this->assertSame($expected,$actual);
 	}
@@ -69,10 +78,13 @@ class MicrosoftDDLwithoutStageTest extends PHPUnit_Framework_TestCase {
 		$expected = file_get_contents("{$this->dataDir}/sql/sample.mssql.tmp.ddl.sql");
 		$schema   = require "{$this->dataDir}/schemata/sample.schema.php";
 		$schema   = new Schema($schema);
-		$ddl      = new MicrosoftSQLServer(null, ['prefix'=>'tmp']);
-		$ddl->stage(false);
+		$db       = new MicrosoftSQLServer(null, ['prefix'=>'tmp']);
+		$db->options([
+			'identity' => true,
+			'stage'    => false,
+		]);
 
-		$actual   = $ddl->generate($schema);
+		$actual = $db->generate($schema);
 
 		$this->assertSame($expected,$actual);
 	}

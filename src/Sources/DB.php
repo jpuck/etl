@@ -100,6 +100,7 @@ abstract class DB extends Source {
 	}
 
 	protected function insertExecute(Array &$query, String $primaryKey = null){
+		$surrogate = $this->options['surrogate'];
 		$table = $this->quote($this->options['prefix'].$query[0]);
 		$sql   = "INSERT INTO $table ";
 
@@ -122,8 +123,8 @@ abstract class DB extends Source {
 			$sql .= "($qo".implode("$qc,$qo",$cols)."$qc)";
 		}
 
-		if (!isset($primaryKey)) {
-			$sql .= ' OUTPUT INSERTED.jpetl_id ';
+		if (!isset($primaryKey) && !empty($this->options['identity'])) {
+			$sql .= " OUTPUT INSERTED.$surrogate ";
 		}
 
 		if (empty($cols)){
@@ -142,8 +143,10 @@ abstract class DB extends Source {
 		// pass parent id for child
 		if (isset($primaryKey)) {
 			$query[$primaryKey.'fk'] = $primaryVal;
+		} elseif(!empty($this->options['identity'])) {
+			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
 		} else {
-			$query['jpetl_pid'] = $stmt->fetch(PDO::FETCH_ASSOC)['jpetl_id'];
+			$query[$surrogate.'fk'] = $this->surrogateCount;
 		}
 	}
 

@@ -2,6 +2,7 @@
 use jpuck\etl\Sources\DB;
 use jpuck\etl\Data\XML;
 use jpuck\etl\Schemata\DBMS\MicrosoftSQLServer;
+use jpuck\phpdev\Functions as jp;
 
 /**
  * @testdox DB
@@ -14,6 +15,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 		$data = self::$dataDir;
 		// maybe create a symlink for some of these files
 		self::$pdo = require "$data/pdos/pdo.php";
+		jp::CleanMsSQLdb(static::$pdo);
 		$ddl  = file_get_contents("$data/sql/sample.ddl.sql");
 		$ddl .= file_get_contents("$data/sql/sample.mssql.tmp.ddl.sql");
 		self::$pdo->exec($ddl);

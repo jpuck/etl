@@ -15,6 +15,7 @@ use InvalidArgumentException;
 abstract class DB extends Source {
 	use DDL;
 	protected $surrogateCount = 0;
+	protected $statements = '';
 
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
@@ -55,6 +56,10 @@ abstract class DB extends Source {
 		$schema = $datum->schema()->toArray();
 		$data   = $datum->parsed();
 		$this->insertData($data, $schema, ['']);
+		if(!empty($this->statements)){
+			$this->uri->query($this->statements)->closeCursor();
+			$this->statements = '';
+		}
 		return true;
 	}
 
@@ -102,7 +107,7 @@ abstract class DB extends Source {
 	protected function insertExecute(Array &$query, String $primaryKey = null){
 		$surrogate = $this->options['surrogate'];
 		$table = $this->quote($this->options['prefix'].$query[0]);
-		$sql   = "INSERT INTO $table ";
+		$sql   = " INSERT INTO $table ";
 
 		if (isset($primaryKey)) {
 			$primaryVal = $query[$primaryKey];
@@ -130,14 +135,18 @@ abstract class DB extends Source {
 		if (empty($cols)){
 			$sql .= " DEFAULT VALUES";
 		} else {
-			$sql .= " VALUES ('".implode("','",$vals)."')";
+			$sql .= " VALUES ('".implode("','",$vals)."'); ";
 		}
 
-		try {
-			$stmt = $this->uri->query($sql);
-		} catch (\PDOException $e) {
-			echo $sql.PHP_EOL;
-			throw $e;
+		if(!empty($this->options['identity'])){
+			try {
+				$stmt = $this->uri->query($sql);
+			} catch (\PDOException $e) {
+				echo $sql.PHP_EOL;
+				throw $e;
+			}
+		} else {
+			$this->statements .= $sql;
 		}
 
 		// pass parent id for child
@@ -145,6 +154,7 @@ abstract class DB extends Source {
 			$query[$primaryKey.'fk'] = $primaryVal;
 		} elseif(!empty($this->options['identity'])) {
 			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
+			$stmt->closeCursor();
 		} else {
 			$query[$surrogate.'fk'] = $this->surrogateCount;
 		}

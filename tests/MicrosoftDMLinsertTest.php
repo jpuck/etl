@@ -95,40 +95,21 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanInsertXMLwithGeneratedCustomSurrogateKey(){
 		jp::CleanMsSQLdb(static::$pdo);
-		$data = self::$dataDir;
-		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new MicrosoftSQLServer(
+		$opts = [
 			self::$pdo,
-			['stage'=>false,'identity'=>false,'surrogate'=>'test_sid']
-		);
-
-		$ddl = $db->toSQL($xml->schema())['create'];
-
-		$this->assertNotFalse(static::$pdo->exec($ddl));
-		$this->assertTrue($db->insert($xml));
-
-		$sql = 'SELECT MAX(test_sid) AS maxid FROM DataRecordSAMPLE';
-		foreach (self::$pdo->query($sql) as $result){
-			$maxid = $result['maxid'];
-		}
-
-		$this->assertSame('25',$maxid);
-	}
-
-	/**
-	 *  @testdox Can insert XML with custom surrogate key
-	 */
-	public function testCanInsertXMLwithCustomSurrogateKey(){
-		jp::CleanMsSQLdb(static::$pdo);
+			[
+				'stage'     =>  false,
+				'surrogate' => 'test_sid',
+				'identity'  =>  false,
+			]
+		];
 		$data = self::$dataDir;
 		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
-		$db  = new MicrosoftSQLServer(self::$pdo, [
-			'stage'     => false,
-			'surrogate' => 'test_sid',
-			'identity'  => true,
-		]);
+		$db  = new MicrosoftSQLServer(...$opts);
 
-		$ddl = $db->toSQL($xml->schema())['create'];
+		$sql = $db->toSQL($xml->schema());
+		$ddl = $sql['create'];
+		$dml = $sql['delete'];
 
 		$this->assertNotFalse(static::$pdo->exec($ddl));
 		$this->assertTrue($db->insert($xml));
@@ -139,5 +120,61 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertSame('6',$maxid);
+
+		// test same values used (no identity continuation after delete)
+		$db  = new MicrosoftSQLServer(...$opts);
+		$this->assertNotFalse(static::$pdo->exec($dml));
+		$this->assertTrue($db->insert($xml));
+
+		$sql = 'SELECT MAX(test_sid) AS maxid FROM DataRecordSAMPLE';
+		foreach (self::$pdo->query($sql) as $result){
+			$maxid = $result['maxid'];
+		}
+
+		$this->assertSame('6',$maxid);
+	}
+
+	/**
+	 *  @testdox Can insert XML with identity custom surrogate key
+	 */
+	public function testCanInsertXMLwithIdentityCustomSurrogateKey(){
+		jp::CleanMsSQLdb(static::$pdo);
+		$opts = [
+			self::$pdo,
+			[
+				'stage'     =>  false,
+				'surrogate' => 'test_sid',
+				'identity'  =>  true,
+			]
+		];
+		$data = self::$dataDir;
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"));
+		$db  = new MicrosoftSQLServer(...$opts);
+
+		$sql = $db->toSQL($xml->schema());
+		$ddl = $sql['create'];
+		$dml = $sql['delete'];
+
+		$this->assertNotFalse(static::$pdo->exec($ddl));
+		$this->assertTrue($db->insert($xml));
+
+		$sql = 'SELECT MAX(test_sid) AS maxid FROM DataRecordSAMPLE';
+		foreach (self::$pdo->query($sql) as $result){
+			$maxid = $result['maxid'];
+		}
+
+		$this->assertSame('6',$maxid);
+
+		// test identity doesn't restart
+		$db  = new MicrosoftSQLServer(...$opts);
+		$this->assertNotFalse(static::$pdo->exec($dml));
+		$this->assertTrue($db->insert($xml));
+
+		$sql = 'SELECT MAX(test_sid) AS maxid FROM DataRecordSAMPLE';
+		foreach (self::$pdo->query($sql) as $result){
+			$maxid = $result['maxid'];
+		}
+
+		$this->assertSame('12',$maxid);
 	}
 }

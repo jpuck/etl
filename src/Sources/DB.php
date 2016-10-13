@@ -14,7 +14,7 @@ use InvalidArgumentException;
 
 abstract class DB extends Source {
 	use DDL;
-	protected $surrogateCount = 0;
+	protected $surrogateCount = [];
 	protected $statements = '';
 
 	public function __construct(PDO $uri = null, ...$options){
@@ -90,7 +90,10 @@ abstract class DB extends Source {
 
 			// generate surrogate key, or use DB identity
 			if(empty($this->options['identity'])){
-				$query[$this->options['surrogate']] = ++$this->surrogateCount;
+				$count =& $this->surrogateCount;
+				$table = $query[0];
+				$count[$table] = $count[$table] ?? 0;
+				$query[$this->options['surrogate']] = ++$count[$table];
 			}
 
 			// execute query
@@ -156,7 +159,7 @@ abstract class DB extends Source {
 			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
 			$stmt->closeCursor();
 		} else {
-			$query[$surrogate.'fk'] = $this->surrogateCount;
+			$query[$surrogate.'fk'] = $this->surrogateCount[$query[0]];
 		}
 	}
 

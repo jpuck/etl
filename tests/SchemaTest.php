@@ -89,4 +89,28 @@ class SchemaTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	public function schemaFormatDataProvider(){
+		return [
+			'php array'   => [
+				require "{$this->schemataDir}/sample.schema.php"
+			],
+			'php file'    => [
+				"{$this->schemataDir}/sample.schema.php"
+			],
+			'json string' => [
+				file_get_contents("{$this->schemataDir}/items.schema.json")
+			],
+			'json file'   => [
+				"{$this->schemataDir}/items.schema.json"
+			],
+		];
+	}
+
+	/**
+	 *  @dataProvider schemaFormatDataProvider
+	 */
+	public function testCanMakeSchemaFromFormat($schema){
+		$this->assertTrue(new Schema($schema) instanceof Schema);
+	}
 }

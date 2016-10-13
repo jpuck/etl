@@ -136,6 +136,75 @@ to the `Datum` constructor prior to being used with `DB::insert`, otherwise the
 surrogate keys will be used by default and will result in a failed insertion if
 the surrogate columns don't exist.
 
+## Saving Schemas
+
+Generating Schemas can take a long time and may require customization, such
+as adding `primaryKey` flags or removing unwanted fields to be ignored. Here are
+some examples for exporting and importing:
+
+```php
+$xml = file_get_contents("sample.xml");
+$xml = new XML($xml);
+$schema = $xml->schema();
+
+// normal JSON_PRETTY_PRINT
+echo $schema;
+```
+
+By simply echoing the object, output can be redirected to a file from console:
+
+    php script.php > myschema.json
+
+Use [`file_put_contents`][19] to write to disk.
+`Schema::toJSON` accepts all the [`json_encode`][18] options.
+
+```php
+$string = $schema->toJSON(JSON_UNESCAPED_UNICODE);
+file_put_contents('myschema.json', $string);
+
+// native php array
+$array = var_export($schema->toArray(), true);
+$array = "<?php return $array;";
+file_put_contents('myschema.php', $array);
+```
+
+Import any of those formats the same way by passing the filename, an
+array, or a JSON string to the constructor.
+
+```php
+$schemas []= new Schema('myschema.php');
+$schemas []= new Schema('myschema.json');
+
+$schemas []= new Schema($schema->toArray());
+$schemas []= new Schema($schema->toJSON());
+$schemas []= new Schema($schema->toJSON(JSON_PRETTY_PRINT));
+
+foreach($schemas as $s){
+	var_dump($schema == $s);
+}
+```
+
+Override the internal `Schematizer` by passing a `Schema` to the `Datum`
+constructor.
+
+```php
+$schema = new Schema('myschema.json');
+$xml = file_get_contents("sample.xml");
+$xml = new XML($xml, $schema);
+```
+
+You can also pass the `Schema` override through `Source::fetch`
+
+```php
+$credentials = [
+	'url' => 'https://api.example.com',
+	'username' => 'user',
+	'password' => 'P@55w0rd',
+];
+$source = new REST($credentials);
+$xml = $source->fetch('endpoint', XML::class, new Schema('myschema.json'));
+```
+
 --------------
 
 # Development
@@ -214,3 +283,5 @@ return (function(){
   [15]:https://codecov.io/gh/jpuck/etl/branch/dev
   [16]:https://img.shields.io/codecov/c/github/jpuck/etl/master.svg
   [17]:https://img.shields.io/codecov/c/github/jpuck/etl/dev.svg
+  [18]:http://php.net/manual/en/function.json-encode.php
+  [19]:http://php.net/manual/en/function.file-put-contents.php

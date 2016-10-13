@@ -29,6 +29,14 @@ class Schema {
 	protected $filtered = [];
 
 	public function __construct($schema){
+		if(is_string($schema) && is_file($schema)){
+			// check if php array, else json string
+			if('php' === substr(strrchr($schema, '.'), 1)){
+				$schema = require $schema;
+			} else {
+				$schema = file_get_contents($schema);
+			}
+		}
 		if (is_string($schema)){
 			$schema = json_decode($schema, true);
 			if (!is_array($schema)){

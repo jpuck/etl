@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__.'/../vendor/autoload.php';
+use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
+use jpuck\etl\Schemata\Schema;
+
+if(empty($argv[1])){
+	throw new InvalidArgumentException('Command required.');
+}
+
+if('ddl' !== $argv[1]){
+	throw new InvalidArgumentException('Only ddl command currently supported.');
+}
+
+if(empty($argv[2])){
+	throw new InvalidArgumentException('Schema required.');
+}
+$schema = $argv[2];
+
+$db = new MicrosoftSQLServer(null,['stage' => false]);
+
+// if array
+if('php' === substr(strrchr($argv[2], '.'), 1)){
+	$schema = require $schema;
+} else {
+	$schema = file_get_contents($schema);
+}
+
+echo $db->generate(new Schema($schema));

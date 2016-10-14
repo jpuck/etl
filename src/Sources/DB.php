@@ -68,7 +68,7 @@ abstract class DB extends Source {
 			$name = Schematizer::stripNamespace($node['name']);
 			$query[0] .= $query[] = $name;
 
-			$primaryKey = $this->getAttributes($node, $query, '', $schema);
+			$primaryKey = $this->getAttributes($node, '', $query, $schema);
 
 			// get the children
 			if (isset($node['value'])){
@@ -79,7 +79,7 @@ abstract class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $key, $schema);
+							$primaryKey = $primaryKey ?? $this->getAttributes($value, $key, $query, $schema);
 							$primaryKey = $primaryKey ?? $this->setValues($value,$key,$query,$schema);
 						}
 					}
@@ -174,7 +174,7 @@ abstract class DB extends Source {
 		return $primaryKey;
 	}
 
-	protected function getAttributes(Array &$node, Array &$query, String $prefix='', Array $schema){
+	protected function getAttributes(Array &$node, String $prefix='', Array &$query, Array $schema){
 		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){

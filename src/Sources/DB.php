@@ -166,13 +166,32 @@ abstract class DB extends Source {
 	}
 
 	protected function setValues($value, String $name, Array &$query, Array $schema, String $prefix=''){
-		if (is_numeric($value) || !empty($value)){
-			$query[$prefix.$name] = $value;
-			if ($this->isPrimaryKey($name, $schema, $query)){
-				$primaryKey = $name;
+		if($this->uses($name,$query,$schema)){
+			if(is_numeric($value) || !empty($value)){
+				$query[$prefix.$name] = $value;
+				if($this->isPrimaryKey($name, $schema, $query)){
+					$primaryKey = $name;
+				}
 			}
 		}
 		return $primaryKey ?? null;
+	}
+
+	protected function uses(String $name, Array &$query, Array $schema) : Bool {
+		$stack = $this->walkSchema($schema, $query);
+
+		if(isset($stack['attributes'])){
+			foreach($stack['attributes'] as $key => $value){
+				if($key === $name){
+					$exists = true;
+				}
+			}
+		}
+
+		if(!empty($stack['elements'][$name])){
+			$exists = true;
+		}
+		return $exists ?? false;
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){

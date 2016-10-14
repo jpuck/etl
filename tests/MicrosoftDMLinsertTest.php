@@ -1,6 +1,7 @@
 <?php
 use jpuck\etl\Sources\DBMS\MicrosoftSQLServer;
 use jpuck\etl\Data\XML;
+use jpuck\etl\Schemata\Schema;
 use jpuck\phpdev\Functions as jp;
 
 /**
@@ -176,5 +177,23 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertSame('12',$maxid);
+	}
+
+	/**
+	 *  @testdox Can insert XML into DB ignoring extra data
+	 */
+	public function testCanInsertXMLintoDBignoringExtraData(){
+		jp::CleanMsSQLdb(static::$pdo);
+		$db = new MicrosoftSQLServer(self::$pdo,
+			['stage'=>false, 'identity'=>true]
+		);
+		$data = self::$dataDir;
+		$schema = new Schema("$data/schemata/sample.schema.reduced.php");
+		$xml = new XML(file_get_contents("$data/xml/sample.xml"), $schema);
+
+		$this->assertNotFalse(static::$pdo->exec(
+			$db->toSQL($schema)['create']
+		));
+		$this->assertTrue($db->insert($xml));
 	}
 }

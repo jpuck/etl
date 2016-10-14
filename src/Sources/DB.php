@@ -80,11 +80,11 @@ abstract class DB extends Source {
 							$recurse []= $value;
 						} else {
 							$primaryKey = $primaryKey ?? $this->getAttributes($value, $key, $query, $schema);
-							$primaryKey = $primaryKey ?? $this->setValues($value,$key,$query,$schema);
+							$primaryKey = $primaryKey ?? $this->setValues($value['value'],$key,$query,$schema);
 						}
 					}
 				} else {
-					$primaryKey = $primaryKey ?? $this->setValues($node,$name,$query,$schema);
+					$primaryKey = $primaryKey ?? $this->setValues($node['value'],$name,$query,$schema);
 				}
 			}
 
@@ -163,10 +163,10 @@ abstract class DB extends Source {
 		}
 	}
 
-	protected function setValues(Array &$node, String $name, Array &$query, Array $schema){
+	protected function setValues($value, String $name, Array &$query, Array $schema){
 		$primaryKey = null;
-		if (is_numeric($node['value']) || !empty($node['value'])){
-			$query[$name] = $node['value'];
+		if (is_numeric($value) || !empty($value)){
+			$query[$name] = $value;
 			if ($this->isPrimaryKey($name, $schema, $query)){
 				$primaryKey = $name;
 			}

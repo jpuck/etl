@@ -163,7 +163,7 @@ abstract class DB extends Source {
 		}
 	}
 
-	protected function setValues($node,$name,&$query,$schema){
+	protected function setValues(Array &$node, String $name, Array &$query, Array $schema){
 		$primaryKey = null;
 		if (is_numeric($node['value']) || !empty($node['value'])){
 			$query[$name] = $node['value'];
@@ -174,7 +174,7 @@ abstract class DB extends Source {
 		return $primaryKey;
 	}
 
-	protected function getAttributes(Array &$node, Array &$query, String $prefix='', $schema){
+	protected function getAttributes(Array &$node, Array &$query, String $prefix='', Array $schema){
 		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){

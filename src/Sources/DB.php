@@ -68,7 +68,7 @@ abstract class DB extends Source {
 			$name = Schematizer::stripNamespace($node['name']);
 			$query[0] .= $query[] = $name;
 
-			$primaryKey = $this->getAttributes($node, '', $query, $schema);
+			$primaryKey = $this->getAttributes($node, $query, $schema);
 
 			// get the children
 			if (isset($node['value'])){
@@ -79,7 +79,7 @@ abstract class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$primaryKey = $primaryKey ?? $this->getAttributes($value, $key, $query, $schema);
+							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $schema, $key);
 							$primaryKey = $primaryKey ?? $this->setValues($value['value'],$key,$query,$schema);
 						}
 					}
@@ -163,10 +163,10 @@ abstract class DB extends Source {
 		}
 	}
 
-	protected function setValues($value, String $name, Array &$query, Array $schema){
+	protected function setValues($value, String $name, Array &$query, Array $schema, String $prefix=''){
 		$primaryKey = null;
 		if (is_numeric($value) || !empty($value)){
-			$query[$name] = $value;
+			$query[$prefix.$name] = $value;
 			if ($this->isPrimaryKey($name, $schema, $query)){
 				$primaryKey = $name;
 			}
@@ -174,16 +174,14 @@ abstract class DB extends Source {
 		return $primaryKey;
 	}
 
-	protected function getAttributes(Array &$node, String $prefix='', Array &$query, Array $schema){
+	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){
 		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
 				$key = Schematizer::stripNamespace($key);
-				$query[$prefix.$key] = $value;
-				if ($this->isPrimaryKey($key, $schema, $query)){
-					$primaryKey = $prefix.$key;
-				}
+				$tmp = $this->setValues($value, $key, $query, $schema, $prefix);
+				$primaryKey = $primaryKey ?? $tmp;
 			}
 		}
 		return $primaryKey;

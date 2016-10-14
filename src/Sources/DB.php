@@ -164,18 +164,16 @@ abstract class DB extends Source {
 	}
 
 	protected function setValues($value, String $name, Array &$query, Array $schema, String $prefix=''){
-		$primaryKey = null;
 		if (is_numeric($value) || !empty($value)){
 			$query[$prefix.$name] = $value;
 			if ($this->isPrimaryKey($name, $schema, $query)){
 				$primaryKey = $name;
 			}
 		}
-		return $primaryKey;
+		return $primaryKey ?? null;
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){
-		$primaryKey = null;
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
@@ -184,7 +182,7 @@ abstract class DB extends Source {
 				$primaryKey = $primaryKey ?? $tmp;
 			}
 		}
-		return $primaryKey;
+		return $primaryKey ?? null;
 	}
 
 	protected function walkSchema(Array $schema, Array $query) : Array {

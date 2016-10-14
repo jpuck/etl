@@ -136,7 +136,7 @@ abstract class DB extends Source {
 		}
 
 		if (empty($cols)){
-			$sql .= " DEFAULT VALUES";
+			$sql .= " DEFAULT VALUES ";
 		} else {
 			$sql .= " VALUES ('".implode("','",$vals)."'); ";
 		}

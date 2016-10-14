@@ -68,7 +68,7 @@ abstract class DB extends Source {
 			$name = Schematizer::stripNamespace($node['name']);
 			$query[0] .= $query[] = $name;
 
-			$primaryKey = $this->getAttributes($node, $query, '', $schema);
+			$primaryKey = $this->getAttributes($node, $query, $schema);
 
 			// get the children
 			if (isset($node['value'])){
@@ -79,12 +79,14 @@ abstract class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $key, $schema);
-							$primaryKey = $primaryKey ?? $this->setValues($value,$key,$query,$schema);
+							$tmpa = $this->getAttributes($value, $query, $schema, $key);
+							$tmpb = $this->setValues($value['value'],$key,$query,$schema);
+							$primaryKey = $primaryKey ?? $tmpa ?? $tmpb;
 						}
 					}
 				} else {
-					$primaryKey = $primaryKey ?? $this->setValues($node,$name,$query,$schema);
+					$tmp = $this->setValues($node['value'],$name,$query,$schema);
+					$primaryKey = $primaryKey ?? $tmp;
 				}
 			}
 
@@ -136,7 +138,7 @@ abstract class DB extends Source {
 		}
 
 		if (empty($cols)){
-			$sql .= " DEFAULT VALUES";
+			$sql .= " DEFAULT VALUES ";
 		} else {
 			$sql .= " VALUES ('".implode("','",$vals)."'); ";
 		}
@@ -163,30 +165,26 @@ abstract class DB extends Source {
 		}
 	}
 
-	protected function setValues($node,$name,&$query,$schema){
-		$primaryKey = null;
-		if (is_numeric($node['value']) || !empty($node['value'])){
-			$query[$name] = $node['value'];
+	protected function setValues($value, String $name, Array &$query, Array $schema, String $prefix=''){
+		if (is_numeric($value) || !empty($value)){
+			$query[$prefix.$name] = $value;
 			if ($this->isPrimaryKey($name, $schema, $query)){
 				$primaryKey = $name;
 			}
 		}
-		return $primaryKey;
+		return $primaryKey ?? null;
 	}
 
-	protected function getAttributes(Array &$node, Array &$query, String $prefix='', $schema){
-		$primaryKey = null;
+	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
 				$key = Schematizer::stripNamespace($key);
-				$query[$prefix.$key] = $value;
-				if ($this->isPrimaryKey($key, $schema, $query)){
-					$primaryKey = $prefix.$key;
-				}
+				$tmp = $this->setValues($value, $key, $query, $schema, $prefix);
+				$primaryKey = $primaryKey ?? $tmp;
 			}
 		}
-		return $primaryKey;
+		return $primaryKey ?? null;
 	}
 
 	protected function walkSchema(Array $schema, Array $query) : Array {

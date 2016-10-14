@@ -3,6 +3,14 @@
 This is a collection of PHP 7 classes useful for
 [extracting, transforming, and loading][1] data between sources.
 
+Hierarchical XML and JSON can be automatically converted to relational SQL.
+Support includes extracting data documents from a file system or REST API,
+and then loading the data into a DBMS like Microsoft SQL Server.
+
+Values are surveyed for datatypes, numeric cardinality, and unique natural key
+candidates. Then this information is used to create a normalized multi-table
+database structure suited to insert the data.
+
 Branch      | Tests                     | Code Coverage
 ----------- | --------------------------|--------------
 [master][9] | [![Build Status][12]][11] | [![Codecov][16]][14]

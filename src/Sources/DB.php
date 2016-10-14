@@ -79,12 +79,14 @@ abstract class DB extends Source {
 						if ($this->hasGrandChildren($key, $schema, $query)){
 							$recurse []= $value;
 						} else {
-							$primaryKey = $primaryKey ?? $this->getAttributes($value, $query, $schema, $key);
-							$primaryKey = $primaryKey ?? $this->setValues($value['value'],$key,$query,$schema);
+							$tmpa = $this->getAttributes($value, $query, $schema, $key);
+							$tmpb = $this->setValues($value['value'],$key,$query,$schema);
+							$primaryKey = $primaryKey ?? $tmpa ?? $tmpb;
 						}
 					}
 				} else {
-					$primaryKey = $primaryKey ?? $this->setValues($node['value'],$name,$query,$schema);
+					$tmp = $this->setValues($node['value'],$name,$query,$schema);
+					$primaryKey = $primaryKey ?? $tmp;
 				}
 			}
 

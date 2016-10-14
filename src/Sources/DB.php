@@ -228,6 +228,10 @@ abstract class DB extends Source {
 	}
 
 	protected function hasGrandChildren(String $name, Array $schema, Array $query){
+		if(!$this->uses($name, $query, $schema)){
+			return false;
+		}
+
 		$elements = $this->walkSchema($schema, $query)['elements'];
 
 		// check if single leaf

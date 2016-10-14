@@ -76,16 +76,16 @@ abstract class DB extends Source {
 					foreach ($node['value'] as $key => $value){
 						// if grandchildren, then recurse
 						$key = Schematizer::stripNamespace($node['value'][$key]['name']);
-						if ($this->hasGrandChildren($key, $schema, $query)){
+						if ($this->hasGrandChildren($node['value'], $key, $schema, $query)){
 							$recurse []= $value;
 						} else {
 							$tmpa = $this->getAttributes($value, $query, $schema, $key);
-							$tmpb = $this->setValues($value['value'],$key,$query,$schema);
+							$tmpb = $this->setValues($value,$key,$query,$schema);
 							$primaryKey = $primaryKey ?? $tmpa ?? $tmpb;
 						}
 					}
 				} else {
-					$tmp = $this->setValues($node['value'],$name,$query,$schema);
+					$tmp = $this->setValues($node,$name,$query,$schema);
 					$primaryKey = $primaryKey ?? $tmp;
 				}
 			}
@@ -165,22 +165,49 @@ abstract class DB extends Source {
 		}
 	}
 
-	protected function setValues($value, String $name, Array &$query, Array $schema, String $prefix=''){
-		if (is_numeric($value) || !empty($value)){
-			$query[$prefix.$name] = $value;
-			if ($this->isPrimaryKey($name, $schema, $query)){
-				$primaryKey = $name;
+	protected function setValues(Array &$node, String $nsname, Array &$query, Array $schema, String $prefix=''){
+		$name = Schematizer::stripNamespace($nsname);
+		if($this->uses($node,$name,$query,$schema)){
+			$value = $node[$nsname] ?? $node['value'] ?? null;
+			if(is_numeric($value) || !empty($value)){
+				$query[$prefix.$name] = $value;
+				if($this->isPrimaryKey($name, $schema, $query)){
+					$primaryKey = $name;
+				}
 			}
 		}
 		return $primaryKey ?? null;
+	}
+
+	protected function uses(Array &$node, String $name, Array &$query, Array $schema) : Bool {
+		$stack = $this->walkSchema($schema, $query);
+
+		if(isset($stack['attributes'])){
+			foreach($stack['attributes'] as $key => $value){
+				if($key === $name){
+					$exists = true;
+				}
+			}
+		}
+
+		if(!empty($stack['elements'][$name])){
+			$exists = true;
+		}
+
+		// don't waste any more time exploring this node
+		if(empty($exists)){
+			unset($node[$name]);
+			return false;
+		}
+
+		return $exists;
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){
 		// get the node attributes as column values
 		if (isset($node['attributes'])){
 			foreach ($node['attributes'] as $key => $value){
-				$key = Schematizer::stripNamespace($key);
-				$tmp = $this->setValues($value, $key, $query, $schema, $prefix);
+				$tmp = $this->setValues($node['attributes'], $key, $query, $schema, $prefix);
 				$primaryKey = $primaryKey ?? $tmp;
 			}
 		}
@@ -208,7 +235,11 @@ abstract class DB extends Source {
 		];
 	}
 
-	protected function hasGrandChildren(String $name, Array $schema, Array $query){
+	protected function hasGrandChildren(Array &$node, String $name, Array $schema, Array $query){
+		if(!$this->uses($node, $name, $query, $schema)){
+			return false;
+		}
+
 		$elements = $this->walkSchema($schema, $query)['elements'];
 
 		// check if single leaf

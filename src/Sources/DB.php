@@ -57,7 +57,19 @@ abstract class DB extends Source {
 		$data   = $datum->parsed();
 		$this->insertData($data, $schema, ['']);
 		if(!empty($this->statements)){
-			$this->uri->query($this->statements)->closeCursor();
+			$this->uri->beginTransaction();
+			try {
+				$statement = $this->uri->query($this->statements);
+				while ($statement->nextRowset()) {
+					/* https://bugs.php.net/bug.php?id=61613 */
+				};
+				$this->uri->commit();
+			} catch (\PDOException $e) {
+				$this->uri->rollBack();
+				throw $e;
+			} finally {
+				$statement->closeCursor();
+			}
 			$this->statements = '';
 		}
 		return true;
@@ -159,6 +171,7 @@ abstract class DB extends Source {
 			$query[$primaryKey.'fk'] = $primaryVal;
 		} elseif(!empty($this->options['identity'])) {
 			$query[$surrogate.'fk'] = $stmt->fetch(PDO::FETCH_ASSOC)[$surrogate];
+			while ($stmt->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
 			$stmt->closeCursor();
 		} else {
 			$query[$surrogate.'fk'] = $this->surrogateCount[$query[0]];

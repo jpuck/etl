@@ -22,26 +22,6 @@ class MicrosoftDMLinsertTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 *  @testdox Can invalidate DB URI in constructor
-	 */
-	public function testCanInvalidateDBURIinConstructor(){
-		$this->expectException(TypeError::class);
-		$db = new MicrosoftSQLServer(['username'=>'user','password'=>'pass']);
-	}
-
-	/**
-	 *  @testdox Can validate DB URI in constructor
-	 */
-	public function testCanValidateDBURIinConstructor(){
-		$expected = self::$pdo;
-
-		$db = new MicrosoftSQLServer($expected);
-		$actual = $db->uri();
-
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
 	 *  @testdox Can insert XML into DB
 	 */
 	public function testCanInsertXMLintoDB(){

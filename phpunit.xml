@@ -13,6 +13,7 @@
 			<file>tests/SchemaValidatorTest.php</file>
 			<file>tests/SchemaTest.php</file>
 			<file>tests/SchemaMergerTest.php</file>
+			<file>tests/MicrosoftDBconstructorTest.php</file>
 			<file>tests/MicrosoftDDLdatatyperTest.php</file>
 			<file>tests/MicrosoftDDLdatetimeTest.php</file>
 			<file>tests/MicrosoftDDLwithoutStageTest.php</file>

@@ -68,7 +68,9 @@ abstract class DB extends Source {
 				$this->uri->rollBack();
 				throw $e;
 			} finally {
-				$statement->closeCursor();
+				if(isset($statement)){
+					$statement->closeCursor();
+				}
 			}
 			$this->statements = '';
 		}

@@ -14,7 +14,7 @@ class JSONstreamTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanGetCountOfJSONlist(){
 		$expected = 3;
-		$list     = self::$data."/json/items.json.lst";
+		$list     = self::$data."/json/item.json.lst";
 
 		$jstream  = new JSONstream($list);
 		$actual   = $jstream->count();
@@ -27,12 +27,12 @@ class JSONstreamTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanCreateSchemaFromListOfJSON(){
 		$expected = file_get_contents(
-			self::$data."/schemata/items.schema.json"
+			self::$data."/schemata/item.schema.json"
 		);
 		$expected = json_decode($expected, true);
-		$list     = self::$data."/json/items.json.lst";
+		$list     = self::$data."/json/item.json.lst";
 
-		$jstream  = new JSONstream($list);
+		$jstream  = new JSONstream($list, ['name'=>'item']);
 		$actual   = $jstream->schematize()->toArray();
 
 		$this->assertEquals($expected, $actual);
@@ -42,7 +42,7 @@ class JSONstreamTest extends PHPUnit_Framework_TestCase {
 	 * @testdox Can fetch list of JSON
 	 */
 	public function testCanFetchListOfJSON(){
-		$list    = self::$data."/json/items.json.lst";
+		$list    = self::$data."/json/item.json.lst";
 
 		$jstream = new JSONstream($list);
 		while($json = $jstream->fetch()){
@@ -54,7 +54,7 @@ class JSONstreamTest extends PHPUnit_Framework_TestCase {
 	 * @testdox Can fetch chunked list of JSON
 	 */
 	public function testCanFetchChunkedListOfJSON(){
-		$list  = self::$data."/json/items.json.lst";
+		$list  = self::$data."/json/item.json.lst";
 		$count = 2;
 		$i = 0;
 
@@ -71,10 +71,10 @@ class JSONstreamTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanFetchListOfJSONwithSchema(){
 		$expected = file_get_contents(
-			self::$data."/schemata/items.schema.json"
+			self::$data."/schemata/item.schema.json"
 		);
 		$expected = new Schema($expected);
-		$list     = self::$data."/json/items.json.lst";
+		$list     = self::$data."/json/item.json.lst";
 
 		$jstream  = new JSONstream($list, $expected);
 		while($json = $jstream->fetch()){

@@ -27,6 +27,7 @@
 			<file>tests/JSONstreamTest.php</file>
 			<file>tests/FolderTest.php</file>
 			<file>tests/MicrosoftDMLinsertTest.php</file>
+			<file>./tests/MicrosoftDMLinsertJSONstreamTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>

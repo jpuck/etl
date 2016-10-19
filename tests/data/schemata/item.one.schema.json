@@ -1,10 +1,7 @@
 {
-    "root": {
+    "item": {
         "count": {
             "max": {
-                "measure": 1
-            },
-            "min": {
                 "measure": 1
             }
         },
@@ -18,56 +15,38 @@
         },
         "elements": {
             "item_id": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
-                        "value": 1021037326
-                    },
-                    "min": {
                         "value": 1021037324
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 10,
-                        "value": 1021037324
-                    },
-                    "min": {
                         "measure": 10,
                         "value": 1021037324
                     }
                 }
             },
             "pers_available_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
@@ -76,9 +55,6 @@
             "__quantity_changes": {
                 "count": {
                     "max": {
-                        "measure": 33
-                    },
-                    "min": {
                         "measure": 33
                     }
                 },
@@ -92,11 +68,9 @@
                 },
                 "elements": {
                     "key": {
+                        "unique": 1,
                         "count": {
                             "max": {
-                                "measure": 1
-                            },
-                            "min": {
                                 "measure": 1
                             }
                         },
@@ -112,19 +86,12 @@
                             "max": {
                                 "measure": 10,
                                 "value": 1452637334
-                            },
-                            "min": {
-                                "measure": 10,
-                                "value": 1452637334
                             }
                         }
                     },
                     "value": {
                         "count": {
                             "max": {
-                                "measure": 1
-                            },
-                            "min": {
                                 "measure": 1
                             }
                         },
@@ -153,9 +120,6 @@
                 "count": {
                     "max": {
                         "measure": 1
-                    },
-                    "min": {
-                        "measure": 1
                     }
                 },
                 "children": {
@@ -171,9 +135,6 @@
                         "count": {
                             "max": {
                                 "measure": 11
-                            },
-                            "min": {
-                                "measure": 11
                             }
                         },
                         "children": {
@@ -186,11 +147,9 @@
                         },
                         "elements": {
                             "key": {
+                                "unique": 1,
                                 "count": {
                                     "max": {
-                                        "measure": 1
-                                    },
-                                    "min": {
                                         "measure": 1
                                     }
                                 },
@@ -206,19 +165,12 @@
                                     "max": {
                                         "measure": 10,
                                         "value": 1452637334
-                                    },
-                                    "min": {
-                                        "measure": 10,
-                                        "value": 1452637334
                                     }
                                 }
                             },
                             "value": {
                                 "count": {
                                     "max": {
-                                        "measure": 1
-                                    },
-                                    "min": {
                                         "measure": 1
                                     }
                                 },
@@ -246,224 +198,152 @@
                 }
             },
             "__last_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
-                        "value": "2016-06-08T15:54:19+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-06-08T15:54:19+00:00"
                     }
                 }
             },
             "__last_cost_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-04-06T03:02:11+00:00"
-                    },
-                    "min": {
-                        "value": "2016-04-06T03:02:11+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-04-06T03:02:11+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-04-06T03:02:11+00:00"
                     }
                 }
             },
             "__last_quantity_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
-                        "value": "2016-06-08T15:54:19+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-06-08T15:54:19+00:00"
                     }
                 }
             },
             "__last_status_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
-                        "value": "2016-06-08T15:54:19+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-06-08T15:54:19+00:00"
                     }
                 }
             },
             "__last_non_inventory_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2015-12-15T17:58:55+00:00"
-                    },
-                    "min": {
-                        "value": "2015-12-15T17:58:55+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2015-12-15T17:58:55+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2015-12-15T17:58:55+00:00"
                     }
                 }
             },
             "__last_job_run": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
-                        "value": "2016-06-08T15:54:19+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-06-08T15:54:19+00:00"
                     }
                 }
             },
             "__last_inventory_update": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
-                        "value": "2016-06-08T15:54:19+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2016-06-08T15:54:19+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2016-06-08T15:54:19+00:00"
                     }
                 }
             },
             "__create_date": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "datetime": {
                     "max": {
                         "value": "2015-12-03T20:18:43+00:00"
-                    },
-                    "min": {
-                        "value": "2015-12-03T20:18:43+00:00"
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 25,
-                        "value": "2015-12-03T20:18:43+00:00"
-                    },
-                    "min": {
                         "measure": 25,
                         "value": "2015-12-03T20:18:43+00:00"
                     }
@@ -472,9 +352,6 @@
             "__pricing_tiers": {
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
@@ -488,28 +365,19 @@
                 },
                 "elements": {
                     "price01": {
+                        "unique": 1,
                         "count": {
                             "max": {
-                                "measure": 1
-                            },
-                            "min": {
                                 "measure": 1
                             }
                         },
                         "int": {
                             "max": {
-                                "value": "12"
-                            },
-                            "min": {
                                 "value": "10"
                             }
                         },
                         "varchar": {
                             "max": {
-                                "measure": 2,
-                                "value": "10"
-                            },
-                            "min": {
                                 "measure": 2,
                                 "value": "10"
                             }
@@ -518,11 +386,9 @@
                 }
             },
             "product_title": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
@@ -530,283 +396,193 @@
                     "max": {
                         "measure": 50,
                         "value": "Ozark Enterprises 42 Cubby Large Bookshelf - Black"
-                    },
-                    "min": {
-                        "measure": 49,
-                        "value": "Ozark Enterprises 42 Cubby Large Bookshelf - Blue"
                     }
                 }
             },
             "product_group": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 9,
-                        "value": "OE001-BLK"
-                    },
-                    "min": {
                         "measure": 9,
                         "value": "OE001-BLK"
                     }
                 }
             },
             "featured_sku_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "product_id": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
-                        "value": 1019769560
-                    },
-                    "min": {
                         "value": 1019769558
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 10,
-                        "value": 1019769558
-                    },
-                    "min": {
                         "measure": 10,
                         "value": 1019769558
                     }
                 }
             },
             "freight_carrier_service_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "air_carrier_service_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "ground_carrier_service_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "postal_carrier_service_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "ships_alone_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "gift_wrap_available_flag": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 0
-                    },
-                    "min": {
-                        "value": 0
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 0
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 0
                     }
                 }
             },
             "country_of_origin": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 2,
-                        "value": "AC"
-                    },
-                    "min": {
                         "measure": 2,
                         "value": "AC"
                     }
                 }
             },
             "status": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
@@ -814,19 +590,13 @@
                     "max": {
                         "measure": 8,
                         "value": "in-stock"
-                    },
-                    "min": {
-                        "measure": 8,
-                        "value": "in-stock"
                     }
                 }
             },
             "title": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
@@ -834,140 +604,94 @@
                     "max": {
                         "measure": 50,
                         "value": "Ozark Enterprises 42 Cubby Large Bookshelf - Black"
-                    },
-                    "min": {
-                        "measure": 49,
-                        "value": "Ozark Enterprises 42 Cubby Large Bookshelf - Blue"
                     }
                 }
             },
             "sku": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 9,
-                        "value": "OE001-BLK"
-                    },
-                    "min": {
                         "measure": 9,
                         "value": "OE001-BLK"
                     }
                 }
             },
             "quantity_available": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
-                        "value": 12
-                    },
-                    "min": {
                         "value": 10
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 2,
-                        "value": 10
-                    },
-                    "min": {
                         "measure": 2,
                         "value": 10
                     }
                 }
             },
             "msrp": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
-                        "value": 102
-                    },
-                    "min": {
                         "value": 100
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 3,
-                        "value": 100
-                    },
-                    "min": {
                         "measure": 3,
                         "value": 100
                     }
                 }
             },
             "supplier_id": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
-                        "value": 4226
-                    },
-                    "min": {
                         "value": 4224
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 4,
-                        "value": 4224
-                    },
-                    "min": {
                         "measure": 4,
                         "value": 4224
                     }
                 }
             },
             "__product_item_cnt": {
+                "unique": 1,
                 "count": {
                     "max": {
-                        "measure": 1
-                    },
-                    "min": {
                         "measure": 1
                     }
                 },
                 "int": {
                     "max": {
                         "value": 1
-                    },
-                    "min": {
-                        "value": 1
                     }
                 },
                 "varchar": {
                     "max": {
-                        "measure": 1,
-                        "value": 1
-                    },
-                    "min": {
                         "measure": 1,
                         "value": 1
                     }

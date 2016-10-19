@@ -2,6 +2,9 @@
 
 # Ubuntu 14.04 Trusty Tahr install php7 with Microsoft ODBC Driver 13
 
+# postgres causes problems
+apt-get purge -y postgresql-9.5 postgresql-9.5-postgis-2.2 postgresql-contrib-9.5
+
 cd $( dirname "${BASH_SOURCE[0]}" )
 
 # get php7
@@ -17,7 +20,7 @@ apt-get install python-software-properties software-properties-common \
 phpenmod odbc
 
 # original download driver link page https://www.microsoft.com/en-us/download/details.aspx?id=50419
-wget https://download.microsoft.com/download/2/E/5/2E58F097-805C-4AB8-9FC6-71288AB4409D/msodbcsql-13.0.0.0.tar.gz
+wget https://github.com/scratchers/travis-ms-odbc/raw/fc543a4e441a4b8ae9c78933d0edbfb95074eb57/msodbcsql-13.0.0.0.tar.gz
 tar xvzf msodbcsql-13.0.0.0.tar.gz
 cd msodbcsql-13.0.0.0
 ./build_dm.sh --accept-warning

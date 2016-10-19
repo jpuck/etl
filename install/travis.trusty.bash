@@ -2,6 +2,9 @@
 
 # Ubuntu 14.04 Trusty Tahr install php7 with Microsoft ODBC Driver 13
 
+# postgres causes problems
+apt-get purge -y postgresql-9.5 postgresql-9.5-postgis-2.2 postgresql-contrib-9.5
+
 cd $( dirname "${BASH_SOURCE[0]}" )
 
 # get php7

@@ -17,6 +17,9 @@ class Merger {
 	}
 
 	protected function recurse($array, $array1) {
+		if(isset($array)){
+			$this->unsetDatatypeConflicts($array, $array1);
+		}
 		foreach ($array1 as $key => $value) {
 			// create new key in $array, if it is empty
 			if (!isset($array[$key])) {
@@ -57,5 +60,16 @@ class Merger {
 		}
 
 		return $array;
+	}
+
+	protected function unsetDatatypeConflicts(Array &$a, Array &$b){
+		if(isset($a['int']) && isset($b['datetime'])){
+			unset($a['int']);
+			unset($b['datetime']);
+		}
+		if(isset($b['int']) && isset($a['datetime'])){
+			unset($b['int']);
+			unset($a['datetime']);
+		}
 	}
 }

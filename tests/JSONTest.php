@@ -30,7 +30,7 @@ class JSONTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCanCreateJSONwithName(){
 		$raw = file_get_contents("{$this->jsonDir}/item.json");
-		$schema = "{$this->jsonDir}/../schemata/item.schema.json";
+		$schema = "{$this->jsonDir}/../schemata/item.one.schema.json";
 		$expected = file_get_contents($schema);
 
 		$json = new JSON($raw, ['name'=>'item']);

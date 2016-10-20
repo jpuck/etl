@@ -99,10 +99,10 @@ class SchemaTest extends PHPUnit_Framework_TestCase {
 				"{$this->schemataDir}/sample.schema.php"
 			],
 			'json string' => [
-				file_get_contents("{$this->schemataDir}/items.schema.json")
+				file_get_contents("{$this->schemataDir}/item.schema.json")
 			],
 			'json file'   => [
-				"{$this->schemataDir}/items.schema.json"
+				"{$this->schemataDir}/item.schema.json"
 			],
 		];
 	}

@@ -27,6 +27,7 @@ abstract class DB extends Source {
 			'stage'     => true,
 			'prefix'    => '',
 			'surrogate' => 'jpetl_id',
+			'debug'     => false,
 		];
 		$this->options($defaults);
 		$this->options(...$options);
@@ -62,12 +63,27 @@ abstract class DB extends Source {
 		if(!empty($this->statements)){
 			$this->uri->beginTransaction();
 			try {
-				$statement = $this->uri->query($this->statements);
-				while ($statement->nextRowset()) {
-					/* https://bugs.php.net/bug.php?id=61613 */
-				};
+				// if debug, execute one statement at a time
+				if($this->options['debug']){
+					foreach(explode(PHP_EOL, $this->statements) as $sql){
+						$statement = $this->uri->query($sql);
+						while ($statement->nextRowset()) {
+							/* https://bugs.php.net/bug.php?id=61613 */
+						};
+					}
+				}
+				// else execute batches normally
+				else {
+					$statement = $this->uri->query($this->statements);
+					while ($statement->nextRowset()) {
+						/* https://bugs.php.net/bug.php?id=61613 */
+					};
+				}
 				$this->uri->commit();
 			} catch (\PDOException $e) {
+				if($this->options['debug']){
+					echo $sql;
+				}
 				$this->uri->rollBack();
 				throw $e;
 			} finally {
@@ -182,6 +198,9 @@ abstract class DB extends Source {
 			}
 		} else {
 			$this->statements .= $sql;
+			if($this->options['debug']){
+				$this->statements .= PHP_EOL;
+			}
 		}
 
 		// pass parent id for child

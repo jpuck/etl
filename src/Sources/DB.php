@@ -19,6 +19,9 @@ abstract class DB extends Source {
 
 	public function __construct(PDO $uri = null, ...$options){
 		parent::__construct($uri);
+		if(isset($uri)){
+			$uri->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+		}
 		$defaults = [
 			'identity'  => false,
 			'stage'     => true,

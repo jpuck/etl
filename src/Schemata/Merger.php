@@ -16,7 +16,7 @@ class Merger {
 		return $base;
 	}
 
-	protected function recurse($array, $array1) {
+	protected function recurse(&$array, &$array1) {
 		if(isset($array)){
 			$this->unsetDatatypeConflicts($array, $array1);
 		}

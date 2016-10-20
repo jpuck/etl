@@ -18,4 +18,18 @@ class SchemaMergerTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	public function testCanMergeSchemasWithConflicts(){
+		$a = require "{$this->schemataDir}/a.schema.php";
+		$a = new Schema($a);
+		$b = require "{$this->schemataDir}/b.schema.php";
+		$b = new Schema($b);
+		$expected = require "{$this->schemataDir}/ab.schema.php";
+
+		$merger = new Merger;
+		$merged = $merger->merge($a,$b);
+		$actual = $merged->toArray();
+
+		$this->assertEquals($expected, $actual);
+	}
 }

@@ -63,13 +63,13 @@ class Merger {
 	}
 
 	protected function unsetDatatypeConflicts(Array &$a, Array &$b){
-		if(isset($a['int']) && isset($b['datetime'])){
-			unset($a['int']);
-			unset($b['datetime']);
-		}
-		if(isset($b['int']) && isset($a['datetime'])){
-			unset($b['int']);
-			unset($a['datetime']);
+		foreach(['int','decimal'] as $datatype){
+			if (isset($a['datetime'], $b[$datatype])){
+				unset($a['datetime'], $b[$datatype]);
+			}
+			if (isset($a[$datatype], $b['datetime'])){
+				unset($a[$datatype], $b['datetime']);
+			}
 		}
 	}
 }

@@ -108,7 +108,15 @@ abstract class DB extends Source {
 			if(empty($this->options['identity'])){
 				$count =& $this->surrogateCount;
 				$table = $query[0];
-				$count[$table] = $count[$table] ?? 0;
+
+				// check for existing records
+				if(empty($count[$table])){
+					$sql = "SELECT MAX({$this->options['surrogate']}) AS id FROM $table";
+					$res = $this->uri->query($sql);
+					$row = $res->fetch(PDO::FETCH_ASSOC);
+					$count[$table] = $row['id'] ?? 0;
+					$res->closeCursor();
+				}
 				$query[$this->options['surrogate']] = ++$count[$table];
 			}
 

@@ -8,19 +8,12 @@ class Merger {
 	}
 
 	// http://php.net/manual/en/function.array-replace-recursive.php#92574
-	protected function array_compare_recursive($base, $replacements){
+	protected function array_compare_recursive(Array $base, Array ...$acquisitions){
 		// handle the arguments, merge one by one
-		$args = func_get_args();
-		$array = $args[0];
-		if (!is_array($array)) {
-			return $array;
+		foreach($acquisitions as $acquisition) {
+			$base = $this->recurse($base, $acquisition);
 		}
-		for ($i = 1; $i < count($args); $i++) {
-			if (is_array($args[$i])) {
-				$array = $this->recurse($array, $args[$i]);
-			}
-		}
-		return $array;
+		return $base;
 	}
 
 	protected function recurse($array, $array1) {

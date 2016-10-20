@@ -32,4 +32,18 @@ class SchemaMergerTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	public function testCanMergeSchemasWithIntDecimalConflicts(){
+		$c = require "{$this->schemataDir}/c.schema.php";
+		$c = new Schema($c);
+		$d = require "{$this->schemataDir}/d.schema.php";
+		$d = new Schema($d);
+		$expected = require "{$this->schemataDir}/cd.schema.php";
+
+		$merger = new Merger;
+		$merged = $merger->merge($c,$d);
+		$actual = $merged->toArray();
+
+		$this->assertEquals($expected, $actual);
+	}
 }

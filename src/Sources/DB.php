@@ -62,12 +62,15 @@ abstract class DB extends Source {
 		if(!empty($this->statements)){
 			$this->uri->beginTransaction();
 			try {
-				$statement = $this->uri->query($this->statements);
-				while ($statement->nextRowset()) {
-					/* https://bugs.php.net/bug.php?id=61613 */
-				};
+				foreach(explode(PHP_EOL, $this->statements) as $sql){
+					$statement = $this->uri->query($sql);
+					while ($statement->nextRowset()) {
+						/* https://bugs.php.net/bug.php?id=61613 */
+					};
+				}
 				$this->uri->commit();
 			} catch (\PDOException $e) {
+				echo $sql;
 				$this->uri->rollBack();
 				throw $e;
 			} finally {
@@ -179,7 +182,7 @@ abstract class DB extends Source {
 				throw $e;
 			}
 		} else {
-			$this->statements .= $sql;
+			$this->statements .= $sql.PHP_EOL;
 		}
 
 		// pass parent id for child

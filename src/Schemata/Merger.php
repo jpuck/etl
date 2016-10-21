@@ -55,7 +55,7 @@ class Merger {
 			$aMin = $aValue['min']['measure'] ?? $aValue['min']['value'] ?? null;
 
 			// if both min set
-			if (isset($aValue['min']) && isset($base[$key]['min'])) {
+			if (isset($aMin, $bMin)) {
 				if (($bMin <=> $aMin) > 0) {
 					$base[$key]['min'] = $aValue['min'];
 				}

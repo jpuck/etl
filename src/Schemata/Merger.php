@@ -36,6 +36,7 @@ class Merger {
 
 			// compare max if exists
 			if (isset($aValue['max']) && isset($base[$key]['max'])) {
+				$oldBaseMax = $base[$key]['max'];
 				$bMax = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
 				$aMax = $aValue['max']['measure'] ?? $aValue['max']['value'];
 				if (($bMax <=> $aMax) < 0) {
@@ -61,6 +62,22 @@ class Merger {
 				}
 				continue;
 			}
+
+			// if only acquisition min and no base min
+			// if old base max < acquisition min,
+			// then base min = old base max
+			if(isset($aMin)){
+				if (($bMax <=> $aMin) > -1) {
+					$base[$key]['min'] = $oldBaseMax;
+				} else {
+					$base[$key]['min'] = $aValue['min'];
+				}
+				continue;
+			}
+
+			// if only $base min, then compare to $acquisition max
+
+			// if no min, then compare maxes to set min
 		}
 
 		return $base;

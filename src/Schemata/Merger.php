@@ -18,7 +18,6 @@ class Merger {
 	protected function array_compare_recursive(Array &$base = null, Array $acquisition) : Array {
 		if(isset($base)){
 			$this->unsetDatatypeConflicts($base, $acquisition);
-			$this->unsetDatatypeConflicts($acquisition, $base);
 		}
 
 		foreach ($acquisition as $key => $value) {
@@ -64,6 +63,11 @@ class Merger {
 	}
 
 	protected function unsetDatatypeConflicts(Array &$a, Array &$b){
+		$this->unsetDatetimeConflicts($a, $b);
+		$this->unsetDatetimeConflicts($b, $a);
+	}
+
+	protected function unsetDatetimeConflicts(Array &$a, Array &$b){
 		foreach ( ['int', 'decimal'] as  $datatype){
 			if (isset($a['datetime'], $b[$datatype])){
 				unset($a['datetime'], $b[$datatype]);

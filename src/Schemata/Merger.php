@@ -47,6 +47,7 @@ class Merger {
 				} else {
 					$base[$key] = $aValue;
 				}
+				continue;
 			}
 
 			// compare optional minimums

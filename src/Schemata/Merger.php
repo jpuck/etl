@@ -15,7 +15,7 @@ class Merger {
 	}
 
 	// http://php.net/manual/en/function.array-replace-recursive.php#92574
-	protected function array_compare_recursive(&$base, $acquisition) {
+	protected function array_compare_recursive(Array &$base = null, Array $acquisition) : Array {
 		if(isset($base)){
 			$this->unsetDatatypeConflicts($base, $acquisition);
 		}

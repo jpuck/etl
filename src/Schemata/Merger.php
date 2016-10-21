@@ -34,15 +34,6 @@ class Merger {
 				$value = $this->array_compare_recursive($base[$key], $value);
 			}
 
-			// compare optional minimums
-			if (isset($value['min']) && isset($base[$key]['min'])) {
-				$a = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'];
-				$b = $value['min']['measure'] ?? $value['min']['value'];
-				if (($a <=> $b) > 0) {
-					$base[$key]['min'] = $value['min'];
-				}
-			}
-
 			// compare max if exists
 			if (isset($value['max']) && isset($base[$key]['max'])) {
 				$a = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
@@ -55,6 +46,15 @@ class Merger {
 					$base[$key] = max($base[$key],$value);
 				} else {
 					$base[$key] = $value;
+				}
+			}
+
+			// compare optional minimums
+			if (isset($value['min']) && isset($base[$key]['min'])) {
+				$a = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'];
+				$b = $value['min']['measure'] ?? $value['min']['value'];
+				if (($a <=> $b) > 0) {
+					$base[$key]['min'] = $value['min'];
 				}
 			}
 		}

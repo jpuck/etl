@@ -2,21 +2,20 @@
 namespace jpuck\etl\Schemata;
 
 class Merger {
-	public function merge(Schema $a, Schema $b) : Schema {
-		$temp = $this->array_compare_recursive($a->toArray(),$b->toArray());
-		return new Schema($temp);
+	public function merge(Schema $base, Schema ...$acquisitions) : Schema {
+		// handle the arguments, merge one by one
+		$merged = $base->toArray();
+		foreach($acquisitions as $acquisition) {
+			$merged = $this->array_compare_recursive(
+				$merged,
+				$acquisition->toArray()
+			);
+		}
+		return new Schema($merged);
 	}
 
 	// http://php.net/manual/en/function.array-replace-recursive.php#92574
-	protected function array_compare_recursive(Array $base, Array ...$acquisitions){
-		// handle the arguments, merge one by one
-		foreach($acquisitions as $acquisition) {
-			$base = $this->recurse($base, $acquisition);
-		}
-		return $base;
-	}
-
-	protected function recurse(&$array, &$array1) {
+	protected function array_compare_recursive(&$array, $array1) {
 		if(isset($array)){
 			$this->unsetDatatypeConflicts($array, $array1);
 		}
@@ -31,7 +30,7 @@ class Merger {
 				is_array($value) &&
 				!(isset($value['max']) && isset($array[$key]['max']))
 			) {
-				$value = $this->recurse($array[$key], $value);
+				$value = $this->array_compare_recursive($array[$key], $value);
 			}
 
 			// compare optional minimums

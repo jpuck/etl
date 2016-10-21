@@ -65,6 +65,8 @@ class Merger {
 	protected function resolveDatatypeConflicts(Array &$a, Array &$b){
 		$this->unsetDatetimeConflicts($a, $b);
 		$this->unsetDatetimeConflicts($b, $a);
+		$this->unsetNumericConflicts($a, $b);
+		$this->unsetNumericConflicts($b, $a);
 		$this->mergeIntegerDecimalMeasures($a, $b);
 		$this->mergeIntegerDecimalMeasures($b, $a);
 	}
@@ -73,6 +75,24 @@ class Merger {
 		foreach ( ['int', 'decimal'] as  $datatype){
 			if (isset($a['datetime'], $b[$datatype])){
 				unset($a['datetime'], $b[$datatype]);
+			}
+		}
+	}
+
+	protected function unsetNumericConflicts(Array &$a, Array &$b){
+		foreach(['int','decimal'] as $number){
+			if(isset($a[$number])){
+				if(!is_numeric($b['varchar']['max']['value'])){
+					unset($a[$number]);
+					break;
+				}
+				if(!isset($b['varchar']['min']['value'])){
+					continue;
+				}
+				if(!is_numeric($b['varchar']['min']['value'])){
+					unset($a[$number]);
+					return;
+				}
 			}
 		}
 	}

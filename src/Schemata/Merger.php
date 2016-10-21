@@ -2,67 +2,188 @@
 namespace jpuck\etl\Schemata;
 
 class Merger {
-	public function merge(Schema $a, Schema $b) : Schema {
-		$temp = $this->array_compare_recursive($a->toArray(),$b->toArray());
-		return new Schema($temp);
+	public function merge(Schema $base, Schema ...$acquisitions) : Schema {
+		// handle the arguments, merge one by one
+		$merged = $base->toArray();
+		foreach($acquisitions as $acquisition) {
+			$merged = $this->array_compare_recursive(
+				$merged,
+				$acquisition->toArray()
+			);
+		}
+		return new Schema($merged);
 	}
 
 	// http://php.net/manual/en/function.array-replace-recursive.php#92574
-	protected function array_compare_recursive($base, $replacements){
-		// handle the arguments, merge one by one
-		$args = func_get_args();
-		$array = $args[0];
-		if (!is_array($array)) {
-			return $array;
+	protected function array_compare_recursive(Array &$base = null, Array $acquisition) : Array {
+		if(isset($base)){
+			$this->resolveDatatypeConflicts($base, $acquisition);
 		}
-		for ($i = 1; $i < count($args); $i++) {
-			if (is_array($args[$i])) {
-				$array = $this->recurse($array, $args[$i]);
-			}
-		}
-		return $array;
-	}
 
-	protected function recurse($array, $array1) {
-		foreach ($array1 as $key => $value) {
-			// create new key in $array, if it is empty
-			if (!isset($array[$key])) {
-				$array[$key] = null;
+		foreach ($acquisition as $key => $value) {
+			// create new key in $base, if it is empty
+			if (!isset($base[$key])) {
+				$base[$key] = null;
 			}
 
 			// overwrite the value in the base array
 			if (
 				is_array($value) &&
-				!(isset($value['max']) && isset($array[$key]['max']))
+				!(isset($value['max']) && isset($base[$key]['max']))
 			) {
-				$value = $this->recurse($array[$key], $value);
+				$value = $this->array_compare_recursive($base[$key], $value);
 			}
 
 			// compare optional minimums
-			if (isset($value['min']) && isset($array[$key]['min'])) {
-				$a = $array[$key]['min']['measure'] ?? $array[$key]['min']['value'];
+			if (isset($value['min']) && isset($base[$key]['min'])) {
+				$a = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'];
 				$b = $value['min']['measure'] ?? $value['min']['value'];
 				if (($a <=> $b) > 0) {
-					$array[$key]['min'] = $value['min'];
+					$base[$key]['min'] = $value['min'];
 				}
 			}
 
 			// compare max if exists
-			if (isset($value['max']) && isset($array[$key]['max'])) {
-				$a = $array[$key]['max']['measure'] ?? $array[$key]['max']['value'];
+			if (isset($value['max']) && isset($base[$key]['max'])) {
+				$a = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
 				$b = $value['max']['measure'] ?? $value['max']['value'];
 				if (($a <=> $b) < 0) {
-					$array[$key]['max'] = $value['max'];
+					$base[$key]['max'] = $value['max'];
 				}
 			} else {
 				if ($key === 'distinct') {
-					$array[$key] = max($array[$key],$value);
+					$base[$key] = max($base[$key],$value);
 				} else {
-					$array[$key] = $value;
+					$base[$key] = $value;
 				}
 			}
 		}
 
-		return $array;
+		return $base;
+	}
+
+	protected function resolveDatatypeConflicts(Array &$a, Array &$b){
+		$this->unsetDatetimeConflicts($a, $b);
+		$this->unsetDatetimeConflicts($b, $a);
+		$this->mergeIntegerDecimalMeasures($a, $b);
+		$this->mergeIntegerDecimalMeasures($b, $a);
+	}
+
+	protected function unsetDatetimeConflicts(Array &$a, Array &$b){
+		foreach ( ['int', 'decimal'] as  $datatype){
+			if (isset($a['datetime'], $b[$datatype])){
+				unset($a['datetime'], $b[$datatype]);
+			}
+		}
+	}
+
+	protected function mergeIntegerDecimalMeasures(Array &$a, Array &$b){
+		if (isset($a['int'], $b['decimal'])){
+			$a['decimal'] = [];
+
+			$this->setValues($a['int'], $b['decimal'], $a['decimal']);
+			$this->setScales($a, $b);
+
+			// max precision is the same
+			$a['precision'] = $b['precision'];
+			// min precision is: measure = 0, value = max(int)
+			$a['precision']['min']['measure'] = 0;
+			$a['precision']['min']['value'] = $a['int']['max']['value'];
+
+			// unset int
+			$b['decimal'] = $a['decimal'];
+			unset($a['int']);
+		}
+	}
+
+	protected function setValues(Array &$int, Array &$dec, Array &$fin){
+		// max value
+		$fin['max']['value'] = max(
+			$int['max']['value'],
+			$dec['max']['value']
+		);
+
+		// min value
+		// if both mins set
+		if(isset($int['min']['value'], $dec['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['min']['value'],
+				$dec['min']['value']
+			);
+		}
+		// if only int min set, compare with decimal max
+		elseif(isset($int['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['min']['value'],
+				$dec['max']['value']
+			);
+		}
+		// if only decimal min set, compare with int max
+		elseif(isset($dec['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['max']['value'],
+				$dec['min']['value']
+			);
+		}
+	}
+
+	protected function setScales(Array &$a, Array &$b){
+		// max
+		// if int min
+		if(isset($a['int']['min']['value'])){
+			$maxScale = $this->evaluateScale(
+				$a['int']['max']['value'],
+				$a['int']['min']['value']
+			);
+		} else {
+			$maxScale = [$a['int']['max']['value']];
+		}
+		// compare decimal
+		$maxScale = $this->evaluateScale(
+			$maxScale[0],
+			$b['scale']['max']['value']
+		);
+		$a['scale']['max'][ 'value' ] = $maxScale[0];
+		$a['scale']['max']['measure'] = $maxScale[1];
+
+		// min
+		// if int min
+		if(isset($a['int']['min']['value'])){
+			$minScale = $this->evaluateScale(
+				$a['int']['max']['value'],
+				$a['int']['min']['value'],
+				true
+			);
+		} else {
+			$maxVal = $a['int']['max']['value'];
+			$minScale = [$maxVal, Schematizer::getPrecision($maxVal)[0]];
+		}
+		// compare decimal
+		if(isset($b['scale']['min']['value'])){
+			$minScale = $this->evaluateScale(
+				$minScale[0],
+				$b['scale']['min']['value'],
+				true
+			);
+		} else {
+			$minScale = $this->evaluateScale(
+				$minScale[0],
+				$b['scale']['max']['value'],
+				true
+			);
+		}
+	}
+
+	protected function evaluateScale(Float $a, Float $b, Bool $min = false) : Array {
+		$scale[0] = $scale[1] = [$a, Schematizer::getPrecision($a)[0]];
+		$scale[-1] = [$b, Schematizer::getPrecision($b)[0]];
+
+		$champion = $scale[1][1] <=> $scale[-1][1];
+
+		if($min){
+			$champion = 0 - $champion;
+		}
+
+		return $scale[$champion];
 	}
 }

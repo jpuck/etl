@@ -17,7 +17,7 @@ class Merger {
 	// http://php.net/manual/en/function.array-replace-recursive.php#92574
 	protected function array_compare_recursive(Array &$base = null, Array $acquisition) : Array {
 		if(isset($base)){
-			$this->unsetDatatypeConflicts($base, $acquisition);
+			$this->resolveDatatypeConflicts($base, $acquisition);
 		}
 
 		foreach ($acquisition as $key => $value) {
@@ -62,9 +62,11 @@ class Merger {
 		return $base;
 	}
 
-	protected function unsetDatatypeConflicts(Array &$a, Array &$b){
+	protected function resolveDatatypeConflicts(Array &$a, Array &$b){
 		$this->unsetDatetimeConflicts($a, $b);
 		$this->unsetDatetimeConflicts($b, $a);
+		$this->mergeIntegerDecimalMeasures($a, $b);
+		$this->mergeIntegerDecimalMeasures($b, $a);
 	}
 
 	protected function unsetDatetimeConflicts(Array &$a, Array &$b){
@@ -73,5 +75,115 @@ class Merger {
 				unset($a['datetime'], $b[$datatype]);
 			}
 		}
+	}
+
+	protected function mergeIntegerDecimalMeasures(Array &$a, Array &$b){
+		if (isset($a['int'], $b['decimal'])){
+			$a['decimal'] = [];
+
+			$this->setValues($a['int'], $b['decimal'], $a['decimal']);
+			$this->setScales($a, $b);
+
+			// max precision is the same
+			$a['precision'] = $b['precision'];
+			// min precision is: measure = 0, value = max(int)
+			$a['precision']['min']['measure'] = 0;
+			$a['precision']['min']['value'] = $a['int']['max']['value'];
+
+			// unset int
+			$b['decimal'] = $a['decimal'];
+			unset($a['int']);
+		}
+	}
+
+	protected function setValues(Array &$int, Array &$dec, Array &$fin){
+		// max value
+		$fin['max']['value'] = max(
+			$int['max']['value'],
+			$dec['max']['value']
+		);
+
+		// min value
+		// if both mins set
+		if(isset($int['min']['value'], $dec['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['min']['value'],
+				$dec['min']['value']
+			);
+		}
+		// if only int min set, compare with decimal max
+		elseif(isset($int['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['min']['value'],
+				$dec['max']['value']
+			);
+		}
+		// if only decimal min set, compare with int max
+		elseif(isset($dec['min']['value'])){
+			$fin['min']['value'] = min(
+				$int['max']['value'],
+				$dec['min']['value']
+			);
+		}
+	}
+
+	protected function setScales(Array &$a, Array &$b){
+		// max
+		// if int min
+		if(isset($a['int']['min']['value'])){
+			$maxScale = $this->evaluateScale(
+				$a['int']['max']['value'],
+				$a['int']['min']['value']
+			);
+		} else {
+			$maxScale = [$a['int']['max']['value']];
+		}
+		// compare decimal
+		$maxScale = $this->evaluateScale(
+			$maxScale[0],
+			$b['scale']['max']['value']
+		);
+		$a['scale']['max'][ 'value' ] = $maxScale[0];
+		$a['scale']['max']['measure'] = $maxScale[1];
+
+		// min
+		// if int min
+		if(isset($a['int']['min']['value'])){
+			$minScale = $this->evaluateScale(
+				$a['int']['max']['value'],
+				$a['int']['min']['value'],
+				true
+			);
+		} else {
+			$maxVal = $a['int']['max']['value'];
+			$minScale = [$maxVal, Schematizer::getPrecision($maxVal)[0]];
+		}
+		// compare decimal
+		if(isset($b['scale']['min']['value'])){
+			$minScale = $this->evaluateScale(
+				$minScale[0],
+				$b['scale']['min']['value'],
+				true
+			);
+		} else {
+			$minScale = $this->evaluateScale(
+				$minScale[0],
+				$b['scale']['max']['value'],
+				true
+			);
+		}
+	}
+
+	protected function evaluateScale(Float $a, Float $b, Bool $min = false) : Array {
+		$scale[0] = $scale[1] = [$a, Schematizer::getPrecision($a)[0]];
+		$scale[-1] = [$b, Schematizer::getPrecision($b)[0]];
+
+		$champion = $scale[1][1] <=> $scale[-1][1];
+
+		if($min){
+			$champion = 0 - $champion;
+		}
+
+		return $scale[$champion];
 	}
 }

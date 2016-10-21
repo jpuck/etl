@@ -20,7 +20,7 @@ class Merger {
 			$this->resolveDatatypeConflicts($base, $acquisition);
 		}
 
-		foreach ($acquisition as $key => $value) {
+		foreach ($acquisition as $key => $aValue) {
 			// create new key in $base, if it is empty
 			if (!isset($base[$key])) {
 				$base[$key] = null;
@@ -28,34 +28,37 @@ class Merger {
 
 			// overwrite the value in the base array
 			if (
-				is_array($value) &&
-				!(isset($value['max']) && isset($base[$key]['max']))
+				is_array($aValue) &&
+				!(isset($aValue['max']) && isset($base[$key]['max']))
 			) {
-				$value = $this->array_compare_recursive($base[$key], $value);
+				$aValue = $this->array_compare_recursive($base[$key], $aValue);
 			}
 
 			// compare max if exists
-			if (isset($value['max']) && isset($base[$key]['max'])) {
-				$a = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
-				$b = $value['max']['measure'] ?? $value['max']['value'];
-				if (($a <=> $b) < 0) {
-					$base[$key]['max'] = $value['max'];
+			if (isset($aValue['max']) && isset($base[$key]['max'])) {
+				$bMax = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
+				$aMax = $aValue['max']['measure'] ?? $aValue['max']['value'];
+				if (($bMax <=> $aMax) < 0) {
+					$base[$key]['max'] = $aValue['max'];
 				}
 			} else {
 				if ($key === 'distinct') {
-					$base[$key] = max($base[$key],$value);
+					$base[$key] = max($base[$key],$aValue);
 				} else {
-					$base[$key] = $value;
+					$base[$key] = $aValue;
 				}
 			}
 
 			// compare optional minimums
-			if (isset($value['min']) && isset($base[$key]['min'])) {
-				$a = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'];
-				$b = $value['min']['measure'] ?? $value['min']['value'];
-				if (($a <=> $b) > 0) {
-					$base[$key]['min'] = $value['min'];
+			$bMin = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'] ?? null;
+			$aMin = $aValue['min']['measure'] ?? $aValue['min']['value'] ?? null;
+
+			// if both min set
+			if (isset($aValue['min']) && isset($base[$key]['min'])) {
+				if (($bMin <=> $aMin) > 0) {
+					$base[$key]['min'] = $aValue['min'];
 				}
+				continue;
 			}
 		}
 

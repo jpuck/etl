@@ -75,7 +75,15 @@ class Merger {
 				continue;
 			}
 
-			// if only $base min, then compare to $acquisition max
+			// if only $base min,
+			// if acquisition max is less than base min,
+			// then set acquisition max as new min
+			if(isset($bMin)){
+				if (($bMin <=> $aMax) > -1) {
+					$base[$key]['min'] = $aValue['max'];
+				}
+				continue;
+			}
 
 			// if no min, then compare maxes to set min
 		}

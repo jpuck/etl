@@ -86,6 +86,13 @@ class Merger {
 			}
 
 			// if no min, then compare maxes to set min
+			if($bMax !== $aMax){
+				if($bMax < $aMax){
+					$base[$key]['min'] = $oldBaseMax;
+				} else {
+					$base[$key]['min'] = $aValue['max'];
+				}
+			}
 		}
 
 		return $base;

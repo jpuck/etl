@@ -932,6 +932,11 @@ return [
 										'measure' => 9,
 										'value' => '987654321',
 									],
+									'min' =>
+									[
+										'measure' => 7,
+										'value' => '9 month',
+									],
 								],
 							],
 							'ENDPOS' =>

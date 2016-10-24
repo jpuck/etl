@@ -20,7 +20,7 @@ class Merger {
 			$this->resolveDatatypeConflicts($base, $acquisition);
 		}
 
-		foreach ($acquisition as $key => $value) {
+		foreach ($acquisition as $key => $aValue) {
 			// create new key in $base, if it is empty
 			if (!isset($base[$key])) {
 				$base[$key] = null;
@@ -28,33 +28,69 @@ class Merger {
 
 			// overwrite the value in the base array
 			if (
-				is_array($value) &&
-				!(isset($value['max']) && isset($base[$key]['max']))
+				is_array($aValue) &&
+				!(isset($aValue['max']) && isset($base[$key]['max']))
 			) {
-				$value = $this->array_compare_recursive($base[$key], $value);
-			}
-
-			// compare optional minimums
-			if (isset($value['min']) && isset($base[$key]['min'])) {
-				$a = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'];
-				$b = $value['min']['measure'] ?? $value['min']['value'];
-				if (($a <=> $b) > 0) {
-					$base[$key]['min'] = $value['min'];
-				}
+				$aValue = $this->array_compare_recursive($base[$key], $aValue);
 			}
 
 			// compare max if exists
-			if (isset($value['max']) && isset($base[$key]['max'])) {
-				$a = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
-				$b = $value['max']['measure'] ?? $value['max']['value'];
-				if (($a <=> $b) < 0) {
-					$base[$key]['max'] = $value['max'];
+			if (isset($aValue['max']) && isset($base[$key]['max'])) {
+				$oldBaseMax = $base[$key]['max'];
+				$bMax = $base[$key]['max']['measure'] ?? $base[$key]['max']['value'];
+				$aMax = $aValue['max']['measure'] ?? $aValue['max']['value'];
+				if (($bMax <=> $aMax) < 0) {
+					$base[$key]['max'] = $aValue['max'];
 				}
 			} else {
 				if ($key === 'distinct') {
-					$base[$key] = max($base[$key],$value);
+					$base[$key] = max($base[$key],$aValue);
 				} else {
-					$base[$key] = $value;
+					$base[$key] = $aValue;
+				}
+				continue;
+			}
+
+			// compare optional minimums
+			$bMin = $base[$key]['min']['measure'] ?? $base[$key]['min']['value'] ?? null;
+			$aMin = $aValue['min']['measure'] ?? $aValue['min']['value'] ?? null;
+
+			// if both min set
+			if (isset($aMin, $bMin)) {
+				if (($bMin <=> $aMin) > 0) {
+					$base[$key]['min'] = $aValue['min'];
+				}
+				continue;
+			}
+
+			// if only acquisition min and no base min
+			// if old base max < acquisition min,
+			// then base min = old base max
+			if(isset($aMin)){
+				if (($bMax <=> $aMin) < 0) {
+					$base[$key]['min'] = $oldBaseMax;
+				} else {
+					$base[$key]['min'] = $aValue['min'];
+				}
+				continue;
+			}
+
+			// if only $base min,
+			// if acquisition max is less than base min,
+			// then set acquisition max as new min
+			if(isset($bMin)){
+				if (($bMin <=> $aMax) > -1) {
+					$base[$key]['min'] = $aValue['max'];
+				}
+				continue;
+			}
+
+			// if no min, then compare maxes to set min
+			if($bMax !== $aMax){
+				if($bMax < $aMax){
+					$base[$key]['min'] = $oldBaseMax;
+				} else {
+					$base[$key]['min'] = $aValue['max'];
 				}
 			}
 		}
@@ -65,6 +101,8 @@ class Merger {
 	protected function resolveDatatypeConflicts(Array &$a, Array &$b){
 		$this->unsetDatetimeConflicts($a, $b);
 		$this->unsetDatetimeConflicts($b, $a);
+		$this->unsetNumericConflicts($a, $b);
+		$this->unsetNumericConflicts($b, $a);
 		$this->mergeIntegerDecimalMeasures($a, $b);
 		$this->mergeIntegerDecimalMeasures($b, $a);
 	}
@@ -73,6 +111,24 @@ class Merger {
 		foreach ( ['int', 'decimal'] as  $datatype){
 			if (isset($a['datetime'], $b[$datatype])){
 				unset($a['datetime'], $b[$datatype]);
+			}
+		}
+	}
+
+	protected function unsetNumericConflicts(Array &$a, Array &$b){
+		foreach(['int','decimal'] as $number){
+			if(isset($a[$number])){
+				if(!is_numeric($b['varchar']['max']['value'])){
+					unset($a[$number]);
+					break;
+				}
+				if(!isset($b['varchar']['min']['value'])){
+					continue;
+				}
+				if(!is_numeric($b['varchar']['min']['value'])){
+					unset($a[$number]);
+					return;
+				}
 			}
 		}
 	}

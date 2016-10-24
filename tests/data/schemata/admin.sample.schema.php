@@ -41,6 +41,10 @@ return [
 				[
 					'measure' => 3,
 				],
+				'min' =>
+				[
+					'measure' => 2,
+				],
 			],
 		],
 		'elements' =>
@@ -52,6 +56,10 @@ return [
 					'max' =>
 					[
 						'measure' => 3,
+					],
+					'min' =>
+					[
+						'measure' => 2,
 					],
 				],
 				'attributes' =>

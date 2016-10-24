@@ -120,14 +120,14 @@ class Merger {
 			if(isset($a[$number])){
 				if(!is_numeric($b['varchar']['max']['value'])){
 					unset($a[$number]);
-					break;
+					continue;
 				}
 				if(!isset($b['varchar']['min']['value'])){
 					continue;
 				}
 				if(!is_numeric($b['varchar']['min']['value'])){
 					unset($a[$number]);
-					return;
+					continue;
 				}
 			}
 		}

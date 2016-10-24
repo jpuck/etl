@@ -67,7 +67,7 @@ class Merger {
 			// if old base max < acquisition min,
 			// then base min = old base max
 			if(isset($aMin)){
-				if (($bMax <=> $aMin) > -1) {
+				if (($bMax <=> $aMin) < 0) {
 					$base[$key]['min'] = $oldBaseMax;
 				} else {
 					$base[$key]['min'] = $aValue['min'];

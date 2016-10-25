@@ -211,22 +211,18 @@ abstract class DB extends Source {
 		if(isset($stack['attributes'])){
 			foreach($stack['attributes'] as $key => $value){
 				if($key === $name){
-					$exists = true;
+					return true;
 				}
 			}
 		}
 
 		if(!empty($stack['elements'][$name])){
-			$exists = true;
+			return true;
 		}
 
 		// don't waste any more time exploring this node
-		if(empty($exists)){
-			unset($node[$name]);
-			return false;
-		}
-
-		return $exists;
+		unset($node[$name]);
+		return false;
 	}
 
 	protected function getAttributes(Array &$node, Array &$query, Array $schema, String $prefix=''){

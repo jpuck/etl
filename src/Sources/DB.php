@@ -83,6 +83,9 @@ abstract class DB extends Source {
 	protected function insertData(Array $node, Array $schema, Array $query){
 			// append table name and push the stack
 			$name = Schematizer::stripNamespace($node['name']);
+			if(!$this->uses($node, $name, $query, $schema)){
+				return;
+			}
 			$query[0] .= $query[] = $name;
 
 			$primaryKey = $this->getAttributes($node, $query, $schema);
@@ -206,6 +209,11 @@ abstract class DB extends Source {
 	}
 
 	protected function uses(Array &$node, String $name, Array &$query, Array $schema) : Bool {
+		// if this is the root node, then return true
+		if(count($query) === 1 && $name === key($schema)){
+			return true;
+		}
+
 		$stack = $this->walkSchema($schema, $query);
 
 		if(isset($stack['attributes'])){

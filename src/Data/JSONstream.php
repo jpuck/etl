@@ -26,16 +26,16 @@ class JSONstream {
 	}
 
 	public function fetch(Int $count = null){
-		$opts = $this->schema ?? ['schematizer'=>['unique'=>false]];
+		$opts []= $this->schema ?? ['schematizer'=>['unique'=>false]];
 		if(isset($this->options['name'])){
-			$opts['name'] = $this->options['name'];
+			$opts []= ['name' => $this->options['name']];
 		}
 		while (($line = fgets($this->file)) !== false){
 			$this->cursor++;
 			if(isset($count) && $this->cursor > $count){
 				break;
 			}
-			return new JSON($line, $opts);
+			return new JSON($line, ...$opts);
 		}
 		fseek($this->file, 0);
 		$this->cursor = 0;

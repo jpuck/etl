@@ -116,19 +116,16 @@ class Merger {
 	}
 
 	protected function unsetNumericConflicts(Array &$a, Array &$b){
-		foreach(['int','decimal'] as $number){
-			if(isset($a[$number])){
-				if(!is_numeric($b['varchar']['max']['value'])){
-					unset($a[$number]);
-					continue;
+		// if either is numeric, then both must be numeric
+		$numbers = ['int','decimal'];
+		foreach($numbers as $onumber){
+			if(isset($a[$onumber])){
+				foreach($numbers as $inumber){
+					if(isset($b[$inumber])){
+						return;
+					}
 				}
-				if(!isset($b['varchar']['min']['value'])){
-					continue;
-				}
-				if(!is_numeric($b['varchar']['min']['value'])){
-					unset($a[$number]);
-					continue;
-				}
+				unset($a[$onumber]);
 			}
 		}
 	}

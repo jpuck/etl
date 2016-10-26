@@ -101,6 +101,8 @@ class Validator {
 				);
 			}
 
+			$this->oneDatatype($value);
+
 			if (isset($value['varchar'])){
 				if (
 					!isset($value['varchar']['max']['measure']) ||
@@ -141,6 +143,24 @@ class Validator {
 		if (is_numeric($num)){
 			throw new InvalidArgumentException(
 				'Node name cannot be numeric.', 2
+			);
+		}
+	}
+
+	protected function oneDatatype(Array $value){
+		// int/decimal & int/datetime
+		foreach(['decimal','datetime'] as $datatype){
+			if(isset($value['int'], $value[$datatype])){
+				throw new InvalidArgumentException(
+					"Cannot have both int and $datatype in Schema.", 9
+				);
+			}
+		}
+
+		// decimal/datetime
+		if(isset($value['decimal'], $value['datetime'])){
+			throw new InvalidArgumentException(
+				"Cannot have both decimal and datetime in Schema.", 9
 			);
 		}
 	}

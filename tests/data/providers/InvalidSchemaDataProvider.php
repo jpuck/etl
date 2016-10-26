@@ -729,4 +729,107 @@ return [
 			]
 		]
 	],
+	'32) conflicting datatypes int and decimal' => [
+		9, [
+			'first' =>
+			[
+				'count' =>
+				[
+					'max' =>
+					[
+						'measure' => 1
+					]
+				],
+				'children' =>
+				[
+					'distinct' => 1,
+					'count' =>
+					[
+						'max' =>
+						[
+							'measure' => 1,
+						]
+					],
+				],
+				'elements' =>
+				[
+					"item_id" =>
+					[
+						"count" =>
+						[
+							"max"=>
+							[
+								"measure"=> 1
+							],
+							"min" =>
+							[
+								"measure"=> 1
+							]
+						],
+						"int" =>
+						[
+							"max" =>
+							[
+								"value" => 1022568213
+							],
+							"min" =>
+							[
+								"value"=> 1000331053
+							]
+						],
+						'decimal' =>
+						[
+							'max' =>
+							[
+								'value' => '1022568213',
+							],
+							'min' =>
+							[
+								'value' => '-210.12',
+							],
+						],
+						'scale' =>
+						[
+							'max' =>
+							[
+								'measure' => 10,
+								'value' => '1022568213',
+							],
+							'min' =>
+							[
+								'measure' => 1,
+								'value' => '2.300',
+							],
+						],
+						'precision' =>
+						[
+							'max' =>
+							[
+								'measure' => 3,
+								'value' => '2.300',
+							],
+							'min' =>
+							[
+								'measure' => 0,
+								'value' => '1022568213',
+							],
+						],
+						'varchar' =>
+						[
+							'max' =>
+							[
+								'measure' => 10,
+								'value' => '1022568213',
+							],
+							'min' =>
+							[
+								'measure' => 5,
+								'value' => '42.21',
+							],
+						],
+					],
+				],
+			]
+		]
+	],
 ];

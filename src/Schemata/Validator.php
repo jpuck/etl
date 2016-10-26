@@ -32,6 +32,7 @@ class Validator {
 							must have scale, precision [7]
 								must have max measure, value [7]
 								may  have min measure, value
+						must not be more than 1 of int, decimal, or datetime [9]
 			may  have children
 				must have distinct [8]
 				must satisfy count [4]

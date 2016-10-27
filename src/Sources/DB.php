@@ -117,7 +117,9 @@ abstract class DB extends Source {
 
 				// check for existing records
 				if(empty($count[$table])){
-					$sql = "SELECT MAX({$this->options['surrogate']}) AS id FROM $table";
+					$id  = $this->quote($this->options['surrogate']);
+					$tab = $this->quote($table);
+					$sql = "SELECT MAX($id) AS id FROM $tab";
 					$res = $this->uri->query($sql);
 					$row = $res->fetch(PDO::FETCH_ASSOC);
 					$count[$table] = $row['id'] ?? 0;

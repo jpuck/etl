@@ -57,7 +57,7 @@ class MicrosoftDDLdatatyperTest extends PHPUnit_Framework_TestCase {
 		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
 		return [
 			['12 months',                  false],
-			['12:12:12',                  'datetime'],
+			['12:12:12',                   false],
 			['12/12/2012',                'datetime'],
 			['12/12/2012 12:12:12',       'datetime'],
 			['2012-12-12',                'datetime'],

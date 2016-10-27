@@ -64,6 +64,7 @@ class MicrosoftDDLdatatyperTest extends PHPUnit_Framework_TestCase {
 			['2012-12-12 12:12:12',       'datetime'],
 			['2012-12-12T12:12:12+05:00', 'datetimeoffset'],
 			['2015-11-12 14:29:08 -0700',  false],
+			['2015-11-12 14:29:08 -07:00','datetimeoffset'],
 		];
 	}
 

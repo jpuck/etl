@@ -57,12 +57,17 @@ class MicrosoftDDLdatatyperTest extends PHPUnit_Framework_TestCase {
 		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
 		return [
 			['12 months',                  false],
-			['12:12:12',                  'datetime'],
+			['12:12:12',                   false],
 			['12/12/2012',                'datetime'],
 			['12/12/2012 12:12:12',       'datetime'],
 			['2012-12-12',                'datetime'],
 			['2012-12-12 12:12:12',       'datetime'],
+			['2012-12-12T12:12:12',       'datetime'],
+			['2012-12-12T12:12:12.121',   'datetime2'],
+			['2012-12-12T12:12:12.121212','datetime2'],
 			['2012-12-12T12:12:12+05:00', 'datetimeoffset'],
+			['2015-11-12 14:29:08 -0700',  false],
+			['2015-11-12 14:29:08 -07:00','datetimeoffset'],
 		];
 	}
 

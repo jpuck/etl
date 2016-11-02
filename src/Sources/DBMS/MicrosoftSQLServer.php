@@ -3,6 +3,7 @@ namespace jpuck\etl\Sources\DBMS;
 
 use jpuck\etl\Sources\DB;
 use InvalidArgumentException;
+use DateTime;
 
 class MicrosoftSQLServer extends DB {
 
@@ -46,23 +47,71 @@ class MicrosoftSQLServer extends DB {
 
 	public function getDatetime($value){
 		// https://msdn.microsoft.com/en-us/library/ms187819.aspx
+		// TODO: require leading zero for days & months.
+		// http://php.net/manual/en/datetime.createfromformat.php
+		// Day of the month, 2 digits with *or without* leading zeros
+		$formats = [
+			// Dates
+			// [0]4/15/[19]96 -- (mdy)
+			'm/d/y' => 'datetime',
+			'm/d/Y' => 'datetime',
+			// [0]4-15-[19]96 -- (mdy)
+			'm-d-y' => 'datetime',
+			'm-d-Y' => 'datetime',
+			// [0]4.15.[19]96 -- (mdy)
+			'm.d.y' => 'datetime',
+			'm.d.Y' => 'datetime',
+			// [0]4/[19]96/15 -- (myd)
+			'm/y/d' => 'datetime',
+			'm/Y/d' => 'datetime',
+			// 15/[0]4/[19]96 -- (dmy)
+			'd/m/y' => 'datetime',
+			'd/m/Y' => 'datetime',
+			// 15/[19]96/[0]4 -- (dym)
+			'd/y/m' => 'datetime',
+			'd/Y/m' => 'datetime',
+			// [19]96/15/[0]4 -- (ydm)
+			'y/d/m' => 'datetime',
+			'Y/d/m' => 'datetime',
+			// [19]96/[0]4/15 -- (ymd)
+			'y/m/d' => 'datetime',
+			'Y/m/d' => 'datetime',
+			// undocumented
+			'Y-m-d' => 'datetime',
 
-		// filter out alphabetic chars per relative format symbols
-		// except for 'T' per ISO8601 and '+' for timezone offset
-		// http://php.net/manual/en/datetime.formats.relative.php
-		if (preg_match('/^[\s\dT+:\/-]*$/', $value) !== 1){
-			return false;
+			// ISO8601
+			// YYYY-MM-DDThh:mm:ss[.mmm]
+			'Y-m-d\TH:i:s'   => 'datetime',
+			'Y-m-d\TH:i:s.u' => 'datetime2',
+			// YYYYMMDD[ hh:mm:ss[.mmm]]
+			'Ymd'         => 'datetime',
+			'Ymd H:i:s'   => 'datetime',
+			'Ymd H:i:s.u' => 'datetime2',
+
+			// undocumented
+			'Y-m-d H:i:s' => 'datetime',
+			'm/d/Y H:i:s' => 'datetime',
+
+			// timezone offset
+			// YYYY-MM-DDThh:mm:ss[.nnnnnnn][{+|-}hh:mm]
+			'Y-m-d\TH:i:s\+H:i'   => 'datetimeoffset',
+			'Y-m-d\TH:i:s\-H:i'   => 'datetimeoffset',
+			'Y-m-d\TH:i:s.u\+H:i' => 'datetimeoffset',
+			'Y-m-d\TH:i:s.u\-H:i' => 'datetimeoffset',
+			'Y-m-d H:i:s \+H:i'   => 'datetimeoffset',
+			'Y-m-d H:i:s \-H:i'   => 'datetimeoffset',
+			'Y-m-d H:i:s.u \+H:i' => 'datetimeoffset',
+			'Y-m-d H:i:s.u \-H:i' => 'datetimeoffset',
+			// YYYY-MM-DDThh:mm:ss[.nnnnnnn]Z (UTC)
+		];
+
+		foreach($formats as $format => $datatype){
+			if(DateTime::createFromFormat($format, trim($value)) !== false){
+				return $datatype;
+			}
 		}
 
-		if (strtotime($value) === false){
-			return false;
-		}
-
-		if (strpos($value, '+') !== false){
-			return 'datetimeoffset';
-		}
-
-		return 'datetime';
+		return false;
 	}
 
 	public function getVarchar ($length = null) : String {

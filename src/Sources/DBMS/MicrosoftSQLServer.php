@@ -106,7 +106,7 @@ class MicrosoftSQLServer extends DB {
 		];
 
 		foreach($formats as $format => $datatype){
-			if(DateTime::createFromFormat($format, $value) !== false){
+			if(DateTime::createFromFormat($format, trim($value)) !== false){
 				return $datatype;
 			}
 		}

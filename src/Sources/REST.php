@@ -38,6 +38,13 @@ class REST extends Source {
 			CURLOPT_RETURNTRANSFER => true,
 		];
 
+		$headers = $this->uri['headers'] ?? null;
+		if(is_array($headers)){
+			foreach($headers as $header => $value){
+				$options[CURLOPT_HTTPHEADER] []= "$header: $value";
+			}
+		}
+
 		if (isset($this->uri['username']) && isset($this->uri['password'])){
 			$options[CURLOPT_USERPWD] =
 				"{$this->uri['username']}:{$this->uri['password']}";

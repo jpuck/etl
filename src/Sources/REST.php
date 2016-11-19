@@ -27,8 +27,12 @@ class REST extends Source {
 	public function fetch(String $endpoint, String $datumClass, Schema $schema = null) : Datum {
 		$curl = curl_init();
 
+		// don't care about trailing slash or not
+		$url = trim($this->uri['url'], '/');
+		$endpoint = trim($endpoint, '/');
+
 		$options = [
-			CURLOPT_URL => "{$this->uri['url']}/$endpoint",
+			CURLOPT_URL => "$url/$endpoint",
 			CURLOPT_ENCODING => 'gzip',
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_RETURNTRANSFER => true,
